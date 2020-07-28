@@ -4,7 +4,11 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <link rel="stylesheet" href="/style/content_style.css" />
-<c:set var="path" value="${requestScope['javax.servlet.forward.request_uri']}" />
+<c:set var="categoryId" value="${requestScope.thisCategory.categoryId}"/>
+<c:set var="boardId" value="${requestScope.thisBoard.boardId}"/>
+<c:set var="boardName" value="${requestScope.thisBoard.boardName}"/>
+<c:set var="path" value="/content/${categoryId}${boardId != '' ? '/'+=boardId : ''}"/>
+
 <c:choose>
 	<c:when test="${(param.tar == 'title' ||param.tar == 'auth')  && param.query != null}">
 		<c:set var="params" value="?tar=${param.tar}&query=${param.query}&"/>
@@ -16,26 +20,21 @@
 
 <div class="content_container">
 	<div class="content_menu border">
-		<div class="menu_title">${requestScope.boardList[0].categoryName}</div>
+		<div class="menu_title">${requestScope.thisCategory.categoryName}</div>
 		<ul class="menu_list">
-			<li class="items ${requestScope.currentBoard.boardName == '' ? 'selected' : ''}">
-				<a href="/content/${requestScope.currentBoard.categoryId}">전체 글</a>
+			<li class="items ${boardId == '' ? 'selected' : ''}">
+				<a href="/content/${categoryId}">전체 글</a>
 			</li>
 			<c:forEach items="${requestScope.boardList}" var="n">
-				<li class="items ${requestScope.currentBoard.boardName == n.boardName ? 'selected' : ''}"><a href="/content/${n.categoryId}/${n.boardId}">${n.boardName}</a></li>
+				<li class="items ${boardName == n.boardName ? 'selected' : ''}">
+					<a href="/content/${n.categoryId}/${n.boardId}">${n.boardName}</a>
+				</li>
 			</c:forEach>
 		</ul>
 	</div>
 	<div class="section">
 		<div class="section_header">
-			<c:choose>
-				<c:when test="${requestScope.currentBoard.boardName == ''}">
-					<div class="section_title">전체 글</div>
-				</c:when>
-				<c:otherwise>
-					<div class="section_title">${requestScope.currentBoard.boardName}</div>
-				</c:otherwise>
-			</c:choose>
+			<div class="section_title">${boardName}</div>
 			<div class="board_search">
 				<form action="${path}" method="get" class="search_form">
 					<select name="tar" class="target_control">
@@ -58,11 +57,10 @@
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach begin="0" end="17" items="${requestScope.postList}"
-					var="n" varStatus="st">
+				<c:forEach begin="0" end="17" items="${requestScope.postList}" var="n" varStatus="st">
 					<tr>
 						<td>${st.index+1}</td>
-						<td>${n.postTitle}</td>
+						<td><a href="/content/${categoryId}/${n.boardId}/${n.postId}">${n.postTitle}</a></td>
 						<td>${n.author}</td>
 						<td><fmt:formatDate value="${n.createDate}"
 								pattern="yyyy-MM-dd" /></td>

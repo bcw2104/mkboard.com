@@ -43,8 +43,9 @@
         </div>
         <div class="nav">
 			<ul class="nav_list">
-				<li class="nav_item"><a href="/content/community">커뮤니티</a></li>
-				<li class="nav_item"><a href="/content/customer">공지사항</a></li>
+				<c:forEach items="${requestScope.categoryList}" var="n">
+					<li class="nav_item"><a href="/content/${n.categoryId}">${n.categoryName}</a></li>
+				</c:forEach>
 			</ul>
         </div>
         <div class="content">

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.codeplayground.database.CategoryDAO;
 import com.codeplayground.database.PostDAO;
 import com.codeplayground.database.PostDTO;
 import com.codeplayground.database.UserDTO;
@@ -18,6 +19,10 @@ public class HomeController extends HttpServlet {
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
+
+		CategoryDAO categoryDAO = new CategoryDAO();
+
+		request.setAttribute("categoryList",categoryDAO.getAllCategoryData());
 
 		if (session.getAttribute("user") == null) {
 			request.setAttribute("login", null);

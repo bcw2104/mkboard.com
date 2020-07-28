@@ -9,10 +9,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.codeplayground.database.BoardDTO;
+import com.codeplayground.database.CategoryDTO;
+import com.codeplayground.database.PostDAO;
+import com.codeplayground.database.PostDTO;
 import com.codeplayground.service.BoardService;
+import com.codeplayground.service.CategoryService;
+import com.codeplayground.service.PostService;
 
 @WebServlet("/content/*")
-public class BoardController extends HttpServlet {
+public class ContentController extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -27,30 +32,26 @@ public class BoardController extends HttpServlet {
 	private void actionPostDo(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		BoardService service = new BoardService();
-		String cmd = request.getParameter("cmd");
-		String[] path = request.getRequestURI().substring(9).split("/");
+		// path[0] = categoryId, path[1] = boardId, path[3] = postId
+		String[] params = request.getRequestURI().substring(9).split("/");
 
-		BoardDTO boardDTO;
 
-		//path[0] = categoryId, path[1] = boardId
-		if(path.length == 1) {
-			boardDTO = new BoardDTO();
-			boardDTO.setCategoryId(path[0]);
-		}
-		else if(path.length == 2) {
-			boardDTO = service.getBoardInfo(path[1]);
-		}
-		else {
-			boardDTO = new BoardDTO();
-		}
+		if (params.length <= 2) {
+			PostService postService = new PostService();
+			BoardService boardService = new BoardService();
+			CategoryService categoryService = new CategoryService();
 
-		//page command
-		if (cmd == null || cmd.equals("")) {
-			cmd = "sl";			//default = select
-		}
+			BoardDTO boardDTO = null;
+			CategoryDTO categoryDTO = null;
 
-		if (cmd.equals("sl")) {
+			categoryDTO = categoryService.getCategoryInfo(params[0]);
+			if (params.length == 2) {
+				boardDTO = boardService.getBoardInfo(params[1]);
+			} else {
+				boardDTO = new BoardDTO();
+				boardDTO.setBoardName("전체 글");
+			}
+
 			String field = request.getParameter("f");
 			String target = request.getParameter("tar");
 			String query = request.getParameter("query");
@@ -63,15 +64,14 @@ public class BoardController extends HttpServlet {
 			}
 
 			if (target != null && query != null) {
-				if(target.equals("title")) {
+				if (target.equals("title")) {
 					boardTitle = query;
-				}
-				else if(target.equals("auth")) {
+				} else if (target.equals("auth")) {
 					author = query;
 				}
 			}
 
-			int totalCount = service.getTotalPostCount(boardDTO, boardTitle, author);
+			int totalCount = postService.getTotalPostCount(boardDTO.getBoardId(), categoryDTO.getCategoryId(), boardTitle, author);
 			int pageNum = 0;
 
 			try {
@@ -82,13 +82,21 @@ public class BoardController extends HttpServlet {
 			} catch (Exception e) {
 				pageNum = 1;
 			}
-			request.setAttribute("postList",service.getPostList(field, boardDTO, boardTitle, author, pageNum));
-			request.setAttribute("boardList", service.getBoardList(boardDTO.getCategoryId()));
+			request.setAttribute("postList", postService.getPostList(boardDTO.getBoardId(), categoryDTO.getCategoryId(),
+					field, boardTitle, author, pageNum));
+			request.setAttribute("boardList", boardService.getBoardList(categoryDTO.getCategoryId()));
 			request.setAttribute("totalCount", totalCount);
 			request.setAttribute("pageNum", pageNum);
-			request.setAttribute("currentBoard", boardDTO);
+			request.setAttribute("thisBoard", boardDTO);
+			request.setAttribute("thisCategory", categoryDTO);
 			request.setAttribute("requestPage", "content.jsp");
 			request.getRequestDispatcher("/").forward(request, response);
+		} else if (params.length == 3) {
+			PostService postService = new PostService();
+
+			PostDTO postDTO = postService.clickPost(params[2]);
+
+			System.out.println(postDTO.getPostTitle());
 		}
 
 	}

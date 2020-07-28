@@ -4,19 +4,8 @@ import java.util.ArrayList;
 
 import com.codeplayground.database.BoardDAO;
 import com.codeplayground.database.BoardDTO;
-import com.codeplayground.database.PostDAO;
-import com.codeplayground.database.PostDTO;
 
 public class BoardService {
-
-	public String fieldConverter(String field) {
-		String result = "post_id";
-
-		if (field.equals("id")) {
-			result = "post_id";
-		}
-		return result;
-	}
 
 	public BoardDTO getBoardInfo(String boardId) {
 		BoardDAO boardDAO = new BoardDAO();
@@ -28,18 +17,6 @@ public class BoardService {
 		BoardDAO boardDAO = new BoardDAO();
 
 		return boardDAO.getBoardList(categoryId);
-	}
-
-	public int getTotalPostCount(BoardDTO boardDTO, String postTitle, String author) {
-		PostDAO dao = new PostDAO();
-
-		return dao.getTotalPostCount(boardDTO, postTitle, author);
-	}
-
-	public ArrayList<PostDTO> getPostList(String field, BoardDTO boardDTO, String postTitle, String author, int page) {
-		PostDAO postDAO = new PostDAO();
-
-		return postDAO.getPostList(fieldConverter(field), boardDTO, postTitle, author, page);
 	}
 
 }

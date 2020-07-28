@@ -8,7 +8,7 @@
 
 .content_menu,
 .content_table{
-	background-color: #ffffff;	
+	background-color: #ffffff;
 }
 .content_menu {
 	width: 250px;
@@ -51,7 +51,7 @@
 
 .section_header .section_title{
 	display :inline-block;
-	
+
 	text-align: left;
 	font-size: 1.2rem;
 	font-weight: bold;
@@ -89,6 +89,14 @@
 	box-shadow: 1px 1px 3px 0 rgba(82, 62, 62, 0.4)
 }
 
+.content_table a{
+	padding: 10px 0;
+	color:#000000;
+}
+
+.content_table a:hover{
+	font-weight: bold;
+}
 
 .content_table thead tr {
 	border-top: 1px solid #c0c0c0;
@@ -100,7 +108,8 @@
 	border-bottom: 1px solid #c0c0c0;
 }
 
-.content_table th, .content_table td {
+.content_table th,
+.content_table td {
 	padding: 10px;
 	font-size: 0.9rem;
 	text-align: center;
@@ -121,12 +130,12 @@
 
 .pages{
 	margin-top: 30px;
-	 
+
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    
+
 	width: 100%;
 }
 
@@ -142,7 +151,7 @@
 
 .page_list li a{
 	color : #808080;
-	
+
 	padding: 0 5px;
 	font-size: 1.1rem;
 	text-decoration: none;

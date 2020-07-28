@@ -22,14 +22,13 @@ public class PostDAO {
 		pageUnit = 18;
 	}
 
-	public int getTotalPostCount(BoardDTO boardDTO) {
-		return getTotalPostCount(boardDTO, "", "");
+	public int getTotalPostCount(String boardId,String categoryId) {
+		return getTotalPostCount(boardId,categoryId, "", "");
 	}
 
-	public int getTotalPostCount(BoardDTO boardDTO, String postTitle, String author) {
+	public int getTotalPostCount(String boardId,String categoryId, String postTitle, String author) {
 		int count = 0;
 		String condition = "=";
-		String boardId = boardDTO.getBoardId();
 		if (boardId.equals("")) {
 			condition = "LIKE";
 			boardId = "%";
@@ -40,7 +39,7 @@ public class PostDAO {
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, boardId);
-			pstmt.setString(2, boardDTO.getCategoryId());
+			pstmt.setString(2, categoryId);
 			pstmt.setString(3, "%" + postTitle + "%");
 			pstmt.setString(4, "%" + author + "%");
 
@@ -70,15 +69,81 @@ public class PostDAO {
 		return count;
 	}
 
-	public ArrayList<PostDTO> getPostList(String field, BoardDTO boardDTO , int pageNum) {
-		return getPostList(field, boardDTO, "", "", pageNum);
+	public boolean addHits(String postId) {
+		String sql = "UPDATE tbl_post SET hits=(SELECT hits FROM tbl_post WHERE post_id = ?)+1 WHERE post_id = ?";
+		boolean state = true;
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, postId);
+			pstmt.setString(2, postId);
+
+			pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			System.out.println("조회수 증가 중 오류가 발생했습니다.");
+			state = false;
+		} finally {
+			try {
+				if (!pstmt.isClosed()) {
+					pstmt.close();
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		return state;
 	}
 
-	public ArrayList<PostDTO> getPostList(String field, BoardDTO boardDTO, String postTitle,String author, int pageNum) {
+	public PostDTO getPostData(String postId) {
+		String sql = "SELECT * FROM tbl_post WHERE post_id = ?";
+		PostDTO postDTO = new PostDTO();
+
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, postId);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				postDTO.setPostId(rs.getInt("post_id"));
+				postDTO.setPostTitle(rs.getString("post_title"));
+				postDTO.setPostContent(rs.getString("post_content"));
+				postDTO.setBoardId(rs.getString("board_id"));
+				postDTO.setAuthor(rs.getString("author"));
+				postDTO.setCreateDate(rs.getTimestamp("create_date"));
+				postDTO.setHits(rs.getInt("hits"));
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				if (!rs.isClosed()) {
+					rs.close();
+				}
+				if (!pstmt.isClosed()) {
+					pstmt.close();
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		return postDTO;
+	}
+
+	public ArrayList<PostDTO> getPostList(String boardId,String categoryId,String field, int pageNum) {
+		return getPostList(boardId,categoryId,field, "", "", pageNum);
+	}
+
+	public ArrayList<PostDTO> getPostList(String boardId,String categoryId,String field, String postTitle,String author, int pageNum) {
 		ArrayList<PostDTO> list = new ArrayList<PostDTO>();
 
 		String condition = "=";
-		String boardId = boardDTO.getBoardId();
 		if (boardId.equals("")) {
 			condition = "LIKE";
 			boardId = "%";
@@ -92,7 +157,7 @@ public class PostDAO {
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, boardId);
-			pstmt.setString(2, boardDTO.getCategoryId());
+			pstmt.setString(2, categoryId);
 			pstmt.setString(3, "%" + postTitle + "%");
 			pstmt.setString(4, "%" + author + "%");
 			pstmt.setInt(5, pageUnit * (pageNum - 1) + 1);
@@ -104,8 +169,7 @@ public class PostDAO {
 				PostDTO postDTO = new PostDTO();
 				postDTO.setPostId(rs.getInt("post_id"));
 				postDTO.setPostTitle(rs.getString("post_title"));
-				postDTO.setPostContent(rs.getString("post_content"));
-				postDTO.setBoardId(boardId);
+				postDTO.setBoardId(rs.getString("board_id"));
 				postDTO.setAuthor(rs.getString("author"));
 				postDTO.setCreateDate(rs.getTimestamp("create_date"));
 				postDTO.setHits(rs.getInt("hits"));
@@ -148,7 +212,6 @@ public class PostDAO {
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println("게시글 업로드 중 오류가 발생했습니다.");
-			e.printStackTrace();
 			state = false;
 		} finally {
 			try {

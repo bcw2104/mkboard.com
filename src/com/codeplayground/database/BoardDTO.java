@@ -4,13 +4,11 @@ public class BoardDTO {
 	private String boardId;
 	private String boardName;
 	private String categoryId;
-	private String categoryName;
 
 	public BoardDTO() {
 		boardId = "";
 		boardName = "";
 		categoryId = "";
-		categoryName = "";
 	}
 
 	public String getBoardId() {
@@ -35,14 +33,6 @@ public class BoardDTO {
 
 	public void setCategoryId(String categoryId) {
 		this.categoryId = categoryId;
-	}
-
-	public String getCategoryName() {
-		return categoryName;
-	}
-
-	public void setCategoryName(String categoryName) {
-		this.categoryName = categoryName;
 	}
 
 }
