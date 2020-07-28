@@ -6,8 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.codeplayground.database.UserDAO;
-import com.codeplayground.database.UserDTO;
+import com.codeplayground.dao.UserDAO;
+import com.codeplayground.entity.UserDTO;
 import com.codeplayground.util.SHA256;
 
 public class LoginService {

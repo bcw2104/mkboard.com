@@ -1,4 +1,4 @@
-package com.codeplayground.database;
+package com.codeplayground.entity;
 
 import java.sql.Timestamp;
 

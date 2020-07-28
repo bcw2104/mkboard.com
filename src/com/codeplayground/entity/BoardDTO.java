@@ -1,4 +1,4 @@
-package com.codeplayground.database;
+package com.codeplayground.entity;
 
 public class BoardDTO {
 	private String boardId;

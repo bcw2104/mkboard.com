@@ -2,8 +2,8 @@ package com.codeplayground.service;
 
 import java.util.ArrayList;
 
-import com.codeplayground.database.CategoryDAO;
-import com.codeplayground.database.CategoryDTO;
+import com.codeplayground.dao.CategoryDAO;
+import com.codeplayground.entity.CategoryDTO;
 
 public class CategoryService {
 

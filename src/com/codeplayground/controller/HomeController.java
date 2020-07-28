@@ -9,10 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.codeplayground.database.CategoryDAO;
-import com.codeplayground.database.PostDAO;
-import com.codeplayground.database.PostDTO;
-import com.codeplayground.database.UserDTO;
+import com.codeplayground.dao.CategoryDAO;
+import com.codeplayground.dao.PostDAO;
+import com.codeplayground.entity.PostDTO;
+import com.codeplayground.entity.UserDTO;
 
 @WebServlet("")
 public class HomeController extends HttpServlet {

@@ -2,8 +2,8 @@ package com.codeplayground.service;
 
 import java.util.ArrayList;
 
-import com.codeplayground.database.BoardDAO;
-import com.codeplayground.database.BoardDTO;
+import com.codeplayground.dao.BoardDAO;
+import com.codeplayground.entity.BoardDTO;
 
 public class BoardService {
 

@@ -8,10 +8,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.codeplayground.database.BoardDTO;
-import com.codeplayground.database.CategoryDTO;
-import com.codeplayground.database.PostDAO;
-import com.codeplayground.database.PostDTO;
+import com.codeplayground.dao.PostDAO;
+import com.codeplayground.entity.BoardDTO;
+import com.codeplayground.entity.CategoryDTO;
+import com.codeplayground.entity.PostDTO;
 import com.codeplayground.service.BoardService;
 import com.codeplayground.service.CategoryService;
 import com.codeplayground.service.PostService;

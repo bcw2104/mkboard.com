@@ -2,8 +2,8 @@ package com.codeplayground.service;
 
 import java.util.ArrayList;
 
-import com.codeplayground.database.PostDAO;
-import com.codeplayground.database.PostDTO;
+import com.codeplayground.dao.PostDAO;
+import com.codeplayground.entity.PostDTO;
 
 public class PostService {
 
