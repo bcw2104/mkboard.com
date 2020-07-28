@@ -1,4 +1,4 @@
-<%@page import="kr.co.codeplayground.database.UserDTO"%>
+<%@page import="com.codeplayground.database.UserDTO"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
