@@ -1,0 +1,153 @@
+@charset "UTF-8";
+
+.content_container {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+}
+
+.content_menu,
+.content_table{
+	background-color: #ffffff;	
+}
+.content_menu {
+	width: 250px;
+	min-height: 500px;
+	padding-left: 30px;
+	margin-right: 80px;
+	box-shadow: 1px 1px 3px 0 rgba(82, 62, 62, 0.4)
+}
+
+.menu_title {
+	padding: 10px;
+	border-bottom: 5px solid #0059ab;
+	font-weight: bold;
+	font-size: 1.3rem;
+	margin-bottom: 10px;
+}
+
+.menu_list {
+	list-style: none;
+}
+
+.menu_list .items {
+	cursor: pointer;
+}
+
+.menu_list .items:hover {
+	background-color: #e4e4e4
+}
+
+.menu_list .items a{
+	display:block;
+	padding: 5px 10px;
+	color : #000000;
+}
+
+.section {
+	width: 950px;
+	padding: 10px;
+}
+
+.section_header .section_title{
+	display :inline-block;
+	
+	text-align: left;
+	font-size: 1.2rem;
+	font-weight: bold;
+	padding-left:5px;
+	margin-bottom: 20px;
+}
+
+.section_header .board_search{
+	display: inline-block;
+	float: right;
+}
+
+.search_form *{
+	height: 30px;
+}
+
+.search_form .target_control{
+	width: 100px;
+	cursor: pointer;
+}
+
+.search_form .query_control{
+	vertical-align: top;
+	padding-left:5px;
+	width: 200px;
+}
+
+.search_form .submit_btn{
+	width: 70px;
+}
+
+.content_table {
+	width: 100%;
+	border-collapse: collapse;
+	box-shadow: 1px 1px 3px 0 rgba(82, 62, 62, 0.4)
+}
+
+
+.content_table thead tr {
+	border-top: 1px solid #c0c0c0;
+	border-bottom: 1px solid #c0c0c0;
+	background-color: #e4e4e4;
+}
+
+.content_table tbody tr {
+	border-bottom: 1px solid #c0c0c0;
+}
+
+.content_table th, .content_table td {
+	padding: 10px;
+	font-size: 0.9rem;
+	text-align: center;
+}
+
+.content_table td:nth-child(2) {
+	text-align: left;
+	cursor: pointer;
+}
+
+.content_table th.tb_short {
+	width: 70px;
+}
+
+.content_table th.tb_mid {
+	width: 150px;
+}
+
+.pages{
+	margin-top: 30px;
+	 
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    
+	width: 100%;
+}
+
+.pages .page_list{
+	display: flex;
+    list-style: none;
+    flex-direction: row;
+}
+
+.page_list li{
+	margin: 0 3px;
+}
+
+.page_list li a{
+	color : #808080;
+	
+	padding: 0 5px;
+	font-size: 1.1rem;
+	text-decoration: none;
+}
+
+.page_list li a:hover{
+	color : #000000;
+}
