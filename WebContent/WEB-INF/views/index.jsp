@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="/style/common/common_setting.css">
 	<link rel="stylesheet" href="/style/common/layout_style.css">
 	<link rel="stylesheet" href="/style/common/frame.css">
-
 	<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 </head>
 

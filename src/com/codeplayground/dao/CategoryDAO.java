@@ -58,7 +58,7 @@ public class CategoryDAO {
 
 	public CategoryDTO getCategoryData(String categoryId) {
 		String sql = "SELECT category_name FROM tbl_category  WHERE category_id = ?";
-		CategoryDTO categoryDTO = new CategoryDTO();
+		CategoryDTO categoryDTO = null;
 
 		try {
 			pstmt = conn.prepareStatement(sql);
@@ -67,6 +67,7 @@ public class CategoryDAO {
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
+				categoryDTO = new CategoryDTO();
 				categoryDTO.setCategoryId(categoryId);
 				categoryDTO.setCategoryName(rs.getString("category_name"));
 			}

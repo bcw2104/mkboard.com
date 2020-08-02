@@ -1,0 +1,21 @@
+@charset "UTF-8";
+
+.section{
+    text-align: center;
+    padding: 50px 0;
+    height: 300px;
+}
+
+.error_msg{
+	font-size: 1.4rem;
+    margin-bottom: 15px;
+}
+
+.home_link a{
+	color: #000000;
+	text-decoration: underline;
+}
+
+.home_link a:hover{
+	font-weight: bold;
+}

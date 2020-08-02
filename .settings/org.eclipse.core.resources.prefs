@@ -1,3 +1,4 @@
 eclipse.preferences.version=1
-encoding//WebContent/WEB-INF/view/content.jsp=UTF-8
-encoding//WebContent/WEB-INF/view/profile.jsp=UTF-8
+encoding//WebContent/WEB-INF/views/boardview.jsp=UTF-8
+encoding//WebContent/WEB-INF/views/errorpage.jsp=UTF-8
+encoding//WebContent/WEB-INF/views/profile.jsp=UTF-8

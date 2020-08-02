@@ -15,7 +15,7 @@ public class SHA256 {
 		}
 	}
 
-	public String getMessage(String message) {
+	public String convert(String message) {
 		StringBuffer hashMsg = new StringBuffer();
 
 		digest.reset();

@@ -10,7 +10,7 @@ public class BoardService {
 	public BoardDTO getBoardInfo(String boardId) {
 		BoardDAO boardDAO = new BoardDAO();
 
-		return boardDAO.getBoardInfo(boardId);
+		return boardDAO.getBoard(boardId);
 	}
 
 	public ArrayList<BoardDTO> getBoardList(String categoryId) {

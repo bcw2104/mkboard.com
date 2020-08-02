@@ -10,15 +10,18 @@ public class PostDTO {
 	private String author;
 	private Timestamp createDate;
 	private int hits;
-	
+	private int comments;
+
+
 	public PostDTO() {
 		postId = 0;
 		postTitle = "";
 		postContent = "";
 		boardId = "";
 		author = "";
-		createDate = null; 
+		createDate = null;
 		hits = 0;
+		comments=0;
 	}
 
 	public int getPostId() {
@@ -75,6 +78,13 @@ public class PostDTO {
 
 	public void setHits(int hits) {
 		this.hits = hits;
+	}
+	public int getComments() {
+		return comments;
+	}
+
+	public void setComments(int comments) {
+		this.comments = comments;
 	}
 
 }

@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 body{
-	background-color: #e4e4e4; 
+	background-color: #e4e4e4;
 }
 
 .header{
@@ -13,7 +13,7 @@ body{
 	height:25px;
 	padding-right:30px;
     padding-top: 3px;
-    
+
 	text-align: right;
 	line-height: 22px;
 	font-size:0.8rem;
@@ -41,7 +41,7 @@ body{
 	background-color: #0059ab;
 	color : #ffffff;
 	font-weight: bold;
-	
+
 	padding : 0 5px;
 }
 
@@ -55,12 +55,12 @@ body{
 
 .nav_list .nav_item a{
 	display:block;
-	
+
 	height:50px;
 	cursor: pointer;
 	padding: 0 30px;
 	line-height: 50px;
-	
+
 	color: #ffffff;
 }
 
@@ -70,6 +70,10 @@ body{
 
 .footer{
 	border-top : 1px solid #c0c0c0;
+}
+
+.footer a{
+	color: #000000;
 }
 
 

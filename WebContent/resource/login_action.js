@@ -1,9 +1,9 @@
 (function($){
-	
+
 	var log_msg = function(){
 		var url = window.location.search;
 		window.history.pushState("", "", window.location.href.substring(0, window.location.href.indexOf("?")));
-		
+
 		if(url.length > 0){
 			url = url.substr(1).split("&");
 			for(var i of url){
@@ -15,7 +15,7 @@
 				}
 			}
 		}
-	} 
-	
+	}
+
 	log_msg();
 })(jQuery);

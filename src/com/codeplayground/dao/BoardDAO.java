@@ -20,9 +20,9 @@ public class BoardDAO {
 		rs = null;
 	}
 
-	public BoardDTO getBoardInfo(String boardId) {
+	public BoardDTO getBoard(String boardId) {
 		String sql = "SELECT board_name,category_id FROM tbl_board  WHERE board_id = ?";
-		BoardDTO boardDTO = new BoardDTO();
+		BoardDTO boardDTO = null;
 
 		try {
 			pstmt = conn.prepareStatement(sql);
@@ -31,6 +31,7 @@ public class BoardDAO {
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
+				boardDTO = new BoardDTO();
 				boardDTO.setBoardId(boardId);
 				boardDTO.setBoardName(rs.getString("board_name"));
 				boardDTO.setCategoryId(rs.getString("category_id"));

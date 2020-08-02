@@ -17,7 +17,7 @@ import com.codeplayground.entity.UserDTO;
 @WebServlet("")
 public class HomeController extends HttpServlet {
 	@Override
-	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 
 		CategoryDAO categoryDAO = new CategoryDAO();
@@ -34,7 +34,7 @@ public class HomeController extends HttpServlet {
 			request.getRequestDispatcher("/content/community").forward(request, response);
 		}
 		else {
-			request.getRequestDispatcher("WEB-INF/view/index.jsp").forward(request, response);
+			request.getRequestDispatcher("WEB-INF/views/index.jsp").forward(request, response);
 		}
 
 	}

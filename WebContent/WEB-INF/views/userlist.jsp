@@ -46,7 +46,11 @@
 		<c:set var="startNum" value="${pageNum-(pageNum-1)%5}" />
 
 		<c:if test="${startNum-5 >=1}">
-			<li><a href="?p=${startNum-5}"><button>←</button></a></li>
+			<li>
+				<div class="page_arrow left_page_arrow"></div>
+				<a href="?p=${startNum-5}">이전</a>
+				<span class="v_bar">|</span>
+			</li>
 		</c:if>
 		<c:forEach begin="0"
 			end="${lastPage > 4+startNum ? 4 : lastPage - startNum }" var="i">
@@ -60,7 +64,11 @@
 			</c:choose>
 		</c:forEach>
 		<c:if test="${startNum+5 <= lastPage}">
-			<li><a href="?p=${startNum+5}"><button>→</button></a></li>
+			<li>
+				<span class="v_bar">|</span>
+				<a href="?p=${startNum+5}">다음</a>
+				<div class="page_arrow right_page_arrow"></div>
+			</li>
 		</c:if>
 	</ul>
 </div>

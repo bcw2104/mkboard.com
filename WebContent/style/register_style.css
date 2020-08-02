@@ -3,9 +3,9 @@
 .section {
 	width: 100%;
 	display: flex;
-	
+
 	flex-direction: column;
-	
+
 	justify-content: center;
 	align-items: center;
 }
@@ -13,7 +13,7 @@
 .section .title {
 	margin-bottom: 40px;
     letter-spacing: 8px;
-	
+
 	font-size: 2rem;
 	font-weight: bold;
 }
@@ -60,7 +60,5 @@
     height: 40px;
     margin-top: 10px;
     font-size: 1.1rem;
-    font-weight: bold;
-    
-    cursor: pointer;}
+    }
 

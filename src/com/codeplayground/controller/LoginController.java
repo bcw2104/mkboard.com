@@ -15,16 +15,7 @@ public class LoginController extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		actionPostDo(request, response);
-	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		actionPostDo(request, response);
-	}
-
-	private void actionPostDo(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+		LoginService service = new LoginService();
 
 		String cmd = "";
 
@@ -32,13 +23,16 @@ public class LoginController extends HttpServlet {
 			cmd = request.getParameter("cmd");
 		}
 
-		LoginService service = new LoginService();
-
-		if (cmd.equals("in")) {
-			service.login(request, response);
+		if (cmd.equals("out")) {
+			service.logout(request.getSession());
+			response.sendRedirect("/");
 		}
-		else if (cmd.equals("out")) {
-			service.logout(request, response);
+		else if(cmd.equals("check")) {
+			if(request.getSession().getAttribute("user") != null) {
+				response.getWriter().write("true");
+			}else {
+				response.getWriter().write("false");
+			}
 		}
 		else {
 			request.setAttribute("requestPage", "login.html");
@@ -46,5 +40,21 @@ public class LoginController extends HttpServlet {
 		}
 
 	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		LoginService service = new LoginService();
+
+		String userId = request.getParameter("user_id");
+		String userPw = request.getParameter("user_pw");
+
+		if(service.login(userId, userPw,request.getSession())) {
+				response.sendRedirect("/");
+		}
+		else {
+				response.sendRedirect("login?st=fail");
+		}
+	}
+
 
 }

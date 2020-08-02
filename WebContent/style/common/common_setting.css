@@ -20,28 +20,43 @@ html, body {
 	height: 100vh;
 }
 
-body {
-	font-family: 'IBMPlexSansKR-Regular';
+body, textarea,input{
+	font-family: 'IBMPlexSansKR-Regular' !important;
 }
 
-input, select {
+input, select,button	 {
 	border: 1px solid #c0c0c0;
+}
+
+div{
+	word-break: break-all;
 }
 
 .button {
 	background-color: #0059ab;
 	color: #ffffff;
 	cursor: pointer;
+
+	letter-spacing: 5px;
+	font-weight: bold;
+	border-radius: 5px;
+}
+
+.button:hover{
+	background-color: #0073db;
+}
+
+.page_btn{
+	width: 25px;
+	height: 25px;
 }
 
 .selected{
-	color : #000000 !important; 
+	color : #000000 !important;
 	font-weight: bold;
 }
 
 .v_bar {
-	position: relative;
-	top: -1px;
 	margin: 0 5px;
 }
 
@@ -53,4 +68,22 @@ input, select {
 
 a {
 	text-decoration: none;
+}
+
+.page_arrow{
+	display: inline-block;
+    background-size: contain;
+    height: 17px;
+    background-repeat: no-repeat;
+    vertical-align: middle;
+    padding: 5px;
+    margin: 0 5px;
+}
+.left_page_arrow{
+    background-image: url(/images/left_arrow.svg);
+}
+
+
+.right_page_arrow{
+	background-image: url("/images/right_arrow.svg");
 }

@@ -6,10 +6,10 @@
 	justify-content: center;
 }
 
-.content_menu,
-.content_table{
+.content_menu, .content_table {
 	background-color: #ffffff;
 }
+
 .content_menu {
 	width: 250px;
 	min-height: 500px;
@@ -38,10 +38,10 @@
 	background-color: #e4e4e4
 }
 
-.menu_list .items a{
-	display:block;
+.menu_list .items a {
+	display: block;
 	padding: 5px 10px;
-	color : #000000;
+	color: #000000;
 }
 
 .section {
@@ -49,38 +49,92 @@
 	padding: 10px;
 }
 
-.section_header .section_title{
-	display :inline-block;
-
-	text-align: left;
-	font-size: 1.2rem;
-	font-weight: bold;
-	padding-left:5px;
+.section_header {
 	margin-bottom: 20px;
 }
 
-.section_header .board_search{
-	display: inline-block;
+.section_title {
+	text-align: left;
+	font-size: 1.5rem;
+	font-weight: bold;
+	padding-left: 5px;
+}
+
+.write_btn {
 	float: right;
 }
 
-.search_form *{
+.write_btn button {
+	width: 140px;
+	height: 35px;
+	font-size: 1.1rem;
+}
+
+.write_btn img{
+	position: relative;
+    width: 17px;
+    margin-right: 7px;
+    top: 2.5px;
+}
+
+.section_nav {
+	height: 30px;
+	margin-bottom: 10px;
+}
+
+.section_nav>div {
+	display: inline-block;
+}
+
+.sort_tab {
+	height: 30px;
+	line-height: 30px;
+}
+
+.sort_tab>a {
+	font-size: 0.9rem;
+	color: #808080;
+	margin: 0px 7px;
+	cursor: pointer;
+}
+
+.sort_tab>a:hover {
+	font-weight: bold;
+	color: #000000;
+}
+
+.board_search {
+	float: right;
+}
+
+.search_form {
+	font-size: 0px;
+}
+
+.search_form>* {
 	height: 30px;
 }
 
-.search_form .target_control{
+.search_form .target_control {
 	width: 100px;
 	cursor: pointer;
 }
 
-.search_form .query_control{
+.search_form .query_control {
 	vertical-align: top;
-	padding-left:5px;
+	padding-left: 5px;
 	width: 200px;
 }
 
-.search_form .submit_btn{
-	width: 70px;
+.search_form .submit_btn {
+	width: 50px;
+	vertical-align: top;
+	cursor: pointer;
+}
+
+.search_form .submit_btn img {
+	height: 17px;
+	vertical-align: middle;
 }
 
 .content_table {
@@ -89,12 +143,12 @@
 	box-shadow: 1px 1px 3px 0 rgba(82, 62, 62, 0.4)
 }
 
-.content_table a{
+.content_table a {
 	padding: 10px 0;
-	color:#000000;
+	color: #000000;
 }
 
-.content_table a:hover{
+.content_table a:hover {
 	font-weight: bold;
 }
 
@@ -108,8 +162,7 @@
 	border-bottom: 1px solid #c0c0c0;
 }
 
-.content_table th,
-.content_table td {
+.content_table th, .content_table td {
 	padding: 10px;
 	font-size: 0.9rem;
 	text-align: center;
@@ -128,35 +181,39 @@
 	width: 150px;
 }
 
-.pages{
+.pages {
 	margin-top: 30px;
-
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
 	width: 100%;
 }
 
-.pages .page_list{
+.pages .page_list {
 	display: flex;
-    list-style: none;
-    flex-direction: row;
+	list-style: none;
+	flex-direction: row;
 }
 
-.page_list li{
+.page_list li {
 	margin: 0 3px;
+	color: #808080
 }
 
-.page_list li a{
-	color : #808080;
-
+.page_num {
+	color: #808080;
 	padding: 0 5px;
 	font-size: 1.1rem;
 	text-decoration: none;
 }
 
-.page_list li a:hover{
-	color : #000000;
+.page_changer {
+	color: #000000;
+	font-size: 0.9rem;
+	text-decoration: none;
+}
+
+.page_list li a:hover {
+	color: #000000;
 }
