@@ -9,6 +9,11 @@ import com.codeplayground.dao.PostDAO;
 import com.codeplayground.entity.PostDTO;
 
 public class PostService {
+	private PostDAO postDAO;
+
+	public PostService() {
+		postDAO = new PostDAO();
+	}
 
 	public String fieldConverter(String field) {
 		if(field != null) {
@@ -33,7 +38,6 @@ public class PostService {
 	}
 
 	public PostDTO getPostInfo(HttpSession session, int postId) {
-		PostDAO postDAO = new PostDAO();
 		int visit = 0;
 
 		if (session.getAttribute("recent_visit") != null) {
@@ -49,19 +53,14 @@ public class PostService {
 	}
 
 	public ArrayList<PostDTO> getClosestPostList(int postId, String boardId){
-		PostDAO postDAO = new PostDAO();
-
 		return postDAO.getClosestPostList(postId, boardId);
 	}
 
 	public int getTotalPostCount(String categoryId, String postTitle, String author) {
-		PostDAO postDAO = new PostDAO();
-
 		return postDAO.getPostCount(categoryId, postTitle, author);
 	}
 
 	public int getPostCount(String boardId, String categoryId, String postTitle, String author) {
-		PostDAO postDAO = new PostDAO();
 		if(boardId.equals("")) {
 			return postDAO.getPostCount(categoryId, postTitle, author);
 		}
@@ -72,9 +71,6 @@ public class PostService {
 
 	public ArrayList<PostDTO> getPostList(String boardId, String categoryId, String field, String postTitle,
 			String author, int pageNum) {
-
-		PostDAO postDAO = new PostDAO();
-
 		if(boardId.equals("")) {
 			return postDAO.getPostList(categoryId, fieldConverter(field), postTitle, author, pageNum);
 		}
@@ -84,7 +80,6 @@ public class PostService {
 	}
 
 	public boolean uploadPost(String postTitle,String postContent,String boardId,String author) {
-		PostDAO postDAO = new PostDAO();
 		return postDAO.postPost(postTitle, postContent, boardId, author);
 	}
 }

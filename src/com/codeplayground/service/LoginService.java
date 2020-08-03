@@ -7,9 +7,13 @@ import com.codeplayground.entity.UserDTO;
 import com.codeplayground.util.SHA256;
 
 public class LoginService {
+	private UserDAO userDAO;
+
+	public LoginService() {
+		userDAO = new UserDAO();
+	}
 
 	public boolean login(String userId, String userPw,HttpSession session) {
-		UserDAO userDAO = new UserDAO();
 		SHA256 sha256 = new SHA256();
 
 		userPw = sha256.convert(userPw);

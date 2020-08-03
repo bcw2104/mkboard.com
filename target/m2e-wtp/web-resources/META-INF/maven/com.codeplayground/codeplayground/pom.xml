@@ -81,6 +81,14 @@
 			<version>1.1.1</version>
 		</dependency>
 
+		<!-- spring-context -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>5.2.7.RELEASE</version>
+		</dependency>
+
+
 
 	</dependencies>
 

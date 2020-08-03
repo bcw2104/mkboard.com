@@ -10,9 +10,13 @@ import com.codeplayground.entity.UserDTO;
 import com.codeplayground.util.SHA256;
 
 public class UserService {
+	private UserDAO userDAO;
+
+	public UserService() {
+		userDAO = new UserDAO();
+	}
 
 	public int getTotalCount() {
-		UserDAO userDAO = new UserDAO();
 		return userDAO.getTotalUserCount();
 	}
 
@@ -47,14 +51,12 @@ public class UserService {
 	}
 
 	public ArrayList<UserDTO> getUserlist(int pageNum) {
-		UserDAO userDAO = new UserDAO();
 		ArrayList<UserDTO> list = userDAO.getUserList(pageNum);
 
 		return list;
 	}
 
 	public boolean checkIdOverlap(String userId) {
-		UserDAO userDAO = new UserDAO();
 		UserDTO userDTO = userDAO.getUser(userId);
 
 		if (userDTO == null) {
@@ -65,7 +67,6 @@ public class UserService {
 	}
 
 	public boolean register(String userId,String userPw,String userName,String userBirth,String userGender,String userPhone) {
-		UserDAO userDAO = new UserDAO();
 		UserDTO userDTO = new UserDTO();
 		SHA256 sha256 = new SHA256();
 

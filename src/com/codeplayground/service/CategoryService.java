@@ -6,16 +6,17 @@ import com.codeplayground.dao.CategoryDAO;
 import com.codeplayground.entity.CategoryDTO;
 
 public class CategoryService {
+	private CategoryDAO categoryDAO;
 
-	public ArrayList<CategoryDTO> getCategoryList() {
-		CategoryDAO categoryDAO = new CategoryDAO();
-
-		return categoryDAO.getAllCategoryData();
+	public CategoryService() {
+		categoryDAO = new CategoryDAO();
 	}
 
 	public CategoryDTO getCategoryInfo(String categoryId) {
-		CategoryDAO categoryDAO = new CategoryDAO();
-
 		return categoryDAO.getCategoryData(categoryId);
+	}
+
+	public ArrayList<CategoryDTO> getCategoryList() {
+		return categoryDAO.getAllCategoryData();
 	}
 }
