@@ -2,88 +2,97 @@ package com.codeplayground.controller;
 
 import java.io.IOException;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import com.codeplayground.dao.UserDAO;
-import com.codeplayground.entity.UserDTO;
-import com.codeplayground.service.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-@WebServlet("/user/*")
-public class UserController extends HttpServlet {
+import com.codeplayground.service.UserService;
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		String path = request.getRequestURI();
-		UserService service = new UserService();
+@Controller
+@RequestMapping("/user")
+public class UserController {
 
-		if (path.equals("/user/register")) {
-			request.setAttribute("requestPage", "register.html");
-			request.getRequestDispatcher("/").forward(request, response);
-		}
-		else if(path.equals("/user/overlap")) {
-			String userId = request.getParameter("user_id");
-			String sendMsg = "";
+	@Autowired
+	private UserService userService;
 
-			if (!userId.equals("")) {
-				if (service.checkIdOverlap(userId)) {
-					sendMsg = "true";
-				} else {
-					sendMsg = "false";
-				}
+	@GetMapping("/register")
+	public String register_get(Model model) {
+		model.addAttribute("requestPage", "register.jsp");
+		return "forward:/";
+	}
+
+	@GetMapping("/overlap")
+	public void overlap(@RequestParam(value = "user_id") String userId,
+										HttpServletResponse response, Model model) {
+		String sendMsg = "";
+
+		if (!userId.equals("")) {
+			if (userService.checkIdOverlap(userId)) {
+				sendMsg = "true";
 			} else {
-				sendMsg = "null";
+				sendMsg = "false";
 			}
+		} else {
+			sendMsg = "null";
+		}
 
-			response.setCharacterEncoding("UTF-8");
+		response.setCharacterEncoding("UTF-8");
+		try {
 			response.getWriter().write(sendMsg);
-		}
-		else if (path.equals("/user/profile")) {
-			request.setAttribute("requestPage", "profile.jsp");
-			request.getRequestDispatcher("/").forward(request, response);
-		}
-		else if (path.equals("/user/admin")) {
-			if (service.checkAdmin(request.getSession())) {
-				int totalCount = service.getTotalCount();
-				int pageNum = service.checkPage(request.getParameter("p"),totalCount);
-
-				request.setAttribute("userList", service.getUserlist(pageNum));
-				request.setAttribute("totalCount", totalCount);
-				request.setAttribute("pageNum", pageNum);
-				request.setAttribute("requestPage", "userlist.jsp");
-
-				request.getRequestDispatcher("/").forward(request, response);
-			} else {
-				response.sendRedirect("/");
-			}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		String path = request.getRequestURI();
-		UserService service = new UserService();
+	@GetMapping("/profile")
+	public String profile(Model model) {
+		model.addAttribute("requestPage", "profile.jsp");
+		return "forward:/";
+	}
 
-		if (path.equals("/user/register")) {
+	@GetMapping("/admin")
+	public String admin(@RequestParam(value = "p") String requestPageNum,
+									  HttpSession session, Model model) {
+		if (userService.checkAdmin(session)) {
+			int totalCount = userService.getTotalCount();
+			int pageNum = userService.checkPage(requestPageNum,totalCount);
 
-			String userId = request.getParameter("user_id");
-			String userPw = request.getParameter("user_pw");
-			String userName = request.getParameter("user_name");
-			String userBirthList[] = request.getParameterValues("user_birth");
-			String userBirth = userBirthList[0] + "-" + userBirthList[1] + "-" + userBirthList[2] + " 00:00:00";
-			String userGender = request.getParameter("user_gender");
-			String userPhoneList[] = request.getParameterValues("user_phone");
-			String userPhone = userPhoneList[0] + "-" + userPhoneList[1] + "-" + userPhoneList[2];
+			model.addAttribute("userList", userService.getUserlist(pageNum));
+			model.addAttribute("totalCount", totalCount);
+			model.addAttribute("pageNum", pageNum);
+			model.addAttribute("requestPage", "userlist.jsp");
 
-			if (service.register(userId,userPw,userName,userBirth,userGender,userPhone)) {
-				response.sendRedirect("/login?reg=su");
-			} else {
-				response.sendRedirect("/error/inner");
-			}
+			return "forward:/";
+		} else {
+			return "redirect:/";
 		}
 	}
+
+	@PostMapping("/register")
+	public String register_post(@RequestParam(value = "user_id") String userId,
+												 @RequestParam(value = "user_pw") String userPw,
+												 @RequestParam(value = "user_name") String userName,
+												 @RequestParam(value = "user_birth") String[] userBirthList,
+												 @RequestParam(value = "user_gender") String userGender,
+												 @RequestParam(value = "user_phone") String[] userPhoneList) {
+
+		String userBirth = userBirthList[0] + "-" + userBirthList[1] + "-" + userBirthList[2] + " 00:00:00";
+		String userPhone = userPhoneList[0] + "-" + userPhoneList[1] + "-" + userPhoneList[2];
+
+		if (userService.register(userId,userPw,userName,userBirth,userGender,userPhone)) {
+			return "redirect:/account/login?reg=su";
+		}
+		else {
+			return "redirect:/error/inner";
+		}
+	}
+
 
 }

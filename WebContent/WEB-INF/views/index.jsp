@@ -6,9 +6,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Code Playground</title>
-    <link rel="stylesheet" href="/style/common/common_setting.css">
-	<link rel="stylesheet" href="/style/common/layout_style.css">
-	<link rel="stylesheet" href="/style/common/frame.css">
+    <link rel="stylesheet" href="/resources/style/common/common_setting.css">
+	<link rel="stylesheet" href="/resources/style/common/layout_style.css">
+	<link rel="stylesheet" href="/resources/style/common/frame.css">
 	<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 </head>
 
@@ -17,18 +17,18 @@
         <div class="header">
         	<div class="header-nav">
         		<c:choose>
-        			<c:when test="${requestScope.login == null}">
-        				<a href="/login">로그인</a>
+        			<c:when test="${login == null}">
+        				<a href="/account/login">로그인</a>
         				<span class="v_bar">|</span>
 	        			<a href="/user/register">회원가입</a>
         			</c:when>
         			<c:otherwise>
-        				<span>${requestScope.login}님 환영합니다.</span>
+        				<span>${login}님 환영합니다.</span>
         				<span class="v_bar">|</span>
-        				<a href="/login?cmd=out">로그아웃</a>
+        				<a href="/account/logout">로그아웃</a>
         				<span class="v_bar">|</span>
         				<c:choose>
-	        				<c:when test="${requestScope.login == 'admin'}">
+	        				<c:when test="${login == 'admin'}">
 		        				<a href="/user/admin">관리자 메뉴</a>
 		        			</c:when>
 		        			<c:otherwise>
@@ -42,13 +42,13 @@
         </div>
         <div class="nav">
 			<ul class="nav_list">
-				<c:forEach items="${requestScope.categoryList}" var="n">
+				<c:forEach items="${categoryList}" var="n">
 					<li class="nav_item"><a href="/content/${n.categoryId}">${n.categoryName}</a></li>
 				</c:forEach>
 			</ul>
         </div>
         <div class="content">
-	        <jsp:include page="${requestScope.requestPage}" flush="false"></jsp:include>
+	        <jsp:include page="${requestPage}" flush="false" />
         </div>
         <div class="footer">
         	<a>Contact |</a>

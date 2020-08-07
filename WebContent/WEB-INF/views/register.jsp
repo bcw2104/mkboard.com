@@ -1,4 +1,5 @@
-<link rel="stylesheet" href="/style/register_style.css" />
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<link rel="stylesheet" href="/resources/style/register_style.css" />
 <div class="section">
     <div class="title">회원가입</div>
     <form action="/user/register" method="post" id="regi_form">
@@ -10,7 +11,7 @@
         <input type="text" class="input" name="user_name" autocomplete="off" required />
         <label >생년월일</label>
         <div>
-	        <input type="text" class="b_input" name="user_birth" pattern="^[0-9]{4}$" autocomplete="off" maxlength="4" placeholder="연도(4자리)" required />
+	        <input type="text" class="b_input" name="user_birth" pattern="^[0-9]{4}$" autocomplete="off" maxlength="4" placeholder="년(4자리)" required />
 	        <select name="user_birth" class="b_input" required>
 	            <option>월</option>
 	            <option value="01">1</option>
@@ -47,7 +48,7 @@
             -
             <input type="tel" class="p_input" name="user_phone" pattern="^[0-9]{4}$" required autocomplete="off" maxlength="4" />
         </div>
-        <input type="submit" class="submit_btn button" value="가입하기" />
+        <input type="submit" class="submit_btn button" value="회원가입" />
     </form>
 </div>
-<script type="text/javascript" src="/resource/register_action.js"></script>
+<script type="text/javascript" src="/resources/js/register_action.js"></script>

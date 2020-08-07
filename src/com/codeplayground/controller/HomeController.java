@@ -1,41 +1,38 @@
 package com.codeplayground.controller;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+
 import com.codeplayground.dao.CategoryDAO;
-import com.codeplayground.dao.PostDAO;
-import com.codeplayground.entity.PostDTO;
 import com.codeplayground.entity.UserDTO;
 
-@WebServlet("")
-public class HomeController extends HttpServlet {
-	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+@Controller
+public class HomeController {
+
+	@GetMapping("/")
+	public String home(HttpServletRequest request, Model model) {
 		HttpSession session = request.getSession();
 
 		CategoryDAO categoryDAO = new CategoryDAO();
 
-		request.setAttribute("categoryList",categoryDAO.getAllCategoryData());
+		model.addAttribute("categoryList",categoryDAO.getAllCategoryData());
 
 		if (session.getAttribute("user") == null) {
-			request.setAttribute("login", null);
+			model.addAttribute("login", null);
 		} else {
 			UserDTO userDTO = (UserDTO) session.getAttribute("user");
-			request.setAttribute("login", userDTO.getUserId());
+			model.addAttribute("login", userDTO.getUserId());
 		}
 		if(request.getAttribute("requestPage")==null) {
-			request.getRequestDispatcher("/content/community").forward(request, response);
+			return "forward:/content/community";
 		}
 		else {
-			request.getRequestDispatcher("WEB-INF/views/index.jsp").forward(request, response);
+			return "index";
 		}
-
 	}
+
 }

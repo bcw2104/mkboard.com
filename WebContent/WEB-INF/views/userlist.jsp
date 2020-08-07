@@ -4,7 +4,7 @@
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<link rel="stylesheet" href="/style/userlist_style.css">
+<link rel="stylesheet" href="/resources/style/userlist_style.css">
 
 <div class="section">
 	<table class="user_table">

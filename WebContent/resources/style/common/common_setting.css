@@ -24,6 +24,10 @@ body, textarea,input{
 	font-family: 'IBMPlexSansKR-Regular' !important;
 }
 
+select{
+	cursor: pointer;
+}
+
 input, select,button	 {
 	border: 1px solid #c0c0c0;
 }
@@ -80,10 +84,10 @@ a {
     margin: 0 5px;
 }
 .left_page_arrow{
-    background-image: url(/images/left_arrow.svg);
+    background-image: url("/resources/images/left_arrow.svg");
 }
 
 
 .right_page_arrow{
-	background-image: url("/images/right_arrow.svg");
+	background-image: url("/resources/images/right_arrow.svg");
 }

@@ -1,8 +1,8 @@
-
-<link rel="stylesheet" href="/style/login_style.css" />
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<link rel="stylesheet" href="/resources/style/login_style.css" />
 <div class="section">
 	<div class="title">로그인</div>
-	<form action="/login?cmd=in" method="post" id="login_form">
+	<form action="/account/login" method="post" id="login_form">
 		<input type="text" class="input" name="user_id" placeholder="아이디" /> <input
 			type="password" class="input" name="user_pw" placeholder="비밀번호" /> <input
 			type="submit" class="submit_btn button" value="로그인" />
@@ -22,4 +22,4 @@
 	</div>
 </div>
 
-<script type="text/javascript" src="/resource/login_action.js"></script>
+<script type="text/javascript" src="/resources/js/login_action.js"></script>

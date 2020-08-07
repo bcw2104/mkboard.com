@@ -3,7 +3,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
-<link rel="stylesheet" href="/style/boardview_style.css" />
+<link rel="stylesheet" href="/resources/style/boardview_style.css" />
 <c:set var="categoryId" value="${requestScope.thisCategory.categoryId}"/>
 <c:set var="boardId" value="${requestScope.thisBoard.boardId}"/>
 <c:set var="boardName" value="${requestScope.thisBoard.boardName}"/>
@@ -37,7 +37,7 @@
 		<div class="section_header">
 			<span class="section_title">${boardName}</span>
 			<a class="write_btn" href="${path}/create">
-				<button class="button"><img alt="write" src="/images/pencil.svg" >글쓰기</button>
+				<button class="button"><img alt="write" src="/resources/images/pencil.svg" >글쓰기</button>
 			</a>
 		</div>
 		<div class="section_nav">
@@ -55,7 +55,7 @@
 					</select>
 					<input type="text" name="query" class="query_control" value="${param.query}" placeholder="검색어"/>
 					<button type="submit" class="submit_btn" >
-						<img alt="search" src="/images/search_icon.svg">
+						<img alt="search" src="/resources/images/search_icon.svg">
 					</button>
 				</form>
 			</div>

@@ -1,7 +1,6 @@
 package com.codeplayground.service;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import javax.servlet.http.HttpSession;
 

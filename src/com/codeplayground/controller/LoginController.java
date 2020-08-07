@@ -2,59 +2,62 @@ package com.codeplayground.controller;
 
 import java.io.IOException;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import com.codeplayground.service.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
-@WebServlet("/login")
-public class LoginController extends HttpServlet {
+import com.codeplayground.entity.UserDTO;
+import com.codeplayground.service.LoginService;
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		LoginService service = new LoginService();
+@Controller
+@RequestMapping("/account")
+public class LoginController{
 
-		String cmd = "";
+	@Autowired
+	private LoginService loginService;
 
-		if(request.getParameter("cmd") != null) {
-			cmd = request.getParameter("cmd");
-		}
+	@GetMapping("/login")
+	public String login_get(Model model) {
+		model.addAttribute("requestPage", "login.jsp");
 
-		if (cmd.equals("out")) {
-			service.logout(request.getSession());
-			response.sendRedirect("/");
-		}
-		else if(cmd.equals("check")) {
-			if(request.getSession().getAttribute("user") != null) {
-				response.getWriter().write("true");
-			}else {
-				response.getWriter().write("false");
-			}
-		}
-		else {
-			request.setAttribute("requestPage", "login.html");
-			request.getRequestDispatcher("/").forward(request, response);
-		}
-
+		return "forward:/";
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		LoginService service = new LoginService();
+	@PostMapping("/login")
+	public String login_post(@RequestParam(value = "user_id") String userId,
+											@RequestParam(value = "user_pw") String userPw,
+											HttpSession session,Model model) {
 
-		String userId = request.getParameter("user_id");
-		String userPw = request.getParameter("user_pw");
-
-		if(service.login(userId, userPw,request.getSession())) {
-				response.sendRedirect("/");
+		if(loginService.login(userId, userPw,session)) {
+			return "redirect:/";
 		}
 		else {
-				response.sendRedirect("login?st=fail");
+			return "redirect:/account/login?st=fail";
 		}
 	}
 
+	@GetMapping("/logout")
+	public String logout(HttpSession session) {
+		loginService.logout(session);
+		return "forward:/";
+	}
 
+	@GetMapping("/check")
+	public void logout(@SessionAttribute("user") UserDTO userDTO,HttpServletResponse response) {
+		String msg = userDTO != null ? "true" : "false";
+
+		try {
+			response.getWriter().write(msg);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }

@@ -3,7 +3,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
-<link rel="stylesheet" href="/style/postcreate_style.css" />
+<link rel="stylesheet" href="/resources/style/postcreate_style.css" />
 <c:set var="categoryId" value="${requestScope.thisCategory.categoryId}" />
 <c:set var="boardId" value="${requestScope.thisBoard.boardId}" />
 <c:set var="boardName" value="${requestScope.thisBoard.boardName}" />
@@ -58,7 +58,7 @@
 				</div>
 				<div class="post_content_input" contenteditable="true"></div>
 				<div class="box_resizer">
-					<img alt="resizer" src="/images/scroll_icon.svg">
+					<img alt="resizer" src="/resources/images/scroll_icon.svg">
 				</div>
 			</div>
 			<div class="form_btn">
@@ -68,4 +68,4 @@
 		</form>
 	</div>
 </div>
-<script type="text/javascript" src="/resource/postcreate_action.js"></script>
+<script type="text/javascript" src="/resources/js/postcreate_action.js"></script>

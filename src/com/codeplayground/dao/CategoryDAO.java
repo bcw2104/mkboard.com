@@ -1,3 +1,4 @@
+
 package com.codeplayground.dao;
 
 import java.sql.Connection;
@@ -37,7 +38,6 @@ public class CategoryDAO {
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			try {
@@ -48,7 +48,6 @@ public class CategoryDAO {
 					pstmt.close();
 				}
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -73,7 +72,6 @@ public class CategoryDAO {
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			try {
@@ -84,7 +82,6 @@ public class CategoryDAO {
 					pstmt.close();
 				}
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

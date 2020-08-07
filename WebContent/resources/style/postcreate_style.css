@@ -69,7 +69,6 @@
 .post_input .board_selection {
 	height: 30px;
 	width: 200px;
-	cursor: pointer;
 }
 
 .post_input .input_control {
@@ -91,7 +90,6 @@
 .font_size_option {
 	width: 60px;
 	height: 30px;
-	cursor: pointer;
 }
 
 .post_content_input {

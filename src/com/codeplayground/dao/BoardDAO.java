@@ -1,3 +1,4 @@
+
 package com.codeplayground.dao;
 
 import java.sql.Connection;
@@ -37,8 +38,7 @@ public class BoardDAO {
 				boardDTO.setCategoryId(rs.getString("category_id"));
 			}
 
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+		} catch (SQLException e) { // TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			try {
@@ -49,7 +49,6 @@ public class BoardDAO {
 					pstmt.close();
 				}
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -72,11 +71,11 @@ public class BoardDAO {
 				boardDTO.setBoardId(rs.getString("board_id"));
 				boardDTO.setBoardName(rs.getString("board_name"));
 				boardDTO.setCategoryId(categoryId);
+
 				list.add(boardDTO);
 			}
 
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+		} catch (SQLException e) { // TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			try {
@@ -87,7 +86,6 @@ public class BoardDAO {
 					pstmt.close();
 				}
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

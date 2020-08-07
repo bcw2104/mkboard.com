@@ -10,9 +10,8 @@
 			}
 
 			$.ajax({
-				url:window.location.pathname+"?cmd=sort",
+				url: "/content/"+$(".post_info").attr("id")+"/comment/sort/"+sortType,
 				type:"get",
-				data:"sort="+sortType,
 				success: function(data){
 					var list = JSON.parse(data);
 					var comments = "";
@@ -22,7 +21,7 @@
 							+"<div>"+i.commentContent+"</div>"
 							+"<div>"
 							+i.createDate.substring(0, 19)
-							+"<span role='button' class='comment_reply'>답글 쓰기</span>"
+							+" <span role='button' class='comment_reply'>답글 쓰기</span>"
 							+"</div>"
 							+"</li>"
 						if(i.subCommentList != ""){
@@ -32,7 +31,7 @@
 									+"<div>"+j.commentContent+"</div>"
 									+"<div>"
 									+j.createDate.substring(0, 19)
-									+"<span role='button' class='comment_reply'>답글 쓰기</span>"
+									+" <span role='button' class='comment_reply'>답글 쓰기</span>"
 									+"</div>"
 									+"</li>"
 							}
@@ -43,7 +42,7 @@
 			});
 		}
 		var subCommentForm = function(parentId){
-			return "<form class='comment_form sub' action='?cmd=sub' method='post'>"
+			return "<form class='comment_form sub' action='/content/"+$(".post_info").attr("id")+"/comment/regsub' method='post'>"
 					+ "<input type='hidden' name='parent_id' value='"+parentId+"'>"
 					+ "<textarea cols='20' rows='3' name='comment_content' class='comment_txt'  placeholder='댓글을 작성해 보세요.' ></textarea>"
 					+ "<input type='submit' class='button submit_btn' value='등록'>"
@@ -63,7 +62,7 @@
 				var parentId = target.attr("id");
 
 				$.ajax({
-					url:"/login?cmd=check",
+					url:"/account/check",
 					type:"get",
 					success: function(data){
 						if(data == "true"){
