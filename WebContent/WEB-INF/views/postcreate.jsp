@@ -55,6 +55,17 @@
 						<option value="24">24</option>
 						<option value="36">36</option>
 					</select>
+					<div class="font_style_option btn_group">
+						<button type="button" id="f_bold" title="굵게"><img alt="font_B" src="/resources/images/font_B.svg"></button>
+						<button type="button" id="f_italy" title="기울임"><img alt="font_I" src="/resources/images/font_I.svg"></button>
+						<button type="button" id="f_underline" title="밑줄"><img alt="font_U" src="/resources/images/font_U.svg"></button>
+						<button type="button" id="f_strike" title="Strikethrough"><img alt="font_S" src="/resources/images/font_S.svg"></button>
+						<button type="button" id="f_none" title="글자 효과 삭제"><img alt="eraser" src="/resources/images/eraser.svg"></button>
+					</div>
+					<div class="font_color_option btn_group">
+						<button type="button" id="f_color_recent"><img alt="font_A" src="/resources/images/font_A.svg"></button>
+						<button type="button" id="f_color_option"><img alt="arrow_bottom" src="/resources/images/arrow_bottom.svg"></button>
+					</div>
 				</div>
 				<div class="post_content_input" contenteditable="true"></div>
 				<div class="box_resizer">

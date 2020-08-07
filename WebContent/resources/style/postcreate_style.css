@@ -83,12 +83,53 @@
 }
 
 .font_option {
-	height: 30px;
+	padding: 5px;
 	border-bottom: 1px solid #c0c0c0;
 }
 
-.font_size_option {
+.font_option > div{
+	display: inline-block;
+	font-size: 0px;
+}
+
+.font_option button{
+	background-color: #ffffff;
+	cursor: pointer;
+}
+
+.font_option button:hover{
+	background-color: #d6d6d6;
+}
+
+.font_size_option	{
+	border-radius:5px;
+    vertical-align: bottom;
 	width: 60px;
+	height: 30px;
+	cursor: pointer;
+}
+
+.font_style_option{
+	display: inline-block;
+	margin: 0 10px;
+}
+
+.font_option img{
+	vertical-align: middle;
+    width: 10px;
+}
+
+.font_style_option button{
+	width: 35px;
+	height: 30px;
+}
+
+.font_color_option button:nth-child(1){
+	width: 35px;
+	height: 30px;
+}
+.font_color_option button:nth-child(2){
+	width: 25px;
 	height: 30px;
 }
 
