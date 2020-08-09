@@ -11,10 +11,11 @@ import com.codeplayground.dao.CategoryDAO;
 import com.codeplayground.entity.UserDTO;
 
 @Controller
+
 public class HomeController {
 
 	@GetMapping("/")
-	public String home(HttpServletRequest request, Model model) {
+	public String home(HttpServletRequest request, Model model) throws Exception{
 		HttpSession session = request.getSession();
 
 		CategoryDAO categoryDAO = new CategoryDAO();

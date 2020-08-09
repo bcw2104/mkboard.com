@@ -1,54 +1,52 @@
 (function($){
 
-	var reg_msg = function(){
-		var url = window.location.search;
-		window.history.pushState("", "", window.location.href.substring(0, window.location.href.indexOf("?")));
-
-		if(url.length > 0){
-			url = url.substr(1).split("&");
-			for(var i of url){
-				if(i === "st=fail"){
-					alert("회원가입 도중 오류가 발생했습니다.");
-				}
-			}
-		}
-	}
-
-	reg_msg();
-
 	$(document).ready(function() {
-		var id_ck = 0;
+		var idCheck = 0;
 
-		var unique_ck = function(){
-			$("#user_id").focusout(function(event) {
-				$("#id_msg").remove();
-				$.ajax({
-					url : "/user/overlap",
-					type:"get",
-					data:"user_id="+$("#user_id").val(),
-					dataType:"text",
-					success:function(data){
-						if(data.trim() == "true"){
-							$("#user_id").before("<span id='id_msg' style='color:blue; font-size:0.9rem'>사용 가능한 아이디입니다.</span>");
-							id_ck = 1;
-						}
-						else if(data.trim() == "false"){
-							$("#user_id").before("<span id='id_msg' style='color:red; font-size:0.9rem'>이미 존재하는 아이디입니다.</span>");
-							id_ck=0;
-						}
-						else if(data.trim() == "null"){
-							id_ck=0;
-						}
+		var onlyEnAndNumber = function(target){
+			var regExp = /^[a-zA-Z][a-zA-Z0-9]{5,20}/;
+
+			return regExp.test(target);
+		}
+		var idValidationCheck = function(){
+			$("#userId").focusout(function(event) {
+				var userId = $("#userId").val();
+
+				$("#idMsg").empty();
+				if(userId.length >= 5){
+					if(onlyEnAndNumber(userId)){
+						$.ajax({
+							url : "/account/overlap",
+							type:"get",
+							data:"user_id="+userId,
+							dataType:"text",
+							success:function(data){
+								if(data.trim() == "true"){
+									$("#idMsg").css("color", "#0000ff").text("사용 가능한 아이디입니다.");
+									idCheck = 1;
+								}
+								else if(data.trim() == "false"){
+									$("#idMsg").css("color", "#ff0000").text("이미 존재하는 아이디입니다.");
+									idCheck=0;
+								}
+							}
+						});
 					}
-
-				});
+					else{
+						$("#idMsg").css("color", "#ff0000").text("아이디는 영문 및 숫자로 구성되어야 합니다.");
+						idCheck=0;
+					}
+				}else{
+					$("#idMsg").css("color", "#ff0000").text("아이디는 5글자 이상이어야 합니다.");
+					idCheck=0;
+				}
 			});
 		}
 
-		var submit_ck = function(){
+		var validationCheck = function(){
 			$(".submit_btn").on("click",function(event) {
-				if(id_ck == 0){
-					alert("아이디가 비어있거나 중복됩니다.");
+				if(idCheck == 0){
+					alert("아이디를 확인해주세요.");
 					return false;
 				}else{
 					return true;
@@ -56,8 +54,8 @@
 			});
 		}
 
-		unique_ck();
-		submit_ck();
+		idValidationCheck();
+		validationCheck();
 	});
 
 })(jQuery);

@@ -1,6 +1,6 @@
 (function($){
 
-	var log_msg = function(){
+	var getMessage = function(){
 		var url = window.location.search;
 		window.history.pushState("", "", window.location.href.substring(0, window.location.href.indexOf("?")));
 
@@ -13,9 +13,12 @@
 				if(i === "reg=su"){
 					alert("회원가입이 완료되었습니다.");
 				}
+				if(i === "auth=fail"){
+					alert("로그인이 필요한 서비스입니다.");
+				}
 			}
 		}
 	}
 
-	log_msg();
+	getMessage();
 })(jQuery);

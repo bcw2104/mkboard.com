@@ -8,12 +8,14 @@
 										http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 
 	<!-- service beans -->
-	<bean id="loginService" class="com.codeplayground.service.LoginService" lazy-init="true"  />
-	<bean id="userService" class="com.codeplayground.service.UserService" lazy-init="true" />
-	<bean id="categoryService" class="com.codeplayground.service.CategoryService" lazy-init="true" />
-	<bean id="boardService" class="com.codeplayground.service.BoardService" lazy-init="true"  />
-	<bean id="postService" class="com.codeplayground.service.PostService" lazy-init="true"  />
-	<bean id="commentService" class="com.codeplayground.service.CommentService" lazy-init="true"  />
+	<bean class="com.codeplayground.service.AccountService" lazy-init="true"  />
+	<bean class="com.codeplayground.service.UserService" lazy-init="true" />
+	<bean class="com.codeplayground.service.CategoryService" lazy-init="true" />
+	<bean class="com.codeplayground.service.BoardService" lazy-init="true"  />
+	<bean class="com.codeplayground.service.PostService" lazy-init="true"  />
+	<bean class="com.codeplayground.service.CommentService" lazy-init="true"  />
 
+	<!-- Util beans -->
+	<bean class="com.codeplayground.util.Tools" lazy-init="true"  />
 
 </beans>

@@ -1,6 +1,5 @@
 package com.codeplayground.controller;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletResponse;
@@ -10,6 +9,7 @@ import org.json.simple.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,6 +27,8 @@ import com.codeplayground.service.BoardService;
 import com.codeplayground.service.CategoryService;
 import com.codeplayground.service.CommentService;
 import com.codeplayground.service.PostService;
+import com.codeplayground.util.PagePath;
+import com.codeplayground.util.Tools;
 
 @Controller
 @RequestMapping("/content")
@@ -40,54 +42,54 @@ public class ContentController {
 	private PostService postService;
 	@Autowired
 	private CommentService commentService;
+	@Autowired
+	private Tools tools;
 
 	public ContentController() { }
+
+	@ExceptionHandler(java.lang.NumberFormatException.class)
+	public String exception() {
+		return "redirect:/system/error/none";
+	}
 
 	@GetMapping("/{categoryId}/{boardId}/{postId}")
 	public String postview(@PathVariable String categoryId,
 										@PathVariable String boardId,
-										@PathVariable String postId,
-										HttpSession session,Model model) {
+										@PathVariable int postId,
+										HttpSession session,Model model) throws Exception{
+		CategoryDTO categoryDTO = categoryService.getCategoryInfo(categoryId);
+		BoardDTO boardDTO = boardService.getBoardInfo(boardId);
+		PostDTO postDTO = postService.getPostInfo(session, postId);
 
-		try {
-			int _postId = Integer.parseInt(postId);
-			CategoryDTO categoryDTO = categoryService.getCategoryInfo(categoryId);
-			BoardDTO boardDTO = boardService.getBoardInfo(boardId);
-			PostDTO postDTO = postService.getPostInfo(session, _postId);
+		if (categoryDTO != null && boardDTO != null && postDTO != null) {
+			ArrayList<CommentDTO> commentList = commentService.getCommentList(postId, null);
+			commentService.addSubCommentList(commentList);
+			model.addAttribute("thisPost", postDTO);
+			model.addAttribute("thisBoard", boardDTO);
+			model.addAttribute("thisCategory", categoryDTO);
+			model.addAttribute("closestPostList", postService.getClosestPostList(postId, boardDTO.getBoardId()));
+			model.addAttribute("boardList", boardService.getBoardList(categoryDTO.getCategoryId()));
+			model.addAttribute("commentList", commentList);
+			model.addAttribute("requestPage", PagePath.postviewPage);
 
-			if (categoryDTO != null && boardDTO != null && postDTO != null) {
-				ArrayList<CommentDTO> commentList = commentService.getCommentList(_postId, null);
-				commentService.addSubCommentList(commentList);
-				model.addAttribute("thisPost", postDTO);
-				model.addAttribute("thisBoard", boardDTO);
-				model.addAttribute("thisCategory", categoryDTO);
-				model.addAttribute("closestPostList",
-							postService.getClosestPostList(_postId, boardDTO.getBoardId()));
-				model.addAttribute("boardList", boardService.getBoardList(categoryDTO.getCategoryId()));
-				model.addAttribute("commentList", commentList);
-				model.addAttribute("requestPage", "postview.jsp");
-
-				return "forward:/";
-			} else {
-				return "redirect:/error/access";
-			}
-		}catch(NumberFormatException e) {
-			return "redirect:/error/access";
+			return "forward:/";
+		} else {
+			return "redirect:/system/error/inner";
 		}
 	}
 
-	@GetMapping({"/", "/{categoryId}","/{categoryId}/{boardId}"})
+	@GetMapping({"/{categoryId}","/{categoryId}/{boardId}"})
 	public String boardview(@PathVariable(required = false) String categoryId,
 											@PathVariable(required = false) String boardId,
 											@RequestParam(required = false) String f,
 											@RequestParam(required = false) String tar,
 											@RequestParam(required = false) String query,
-											@RequestParam(required = false) String p, Model model) {
+											@RequestParam(required = false) String p, Model model) throws Exception{
 
 		BoardDTO boardDTO = null;
 		CategoryDTO categoryDTO = null;
 
-		categoryDTO = categoryService.getCategoryInfo(categoryId == null ? "community": categoryId);
+		categoryDTO = categoryService.getCategoryInfo(categoryId);
 
 		if(boardId == null) {
 			boardDTO = new BoardDTO();
@@ -111,16 +113,8 @@ public class ContentController {
 
 			int totalCount = postService.getPostCount(boardDTO.getBoardId(), categoryDTO.getCategoryId(),
 					boardTitle, author);
-			int pageNum = 0;
 
-			try {
-				pageNum = Integer.parseInt(p);
-				if (!(pageNum <= (totalCount - 1) / 18 + 1 && pageNum > 0)) {
-					pageNum = 1;
-				}
-			} catch (Exception e) {
-				pageNum = 1;
-			}
+			int pageNum = tools.checkPage(p, totalCount, 18);
 
 			model.addAttribute("postList", postService.getPostList(boardDTO.getBoardId(),
 					categoryDTO.getCategoryId(), f, boardTitle, author, pageNum));
@@ -129,42 +123,32 @@ public class ContentController {
 			model.addAttribute("pageNum", pageNum);
 			model.addAttribute("thisBoard", boardDTO);
 			model.addAttribute("thisCategory", categoryDTO);
-			model.addAttribute("requestPage", "boardview.jsp");
+			model.addAttribute("requestPage", PagePath.boardviewPage);
 			return "forward:/";
 		} else {
-			return "redirect:/error/access";
+			return "redirect:/system/error/inner";
 		}
 
 	}
 
 	@GetMapping("{postId}/comment/sort/{sort}")
-	public String comment(@PathVariable String postId,
-										 @PathVariable String sort, HttpServletResponse response) {
-		int _postId = 0;
+	public String comment(@PathVariable int postId,
+										 @PathVariable String sort, HttpServletResponse response) throws Exception{
 
-		try {
-			_postId = Integer.parseInt(postId);
-			ArrayList<CommentDTO> commentList = commentService.getCommentList(_postId, sort);
-			commentService.addSubCommentList(commentList);
+		ArrayList<CommentDTO> commentList = commentService.getCommentList(postId, sort);
+		commentService.addSubCommentList(commentList);
 
-			JSONArray array = commentService.convertToJson(commentList);
+		JSONArray array = commentService.convertToJson(commentList);
 
-			response.setCharacterEncoding("UTF-8");
-			try {
-				response.getWriter().write(array.toJSONString());
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return null;
-		}catch(NumberFormatException e) {
-			return "redirect:/error/access";
-		}
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().write(array.toJSONString());
+
+		return null;
 	}
 
 	@GetMapping({"/{categoryId}/create","/{categoryId}/{boardId}/create"})
 	public String postcreate(@PathVariable String categoryId,
-											@PathVariable(required = false) String boardId, Model model) {
+											@PathVariable(required = false) String boardId, Model model) throws Exception{
 		BoardDTO boardDTO = null;
 		CategoryDTO categoryDTO = null;
 
@@ -181,11 +165,11 @@ public class ContentController {
 			model.addAttribute("boardList", boardService.getBoardList(categoryDTO.getCategoryId()));
 			model.addAttribute("thisBoard", boardDTO);
 			model.addAttribute("thisCategory", categoryDTO);
-			model.addAttribute("requestPage", "postcreate.jsp");
+			model.addAttribute("requestPage", PagePath.postcreatePage);
 
 			return "forward:/";
 		} else {
-			return "forward:/error/access";
+			return "redirect:/system/error/inner";
 		}
 	}
 
@@ -193,66 +177,45 @@ public class ContentController {
 	public String regpost(@RequestParam(value = "post_title") String postTitle,
 									    @RequestParam(value = "post_content") String postContent,
 									    @RequestParam(value = "board_id") String boardId,
-									    @SessionAttribute("user") UserDTO userDTO,HttpServletResponse response) {
-		if (userDTO != null) {
-			String userId = userDTO.getUserId();
-			if (!(postTitle.equals("") && postContent.equals("") && boardId.equals(""))) {
-				if (postService.uploadPost(postTitle, postContent, boardId, userId)) {
-					response.setCharacterEncoding("UTF-8");
-					try {
-						response.getWriter().write( "<script>"
-																	+ "alert('게시글이 업로드되었습니다.');"
-																	+ "window.location.href='/';"
-																	+ "</script>");
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					return null;
-				} else {
-					return "redirect:/error/inner";
-				}
-			} else {
-				return "redirect:/error/access";
-			}
-		} else {
-			return "redirect:/error/login";
+									    @SessionAttribute("user") UserDTO userDTO,HttpServletResponse response) throws Exception{
+
+		String userId = userDTO.getUserId();
+		if (!(postTitle.equals("") && postContent.equals("") && boardId.equals(""))) {
+			postService.uploadPost(postTitle, postContent, boardId, userId);
+			response.setCharacterEncoding("UTF-8");
+			response.setContentType("text/html; charset=UTF-8");
+			response.getWriter().write( "<script>"
+														+ "alert('게시글이 업로드되었습니다.');"
+														+ "window.location.href='/';"
+														+ "</script>");
+			return null;
+		}else {
+			return "redirect:/system/error/inner";
 		}
 	}
 
-	@PostMapping("/{postId}/comment/{commentType}")
-	public String regcomment(@PathVariable String postId,
-											   @PathVariable String commentType,
+	@PostMapping("/{postId}/regcomment")
+	public String regcomment(@PathVariable int postId,
 											   @RequestParam(required = false, value = "comment_content") String commentContent,
-											   @RequestParam(value = "parent_id") String parentId,
+											   @RequestParam(required = false, value = "parent_id") String parentId,
 											   @SessionAttribute("user") UserDTO userDTO,
-											   @RequestHeader("Referer") String from) {
-		try {
-			int _postId = Integer.parseInt(postId);
+											   @RequestHeader("Referer") String from) throws Exception{
+		String userId = userDTO.getUserId();
 
-			if (userDTO != null) {
-				String userId = userDTO.getUserId();
-
-				if (commentContent != null && !commentContent.equals("")) {
-					if (commentType.equals("regmain")) {
-						commentService.addNewComment(_postId, commentContent, userDTO.getUserId());
-					}
-					else if (commentType.equals("regsub")) {
-						int _parentId = Integer.parseInt(parentId);
-
-						_parentId = Integer.parseInt(parentId);
-						commentService.addNewSubComment(_postId, _parentId, commentContent, userId);
-					}
-					return "redirect:"+from;
-				} else {
-					return "redirect:/error/access";
-				}
-			} else {
-				return "redirect:/error/login";
+		if (commentContent != null && !commentContent.equals("")) {
+			if (parentId == null) {
+				commentService.addNewComment(postId, commentContent, userId);
 			}
-		} catch (Exception e) {
-			return "redirect:/error/access";
-		}
+			else{
+				int _parentId = Integer.parseInt(parentId);
 
+				_parentId = Integer.parseInt(parentId);
+				commentService.addNewSubComment(postId, _parentId, commentContent, userId);
+			}
+			return "redirect:"+from;
+		} else {
+			return "redirect:/system/error/inner";
+		}
 	}
 
 }

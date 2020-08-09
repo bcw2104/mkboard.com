@@ -11,6 +11,16 @@ public class UserDTO {
 	private String userPhone;
 	private Timestamp userRegdate;
 
+	public UserDTO() {
+		userId = "";
+		userName = "";
+		userPw = "";
+		userGender ="";
+		userBirth = null;
+		userPhone = "";
+		userRegdate = null;
+	}
+
 	public String getUserId() {
 		return userId;
 	}

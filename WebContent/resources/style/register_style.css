@@ -18,47 +18,44 @@
 	font-weight: bold;
 }
 
-
-#regi_form label {
+#registerForm label {
 	display:inline-block;
 	font-weight: bold;
 	padding-bottom: 5px;
 }
 
 
-#regi_form .input {
-	display: block;
-	width: 300px;
-	height: 35px;
-	font-size: 1rem;
+.inp{
+	height: 40px;
+	font-size: 1.1rem;
 	line-height: 40px;
 	padding-left: 5px;
-	margin-bottom: 10px;
 }
 
-#regi_form .b_input {
+.inp_self {
+	display: block;
+	width: 300px;
+}
+
+.inp_group{
 	width: 98px;
-	height: 35px;
-	font-size: 1rem;
-	line-height: 40px;
-	padding-left: 5px;
-	margin-bottom: 10px;
 	vertical-align: middle;
 }
 
-#regi_form .p_input {
+.inp_txt_group{
 	width: 90px;
-	height: 35px;
-	font-size: 1rem;
-	line-height: 40px;
-	padding-left: 5px;
-	margin-bottom: 10px;
 }
 
-#regi_form .submit_btn {
+#registerForm .btn_self {
 	width: 300px;
     height: 40px;
     margin-top: 10px;
     font-size: 1.1rem;
-    }
+}
+
+#registerForm .form_msg{
+	height: 20px;
+	font-size:0.85rem;
+	margin-bottom: 5px;
+}
 

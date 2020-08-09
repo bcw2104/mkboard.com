@@ -21,69 +21,51 @@ public class CategoryDAO {
 		rs = null;
 	}
 
-	public ArrayList<CategoryDTO> getAllCategoryData() {
+	public ArrayList<CategoryDTO> getAllCategoryData() throws SQLException {
 		String sql = "SELECT * FROM tbl_category";
 		ArrayList<CategoryDTO> list = new ArrayList<CategoryDTO>();
 
-		try {
-			pstmt = conn.prepareStatement(sql);
-			rs = pstmt.executeQuery();
+		pstmt = conn.prepareStatement(sql);
+		rs = pstmt.executeQuery();
 
-			while (rs.next()) {
-				CategoryDTO categoryDTO = new CategoryDTO();
-				categoryDTO.setCategoryId(rs.getString("category_id"));
-				categoryDTO.setCategoryName(rs.getString("category_name"));
+		while (rs.next()) {
+			CategoryDTO categoryDTO = new CategoryDTO();
+			categoryDTO.setCategoryId(rs.getString("category_id"));
+			categoryDTO.setCategoryName(rs.getString("category_name"));
 
-				list.add(categoryDTO);
-			}
+			list.add(categoryDTO);
+		}
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (!rs.isClosed()) {
-					rs.close();
-				}
-				if (!pstmt.isClosed()) {
-					pstmt.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+		if (!rs.isClosed()) {
+			rs.close();
+		}
+		if (!pstmt.isClosed()) {
+			pstmt.close();
 		}
 
 		return list;
 	}
 
-	public CategoryDTO getCategoryData(String categoryId) {
+	public CategoryDTO getCategoryData(String categoryId) throws SQLException {
 		String sql = "SELECT category_name FROM tbl_category  WHERE category_id = ?";
 		CategoryDTO categoryDTO = null;
 
-		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, categoryId);
+		pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, categoryId);
 
-			rs = pstmt.executeQuery();
+		rs = pstmt.executeQuery();
 
-			while (rs.next()) {
-				categoryDTO = new CategoryDTO();
-				categoryDTO.setCategoryId(categoryId);
-				categoryDTO.setCategoryName(rs.getString("category_name"));
-			}
+		while (rs.next()) {
+			categoryDTO = new CategoryDTO();
+			categoryDTO.setCategoryId(categoryId);
+			categoryDTO.setCategoryName(rs.getString("category_name"));
+		}
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (!rs.isClosed()) {
-					rs.close();
-				}
-				if (!pstmt.isClosed()) {
-					pstmt.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+		if (!rs.isClosed()) {
+			rs.close();
+		}
+		if (!pstmt.isClosed()) {
+			pstmt.close();
 		}
 
 		return categoryDTO;

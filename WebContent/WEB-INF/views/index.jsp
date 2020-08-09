@@ -15,45 +15,45 @@
 <body>
     <div class="layout-container">
         <div class="header">
-        	<div class="header-nav">
+        	<div class="gnb">
         		<c:choose>
         			<c:when test="${login == null}">
-        				<a href="/account/login">로그인</a>
+        				<a class="gnb-item_link" href="/account/login">로그인</a>
         				<span class="v_bar">|</span>
-	        			<a href="/user/register">회원가입</a>
+	        			<a class="gnb-item_link" href="/account/register">회원가입</a>
         			</c:when>
         			<c:otherwise>
         				<span>${login}님 환영합니다.</span>
         				<span class="v_bar">|</span>
-        				<a href="/account/logout">로그아웃</a>
+        				<a class="gnb-item_link" href="/account/logout">로그아웃</a>
         				<span class="v_bar">|</span>
         				<c:choose>
 	        				<c:when test="${login == 'admin'}">
-		        				<a href="/user/admin">관리자 메뉴</a>
+		        				<a class="gnb-item_link" href="/admin/users">관리자 메뉴</a>
 		        			</c:when>
 		        			<c:otherwise>
-		        				<a href="/user/profile">설정</a>
+		        				<a class="gnb-item_link" href="/user/profile">설정</a>
 		        			</c:otherwise>
 	        			</c:choose>
         			</c:otherwise>
         		</c:choose>
         	</div>
-        	<div class="header-title"><a href="/">Code Playground</a></div>
+        	<div class="header-title"><a class="header-title_link" href="/">Code Playground</a></div>
         </div>
-        <div class="nav">
-			<ul class="nav_list">
+        <div class="lnb">
+			<ul class="lnb-list">
 				<c:forEach items="${categoryList}" var="n">
-					<li class="nav_item"><a href="/content/${n.categoryId}">${n.categoryName}</a></li>
+					<li class="lnb-item"><a class="lnb-item_link" href="/content/${n.categoryId}">${n.categoryName}</a></li>
 				</c:forEach>
 			</ul>
         </div>
-        <div class="content">
+        <div class="container">
 	        <jsp:include page="${requestPage}" flush="false" />
         </div>
         <div class="footer">
-        	<a>Contact |</a>
-        	<a href="https://www.facebook.com/profile.php?id=100006654306781">Facebook |</a>
-        	<a href="https://github.com/bcw2104">Github</a><br/>
+        	<a class="footer-item_link">Contact |</a>
+        	<a class="footer-item_link" href="https://www.facebook.com/profile.php?id=100006654306781">Facebook |</a>
+        	<a class="footer-item_link" href="https://github.com/bcw2104">Github</a><br/>
         	<hr class="hr_light">
         	<span>제작자 : bcw2104 |</span>
         	<span>대표명 : 방철우 |</span>

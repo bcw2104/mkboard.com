@@ -21,151 +21,106 @@ public class CommentDAO {
 		rs = null;
 	}
 
-	public ArrayList<SubCommentDTO> getSubCommentList(int parentId){
+	public ArrayList<SubCommentDTO> getSubCommentList(int parentId) throws SQLException {
 		ArrayList<SubCommentDTO> list = new ArrayList<SubCommentDTO>();
 		String sql = "SELECT * FROM tbl_subcomment WHERE parent_id = ? ORDER BY create_date ASC";
 
-		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, parentId);
+		pstmt = conn.prepareStatement(sql);
+		pstmt.setInt(1, parentId);
 
-			rs = pstmt.executeQuery();
+		rs = pstmt.executeQuery();
 
-			while (rs.next()) {
-				SubCommentDTO subCommentDTO = new SubCommentDTO();
+		while (rs.next()) {
+			SubCommentDTO subCommentDTO = new SubCommentDTO();
 
-				subCommentDTO.setCommentId(rs.getInt("comment_id"));
-				subCommentDTO.setParentId(rs.getInt("parent_id"));
-				subCommentDTO.setCommentContent(rs.	getString("comment_content"));
-				subCommentDTO.setUserId(rs.getString("user_id"));
-				subCommentDTO.setCreateDate(rs.getTimestamp("create_date"));
+			subCommentDTO.setCommentId(rs.getInt("comment_id"));
+			subCommentDTO.setParentId(rs.getInt("parent_id"));
+			subCommentDTO.setCommentContent(rs.getString("comment_content"));
+			subCommentDTO.setUserId(rs.getString("user_id"));
+			subCommentDTO.setCreateDate(rs.getTimestamp("create_date"));
 
-				list.add(subCommentDTO);
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (!rs.isClosed()) {
-					rs.close();
-				}
-				if (!pstmt.isClosed()) {
-					pstmt.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			list.add(subCommentDTO);
+		}
+		if (!rs.isClosed()) {
+			rs.close();
+		}
+		if (!pstmt.isClosed()) {
+			pstmt.close();
 		}
 		return list;
 	}
 
-	public ArrayList<CommentDTO> getCommentList(int postId, String sort){
+	public ArrayList<CommentDTO> getCommentList(int postId, String sort) throws SQLException {
 		ArrayList<CommentDTO> list = new ArrayList<CommentDTO>();
-		String sql = "SELECT * FROM tbl_comment WHERE post_id = ? ORDER BY create_date "+sort;
+		String sql = "SELECT * FROM tbl_comment WHERE post_id = ? ORDER BY create_date " + sort;
 
-		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, postId);
+		pstmt = conn.prepareStatement(sql);
+		pstmt.setInt(1, postId);
 
-			rs = pstmt.executeQuery();
+		rs = pstmt.executeQuery();
 
-			while (rs.next()) {
-				CommentDTO commentDTO = new CommentDTO();
+		while (rs.next()) {
+			CommentDTO commentDTO = new CommentDTO();
 
-				commentDTO.setCommentId(rs.getInt("comment_id"));
-				commentDTO.setPostId(rs.getInt("post_id"));
-				commentDTO.setCommentContent(rs.	getString("comment_content"));
-				commentDTO.setUserId(rs.getString("user_id"));
-				commentDTO.setChildCount(rs.getInt("child_count"));
-				commentDTO.setCreateDate(rs.getTimestamp("create_date"));
+			commentDTO.setCommentId(rs.getInt("comment_id"));
+			commentDTO.setPostId(rs.getInt("post_id"));
+			commentDTO.setCommentContent(rs.getString("comment_content"));
+			commentDTO.setUserId(rs.getString("user_id"));
+			commentDTO.setChildCount(rs.getInt("child_count"));
+			commentDTO.setCreateDate(rs.getTimestamp("create_date"));
 
-				list.add(commentDTO);
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (!rs.isClosed()) {
-					rs.close();
-				}
-				if (!pstmt.isClosed()) {
-					pstmt.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			list.add(commentDTO);
+		}
+		if (!rs.isClosed()) {
+			rs.close();
+		}
+		if (!pstmt.isClosed()) {
+			pstmt.close();
 		}
 		return list;
 	}
 
-	public void postComment(int postId,String commentContent,String userId) {
+	public void postComment(int postId, String commentContent, String userId) throws SQLException {
 
 		String sql = "INSERT INTO tbl_comment VALUES((SELECT count(*) FROM tbl_comment)+1,?,?,?,sysdate,0)";
-		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, postId);
-			pstmt.setString(2, commentContent);
-			pstmt.setString(3, userId);
 
-			pstmt.executeUpdate();
+		pstmt = conn.prepareStatement(sql);
+		pstmt.setInt(1, postId);
+		pstmt.setString(2, commentContent);
+		pstmt.setString(3, userId);
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (!pstmt.isClosed()) {
-					pstmt.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+		pstmt.executeUpdate();
+
+		if (!pstmt.isClosed()) {
+			pstmt.close();
 		}
 	}
 
-	public void postSubComment(int parentId,String commentContent,String userId) {
+	public void postSubComment(int parentId, String commentContent, String userId) throws SQLException {
 
 		String sql = "INSERT INTO tbl_subcomment VALUES((SELECT count(*) FROM tbl_subcomment)+1,?,?,sysdate,?)";
-		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, commentContent);
-			pstmt.setString(2, userId);
-			pstmt.setInt(3, parentId);
 
-			pstmt.executeUpdate();
+		pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, commentContent);
+		pstmt.setString(2, userId);
+		pstmt.setInt(3, parentId);
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (!pstmt.isClosed()) {
-					pstmt.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+		pstmt.executeUpdate();
+
+		if (!pstmt.isClosed()) {
+			pstmt.close();
 		}
 	}
 
-	public void putCommentChild(int commentId) {
+	public void putCommentChild(int commentId) throws SQLException {
 
 		String sql = "UPDATE tbl_comment SET child_count = child_count+1 where comment_id = ?";
-		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, commentId);
-			pstmt.executeUpdate();
+		pstmt = conn.prepareStatement(sql);
+		pstmt.setInt(1, commentId);
+		pstmt.executeUpdate();
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (!pstmt.isClosed()) {
-					pstmt.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+		if (!pstmt.isClosed()) {
+			pstmt.close();
 		}
 	}
 }

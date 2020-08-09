@@ -24,7 +24,7 @@ body, textarea,input{
 	font-family: 'IBMPlexSansKR-Regular' !important;
 }
 
-select{
+select, button,.btn{
 	cursor: pointer;
 }
 
@@ -32,21 +32,24 @@ input, select,button	 {
 	border: 1px solid #c0c0c0;
 }
 
+a {
+	text-decoration: none;
+}
+
 div{
 	word-break: break-all;
 }
 
-.button {
+.btn_major{
 	background-color: #0059ab;
 	color: #ffffff;
-	cursor: pointer;
 
 	letter-spacing: 5px;
 	font-weight: bold;
 	border-radius: 5px;
 }
 
-.button:hover{
+.btn_major:hover{
 	background-color: #0073db;
 }
 
@@ -70,10 +73,6 @@ div{
 	border-top: 1px solid #c0c0c0;
 }
 
-a {
-	text-decoration: none;
-}
-
 .page_arrow{
 	display: inline-block;
     background-size: contain;
@@ -86,8 +85,6 @@ a {
 .left_page_arrow{
     background-image: url("/resources/images/left_arrow.svg");
 }
-
-
 .right_page_arrow{
 	background-image: url("/resources/images/right_arrow.svg");
 }

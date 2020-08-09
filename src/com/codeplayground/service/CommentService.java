@@ -1,5 +1,6 @@
 package com.codeplayground.service;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -19,7 +20,7 @@ public class CommentService {
 	}
 
 
-	public void addSubCommentList(ArrayList<CommentDTO> list) {
+	public void addSubCommentList(ArrayList<CommentDTO> list) throws SQLException{
 		Iterator<CommentDTO> itr = list.iterator();
 		CommentDTO temp = null;
 
@@ -68,7 +69,7 @@ public class CommentService {
 		return array;
 	}
 
-	public ArrayList<CommentDTO> getCommentList(int postId, String sort) {
+	public ArrayList<CommentDTO> getCommentList(int postId, String sort) throws SQLException{
 		if (sort == null) {
 			sort = "DESC";
 		}
@@ -77,19 +78,17 @@ public class CommentService {
 		return list;
 	}
 
-	public void addNewComment(int postId, String commentContent, String userId) {
+	public void addNewComment(int postId, String commentContent, String userId) throws SQLException{
 		PostDAO postDAO = new PostDAO();
 
-		if(postDAO.putComments(postId)) {
-			commentDAO.postComment(postId, commentContent, userId);
-		}
+		postDAO.putComments(postId);
+		commentDAO.postComment(postId, commentContent, userId);
 	}
 
-	public void addNewSubComment(int postId, int parentId, String commentContent, String userId) {
+	public void addNewSubComment(int postId, int parentId, String commentContent, String userId) throws SQLException{
 		PostDAO postDAO = new PostDAO();
-		if(postDAO.putComments(postId)) {
-			commentDAO.postSubComment(parentId, commentContent, userId);
-			commentDAO.putCommentChild(parentId);
-		}
+		postDAO.putComments(postId);
+		commentDAO.postSubComment(parentId, commentContent, userId);
+		commentDAO.putCommentChild(parentId);
 	}
 }

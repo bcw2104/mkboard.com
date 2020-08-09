@@ -1,5 +1,6 @@
 package com.codeplayground.service;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpSession;
@@ -36,7 +37,7 @@ public class PostService {
 		return field;
 	}
 
-	public PostDTO getPostInfo(HttpSession session, int postId) {
+	public PostDTO getPostInfo(HttpSession session, int postId) throws SQLException{
 		int visit = 0;
 
 		if (session.getAttribute("recent_visit") != null) {
@@ -51,15 +52,15 @@ public class PostService {
 		return postDAO.getPost(postId);
 	}
 
-	public ArrayList<PostDTO> getClosestPostList(int postId, String boardId){
+	public ArrayList<PostDTO> getClosestPostList(int postId, String boardId) throws SQLException{
 		return postDAO.getClosestPostList(postId, boardId);
 	}
 
-	public int getTotalPostCount(String categoryId, String postTitle, String author) {
+	public int getTotalPostCount(String categoryId, String postTitle, String author) throws SQLException{
 		return postDAO.getPostCount(categoryId, postTitle, author);
 	}
 
-	public int getPostCount(String boardId, String categoryId, String postTitle, String author) {
+	public int getPostCount(String boardId, String categoryId, String postTitle, String author) throws SQLException{
 		if(boardId.equals("")) {
 			return postDAO.getPostCount(categoryId, postTitle, author);
 		}
@@ -69,7 +70,7 @@ public class PostService {
 	}
 
 	public ArrayList<PostDTO> getPostList(String boardId, String categoryId, String field, String postTitle,
-			String author, int pageNum) {
+			String author, int pageNum) throws SQLException{
 		if(boardId.equals("")) {
 			return postDAO.getPostList(categoryId, fieldConverter(field), postTitle, author, pageNum);
 		}
@@ -78,7 +79,7 @@ public class PostService {
 		}
 	}
 
-	public boolean uploadPost(String postTitle,String postContent,String boardId,String author) {
-		return postDAO.postPost(postTitle, postContent, boardId, author);
+	public void uploadPost(String postTitle,String postContent,String boardId,String author) throws SQLException{
+		postDAO.postPost(postTitle, postContent, boardId, author);
 	}
 }

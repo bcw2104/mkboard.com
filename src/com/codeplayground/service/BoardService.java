@@ -1,5 +1,6 @@
 package com.codeplayground.service;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.codeplayground.dao.BoardDAO;
@@ -12,11 +13,11 @@ public class BoardService {
 		boardDAO = new BoardDAO();
 	}
 
-	public BoardDTO getBoardInfo(String boardId) {
+	public BoardDTO getBoardInfo(String boardId) throws SQLException{
 		return boardDAO.getBoard(boardId);
 	}
 
-	public ArrayList<BoardDTO> getBoardList(String categoryId) {
+	public ArrayList<BoardDTO> getBoardList(String categoryId) throws SQLException{
 		return boardDAO.getBoardList(categoryId);
 	}
 

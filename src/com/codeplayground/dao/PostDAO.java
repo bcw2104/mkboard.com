@@ -23,172 +23,132 @@ public class PostDAO {
 		pageUnit = 18;
 	}
 
-	public int getPostCount(String categoryId, String postTitle, String author) {
+	public int getPostCount(String categoryId, String postTitle, String author) throws SQLException {
 		int count = 0;
 		String sql = "SELECT count(*) as count FROM tbl_post NATURAL JOIN tbl_board "
 				+ "WHERE category_id = ? AND post_title LIKE ? AND author LIKE ? ";
 
-		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, categoryId);
-			pstmt.setString(2, "%" + postTitle + "%");
-			pstmt.setString(3, "%" + author + "%");
+		pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, categoryId);
+		pstmt.setString(2, "%" + postTitle + "%");
+		pstmt.setString(3, "%" + author + "%");
 
-			rs = pstmt.executeQuery();
+		rs = pstmt.executeQuery();
 
-			while (rs.next()) {
-				count = rs.getInt("count");
-			}
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			try {
-				if (!rs.isClosed()) {
-					rs.close();
-				}
-				if (!pstmt.isClosed()) {
-					pstmt.close();
-				}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		while (rs.next()) {
+			count = rs.getInt("count");
 		}
+
+		if (!rs.isClosed()) {
+			rs.close();
+		}
+		if (!pstmt.isClosed()) {
+			pstmt.close();
+		}
+
 		return count;
 	}
 
-	public int getPostCount(String boardId, String categoryId, String postTitle, String author) {
+	public int getPostCount(String boardId, String categoryId, String postTitle, String author) throws SQLException {
 		int count = 0;
 		String sql = "SELECT count(*) as count FROM tbl_post NATURAL JOIN tbl_board "
 				+ "WHERE board_id = ? AND category_id = ? AND post_title LIKE ? AND author LIKE ? ";
 
-		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, boardId);
-			pstmt.setString(2, categoryId);
-			pstmt.setString(3, "%" + postTitle + "%");
-			pstmt.setString(4, "%" + author + "%");
+		pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, boardId);
+		pstmt.setString(2, categoryId);
+		pstmt.setString(3, "%" + postTitle + "%");
+		pstmt.setString(4, "%" + author + "%");
 
-			rs = pstmt.executeQuery();
+		rs = pstmt.executeQuery();
 
-			while (rs.next()) {
-				count = rs.getInt("count");
-			}
+		while (rs.next()) {
+			count = rs.getInt("count");
+		}
 
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			try {
-				if (!rs.isClosed()) {
-					rs.close();
-				}
-				if (!pstmt.isClosed()) {
-					pstmt.close();
-				}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		if (!rs.isClosed()) {
+			rs.close();
+		}
+		if (!pstmt.isClosed()) {
+			pstmt.close();
 		}
 		return count;
 	}
 
-	public PostDTO getPost(int postId) {
+	public PostDTO getPost(int postId) throws SQLException {
 		String sql = "SELECT * FROM tbl_post WHERE post_id = ?";
 		PostDTO postDTO = null;
 
-		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, postId);
+		pstmt = conn.prepareStatement(sql);
+		pstmt.setInt(1, postId);
 
-			rs = pstmt.executeQuery();
+		rs = pstmt.executeQuery();
 
-			while (rs.next()) {
-				postDTO = new PostDTO();
+		while (rs.next()) {
+			postDTO = new PostDTO();
 
-				postDTO.setPostId(rs.getInt("post_id"));
-				postDTO.setPostTitle(rs.getString("post_title"));
-				postDTO.setPostContent(rs.getString("post_content"));
-				postDTO.setBoardId(rs.getString("board_id"));
-				postDTO.setAuthor(rs.getString("author"));
-				postDTO.setCreateDate(rs.getTimestamp("create_date"));
-				postDTO.setHits(rs.getInt("hits"));
-				postDTO.setComments(rs.getInt("comments"));
-			}
+			postDTO.setPostId(rs.getInt("post_id"));
+			postDTO.setPostTitle(rs.getString("post_title"));
+			postDTO.setPostContent(rs.getString("post_content"));
+			postDTO.setBoardId(rs.getString("board_id"));
+			postDTO.setAuthor(rs.getString("author"));
+			postDTO.setCreateDate(rs.getTimestamp("create_date"));
+			postDTO.setHits(rs.getInt("hits"));
+			postDTO.setComments(rs.getInt("comments"));
+		}
 
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			try {
-				if (!rs.isClosed()) {
-					rs.close();
-				}
-				if (!pstmt.isClosed()) {
-					pstmt.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+		if (!rs.isClosed()) {
+			rs.close();
+		}
+		if (!pstmt.isClosed()) {
+			pstmt.close();
 		}
 
 		return postDTO;
 	}
 
-	public ArrayList<PostDTO> getClosestPostList(int postId, String boardId) {
+	public ArrayList<PostDTO> getClosestPostList(int postId, String boardId) throws SQLException {
 		ArrayList<PostDTO> list = new ArrayList<PostDTO>();
 
 		String sql = "SELECT post_id,post_title,author,create_date,comments FROM (SELECT ROWNUM AS row_num, tbl_post.* FROM"
-				+" (SELECT * FROM tbl_post WHERE board_id=?) tbl_post) "
+				+ " (SELECT * FROM tbl_post WHERE board_id=? ORDER BY post_id DESC) tbl_post) "
 				+ "WHERE row_num = (SELECT row_num FROM  (SELECT ROWNUM AS row_num, tbl_post.* FROM "
-				+ "(SELECT * FROM tbl_post WHERE board_id=?) tbl_post) where post_id = ?)+1 "
+				+ "(SELECT * FROM tbl_post WHERE board_id=? ORDER BY post_id DESC) tbl_post) where post_id = ?)+1 "
 				+ "OR row_num = (SELECT row_num FROM  (SELECT ROWNUM AS row_num, tbl_post.* FROM "
-				+ "(SELECT * FROM tbl_post WHERE board_id=?) tbl_post) where post_id = ?)-1 ";
-		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, boardId);
-			pstmt.setString(2, boardId);
-			pstmt.setInt(3, postId);
-			pstmt.setString(4, boardId);
-			pstmt.setInt(5, postId);
+				+ "(SELECT * FROM tbl_post WHERE board_id=? ORDER BY post_id DESC) tbl_post) where post_id = ?)-1 ";
 
-			rs = pstmt.executeQuery();
+		pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, boardId);
+		pstmt.setString(2, boardId);
+		pstmt.setInt(3, postId);
+		pstmt.setString(4, boardId);
+		pstmt.setInt(5, postId);
 
-			while (rs.next()) {
-				PostDTO postDTO = new PostDTO();
-				postDTO.setPostId(rs.getInt("post_id"));
-				postDTO.setPostTitle(rs.getString("post_title"));
-				postDTO.setAuthor(rs.getString("author"));
-				postDTO.setCreateDate(rs.getTimestamp("create_date"));
-				postDTO.setComments(rs.getInt("comments"));
+		rs = pstmt.executeQuery();
 
-				list.add(postDTO);
-			}
+		while (rs.next()) {
+			PostDTO postDTO = new PostDTO();
+			postDTO.setPostId(rs.getInt("post_id"));
+			postDTO.setPostTitle(rs.getString("post_title"));
+			postDTO.setAuthor(rs.getString("author"));
+			postDTO.setCreateDate(rs.getTimestamp("create_date"));
+			postDTO.setComments(rs.getInt("comments"));
 
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			try {
-				if (!rs.isClosed()) {
-					rs.close();
-				}
-				if (!pstmt.isClosed()) {
-					pstmt.close();
-				}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			list.add(postDTO);
+		}
+
+		if (!rs.isClosed()) {
+			rs.close();
+		}
+		if (!pstmt.isClosed()) {
+			pstmt.close();
 		}
 
 		return list;
 	}
 
-	public ArrayList<PostDTO> getPostList(String categoryId, String field, String postTitle, String author, int pageNum) {
+	public ArrayList<PostDTO> getPostList(String categoryId, String field, String postTitle, String author, int pageNum)
+			throws SQLException {
 		ArrayList<PostDTO> list = new ArrayList<PostDTO>();
 
 		String sql = "SELECT * FROM "
@@ -197,51 +157,39 @@ public class PostDAO {
 				+ "WHERE post_title LIKE ? AND author LIKE ? ORDER BY " + field + ") tbl_post)"
 				+ "WHERE row_num BETWEEN ? AND ?";
 
-		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, categoryId);
-			pstmt.setString(2, "%" + postTitle + "%");
-			pstmt.setString(3, "%" + author + "%");
-			pstmt.setInt(4, pageUnit * (pageNum - 1) + 1);
-			pstmt.setInt(5, pageUnit * pageNum);
+		pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, categoryId);
+		pstmt.setString(2, "%" + postTitle + "%");
+		pstmt.setString(3, "%" + author + "%");
+		pstmt.setInt(4, pageUnit * (pageNum - 1) + 1);
+		pstmt.setInt(5, pageUnit * pageNum);
 
-			rs = pstmt.executeQuery();
+		rs = pstmt.executeQuery();
 
-			while (rs.next()) {
-				PostDTO postDTO = new PostDTO();
-				postDTO.setPostId(rs.getInt("post_id"));
-				postDTO.setPostTitle(rs.getString("post_title"));
-				postDTO.setBoardId(rs.getString("board_id"));
-				postDTO.setAuthor(rs.getString("author"));
-				postDTO.setCreateDate(rs.getTimestamp("create_date"));
-				postDTO.setHits(rs.getInt("hits"));
-				postDTO.setComments(rs.getInt("comments"));
+		while (rs.next()) {
+			PostDTO postDTO = new PostDTO();
+			postDTO.setPostId(rs.getInt("post_id"));
+			postDTO.setPostTitle(rs.getString("post_title"));
+			postDTO.setBoardId(rs.getString("board_id"));
+			postDTO.setAuthor(rs.getString("author"));
+			postDTO.setCreateDate(rs.getTimestamp("create_date"));
+			postDTO.setHits(rs.getInt("hits"));
+			postDTO.setComments(rs.getInt("comments"));
 
-				list.add(postDTO);
-			}
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			try {
-				if (!rs.isClosed()) {
-					rs.close();
-				}
-				if (!pstmt.isClosed()) {
-					pstmt.close();
-				}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			list.add(postDTO);
+		}
+		if (!rs.isClosed()) {
+			rs.close();
+		}
+		if (!pstmt.isClosed()) {
+			pstmt.close();
 		}
 
 		return list;
 	}
 
 	public ArrayList<PostDTO> getPostList(String boardId, String categoryId, String field, String postTitle,
-			String author, int pageNum) {
+			String author, int pageNum) throws SQLException {
 		ArrayList<PostDTO> list = new ArrayList<PostDTO>();
 
 		String condition = "=";
@@ -255,129 +203,76 @@ public class PostDAO {
 				+ "WHERE post_title LIKE ? AND author LIKE ? ORDER BY " + field + ") tbl_post)"
 				+ "WHERE row_num BETWEEN ? AND ?";
 
-		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, boardId);
-			pstmt.setString(2, categoryId);
-			pstmt.setString(3, "%" + postTitle + "%");
-			pstmt.setString(4, "%" + author + "%");
-			pstmt.setInt(5, pageUnit * (pageNum - 1) + 1);
-			pstmt.setInt(6, pageUnit * pageNum);
+		pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, boardId);
+		pstmt.setString(2, categoryId);
+		pstmt.setString(3, "%" + postTitle + "%");
+		pstmt.setString(4, "%" + author + "%");
+		pstmt.setInt(5, pageUnit * (pageNum - 1) + 1);
+		pstmt.setInt(6, pageUnit * pageNum);
 
-			rs = pstmt.executeQuery();
+		rs = pstmt.executeQuery();
 
-			while (rs.next()) {
-				PostDTO postDTO = new PostDTO();
-				postDTO.setPostId(rs.getInt("post_id"));
-				postDTO.setPostTitle(rs.getString("post_title"));
-				postDTO.setBoardId(rs.getString("board_id"));
-				postDTO.setAuthor(rs.getString("author"));
-				postDTO.setCreateDate(rs.getTimestamp("create_date"));
-				postDTO.setHits(rs.getInt("hits"));
-				postDTO.setComments(rs.getInt("comments"));
+		while (rs.next()) {
+			PostDTO postDTO = new PostDTO();
+			postDTO.setPostId(rs.getInt("post_id"));
+			postDTO.setPostTitle(rs.getString("post_title"));
+			postDTO.setBoardId(rs.getString("board_id"));
+			postDTO.setAuthor(rs.getString("author"));
+			postDTO.setCreateDate(rs.getTimestamp("create_date"));
+			postDTO.setHits(rs.getInt("hits"));
+			postDTO.setComments(rs.getInt("comments"));
 
-				list.add(postDTO);
-			}
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			try {
-				if (!rs.isClosed()) {
-					rs.close();
-				}
-				if (!pstmt.isClosed()) {
-					pstmt.close();
-				}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			list.add(postDTO);
+		}
+		if (!rs.isClosed()) {
+			rs.close();
+		}
+		if (!pstmt.isClosed()) {
+			pstmt.close();
 		}
 
 		return list;
 	}
 
-	public boolean postPost(String postTitle,String postContent,String boardId,String author) {
+	public void postPost(String postTitle, String postContent, String boardId, String author) throws SQLException {
 		String sql = "INSERT INTO tbl_post VALUES((SELECT MAX(post_id)+1 FROM tbl_post),?,?,?,?,sysdate,0,0)";
-		boolean state = true;
 
-		try {
-			pstmt = conn.prepareStatement(sql);
+		pstmt = conn.prepareStatement(sql);
 
-			pstmt.setString(1, postTitle);
-			pstmt.setString(2, postContent);
-			pstmt.setString(3, boardId);
-			pstmt.setString(4, author);
+		pstmt.setString(1, postTitle);
+		pstmt.setString(2, postContent);
+		pstmt.setString(3, boardId);
+		pstmt.setString(4, author);
 
-			pstmt.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			state = false;
-		} finally {
-			try {
-				if (!pstmt.isClosed()) {
-					pstmt.close();
-				}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		pstmt.executeUpdate();
+
+		if (!pstmt.isClosed()) {
+			pstmt.close();
 		}
-
-		return state;
 	}
 
-	public boolean putHits(int postId) {
+	public void putHits(int postId) throws SQLException {
 		String sql = "UPDATE tbl_post SET hits=hits+1 WHERE post_id = ?";
-		boolean state = true;
-		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, postId);
+		pstmt = conn.prepareStatement(sql);
+		pstmt.setInt(1, postId);
 
-			pstmt.executeUpdate();
+		pstmt.executeUpdate();
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-			state = false;
-		} finally {
-			try {
-				if (!pstmt.isClosed()) {
-					pstmt.close();
-				}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		if (!pstmt.isClosed()) {
+			pstmt.close();
 		}
-
-		return state;
 	}
 
-	public boolean putComments(int postId) {
+	public void putComments(int postId) throws SQLException {
 		String sql = "UPDATE tbl_post SET comments=comments+1 WHERE post_id = ?";
-		boolean state = true;
-		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, postId);
+		pstmt = conn.prepareStatement(sql);
+		pstmt.setInt(1, postId);
 
-			pstmt.executeUpdate();
-
-		} catch (SQLException e) {
-			System.out.println("댓글수 증가 중 오류가 발생했습니다.");
-			state = false;
-		} finally {
-			try {
-				if (!pstmt.isClosed()) {
-					pstmt.close();
-				}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		pstmt.executeUpdate();
+		if (!pstmt.isClosed()) {
+			pstmt.close();
 		}
-
-		return state;
 	}
+
 }

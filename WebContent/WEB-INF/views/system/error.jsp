@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<link rel="stylesheet" href="/resources/style/errorpage_style.css">
+<link rel="stylesheet" href="/resources/style/error_style.css">
 <div class=section>
 	<div class="error_msg">${errorMsg}</div>
 	<div class="home_link">

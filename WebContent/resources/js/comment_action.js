@@ -2,7 +2,7 @@
 	$(document).ready(function() {
 
 		var sortComments = function(sortType){
-			if(sortType == "sort_2"){
+			if(sortType == "sortType2"){
 				sortType = "ASC"
 			}
 			else{
@@ -16,7 +16,7 @@
 					var list = JSON.parse(data);
 					var comments = "";
 					for(i of list){
-						comments+= "<li id='"+i.commentId+"' class='main_comment'>"
+						comments+= "<li id='"+i.commentId+"' class='post_comment-item main'>"
 							+"<div >"+i.userId+"</div>"
 							+"<div>"+i.commentContent+"</div>"
 							+"<div>"
@@ -26,7 +26,7 @@
 							+"</li>"
 						if(i.subCommentList != ""){
 							for(j of i.subCommentList){
-								comments+= "<li id='sub_"+j.commentId+"' class='sub_comment'>"
+								comments+= "<li id='sub_"+j.commentId+"' class='post_comment-item sub'>"
 									+"<div >"+j.userId+"</div>"
 									+"<div>"+j.commentContent+"</div>"
 									+"<div>"
@@ -37,26 +37,26 @@
 							}
 						}
 					}
-					$(".comment_list").empty().html(comments);
+					$(".post_comment-list").empty().html(comments);
 				}
 			});
 		}
 		var subCommentForm = function(parentId){
-			return "<form class='comment_form sub' action='/content/"+$(".post_info").attr("id")+"/comment/regsub' method='post'>"
+			return "<form class='comment_form sub' action='/content/"+$(".post_info").attr("id")+"/regcomment' method='post'>"
 					+ "<input type='hidden' name='parent_id' value='"+parentId+"'>"
-					+ "<textarea cols='20' rows='3' name='comment_content' class='comment_txt'  placeholder='댓글을 작성해 보세요.' ></textarea>"
-					+ "<input type='submit' class='button submit_btn' value='등록'>"
+					+ "<textarea cols='20' rows='3' name='comment_content' class='tf_content' placeholder='댓글을 작성해 보세요.' ></textarea>"
+					+ "<button type='submit' class='btn_major btn_self'>등록</button>"
 					+ "</form>";
 		}
 
-		$(".comment_tab").on("click", function(event) {
+		$(".tab_sort_item").on("click", function(event) {
 			var target = $(event.target);
-			$(".comment_tab.selected").removeClass("selected");
+			$(".tab_sort_item.selected").removeClass("selected");
 			target.addClass("selected");
 			sortComments(target.attr("id"));
 		});
 
-		$(".comment_list").on("click", function(event) {
+		$(".post_comment-list").on("click", function(event) {
 			if($(event.target).hasClass("comment_reply")){
 				var target = $(event.target).parents("li");
 				var parentId = target.attr("id");
@@ -71,7 +71,7 @@
 							target.append(form);
 						}
 						else{
-							alert("로그인을 해주세요.");
+							alert("로그인이 필요한 서비스입니다.");
 						}
 					}
 				});

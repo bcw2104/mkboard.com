@@ -21,73 +21,56 @@ public class BoardDAO {
 		rs = null;
 	}
 
-	public BoardDTO getBoard(String boardId) {
+	public BoardDTO getBoard(String boardId) throws SQLException {
 		String sql = "SELECT board_name,category_id FROM tbl_board  WHERE board_id = ?";
 		BoardDTO boardDTO = null;
 
-		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, boardId);
+		pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, boardId);
 
-			rs = pstmt.executeQuery();
+		rs = pstmt.executeQuery();
 
-			while (rs.next()) {
-				boardDTO = new BoardDTO();
-				boardDTO.setBoardId(boardId);
-				boardDTO.setBoardName(rs.getString("board_name"));
-				boardDTO.setCategoryId(rs.getString("category_id"));
-			}
+		while (rs.next()) {
+			boardDTO = new BoardDTO();
+			boardDTO.setBoardId(boardId);
+			boardDTO.setBoardName(rs.getString("board_name"));
+			boardDTO.setCategoryId(rs.getString("category_id"));
+		}
 
-		} catch (SQLException e) { // TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			try {
-				if (!rs.isClosed()) {
-					rs.close();
-				}
-				if (!pstmt.isClosed()) {
-					pstmt.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+		if (!rs.isClosed()) {
+			rs.close();
+		}
+		if (!pstmt.isClosed()) {
+			pstmt.close();
 		}
 
 		return boardDTO;
+
 	}
 
-	public ArrayList<BoardDTO> getBoardList(String categoryId) {
+	public ArrayList<BoardDTO> getBoardList(String categoryId) throws SQLException{
 		String sql = "SELECT board_id,board_name FROM tbl_board  WHERE category_id = ?";
 		ArrayList<BoardDTO> list = new ArrayList<BoardDTO>();
 
-		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, categoryId);
+		pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, categoryId);
 
-			rs = pstmt.executeQuery();
+		rs = pstmt.executeQuery();
 
-			while (rs.next()) {
-				BoardDTO boardDTO = new BoardDTO();
-				boardDTO.setBoardId(rs.getString("board_id"));
-				boardDTO.setBoardName(rs.getString("board_name"));
-				boardDTO.setCategoryId(categoryId);
+		while (rs.next()) {
+			BoardDTO boardDTO = new BoardDTO();
+			boardDTO.setBoardId(rs.getString("board_id"));
+			boardDTO.setBoardName(rs.getString("board_name"));
+			boardDTO.setCategoryId(categoryId);
 
-				list.add(boardDTO);
-			}
+			list.add(boardDTO);
+		}
 
-		} catch (SQLException e) { // TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			try {
-				if (!rs.isClosed()) {
-					rs.close();
-				}
-				if (!pstmt.isClosed()) {
-					pstmt.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+		if (!rs.isClosed()) {
+			rs.close();
+		}
+		if (!pstmt.isClosed()) {
+			pstmt.close();
 		}
 
 		return list;
