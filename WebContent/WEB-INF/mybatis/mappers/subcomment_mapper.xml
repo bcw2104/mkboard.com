@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+														"HTTP://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.codeplayground.mapper.SubCommentMapperInterface">
+
+	<resultMap type="subcommentDTO" id="subcommentDTO">
+		<id column="comment_id" property="commentId"/>
+		<result column="comment_content" property="commentContent"/>
+		<result column="user_id" property="userId"/>
+		<result column="create_date" property="createDate" javaType="java.sql.Timestamp"/>
+		<result column="parent_id" property="parentId"/>
+	</resultMap>
+
+	<select id="selectListbyParent" parameterType="int" resultMap="subcommentDTO">
+		SELECT * FROM tbl_subcomment WHERE parent_id = #{parentId} ORDER BY create_date ASC
+	</select>
+
+	<select id="selectListbyUser" parameterType="String" resultMap="subcommentDTO">
+		SELECT * FROM tbl_subcomment WHERE user_id = #{userId} ORDER BY create_date DESC;
+	</select>
+
+	<insert id="insert" parameterType="subCommentDTO">
+		INSERT INTO tbl_subcomment
+		VALUES((SELECT NVL(MAX(comment_id),0)+1 FROM tbl_subcomment),#{commentContent},#{userId},sysdate,#{parentId})
+	</insert>
+
+	<update id="update" parameterType="subCommentDTO">
+		UPDATE tbl_subcomment
+		SET comment_content = #{commentContent}
+		WHERE comment_id = #{comment_id}
+	</update>
+
+	<delete id="delete" parameterType="int">
+		DELETE FROM tbl_subcomment WHERE comment_id = #{comment_id}
+	</delete>
+</mapper>

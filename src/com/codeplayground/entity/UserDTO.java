@@ -7,18 +7,22 @@ public class UserDTO {
 	private String userName;
 	private String userPw;
 	private String userGender;
+	private String userEmail;
 	private Timestamp userBirth;
 	private String userPhone;
 	private Timestamp userRegdate;
+	private String userCertification;
 
 	public UserDTO() {
-		userId = "";
-		userName = "";
-		userPw = "";
-		userGender ="";
+		userId = null;
+		userName = null;
+		userPw = null;
+		userGender =null;
+		userEmail = null;
 		userBirth = null;
-		userPhone = "";
+		userPhone = null;
 		userRegdate = null;
+		userCertification = null;
 	}
 
 	public String getUserId() {
@@ -53,6 +57,14 @@ public class UserDTO {
 		this.userGender = userGender;
 	}
 
+	public String getUserEmail() {
+		return userEmail;
+	}
+
+	public void setUserEmail(String userEmail) {
+		this.userEmail = userEmail;
+	}
+
 	public Timestamp getUserBirth() {
 		return userBirth;
 	}
@@ -75,6 +87,14 @@ public class UserDTO {
 
 	public void setUserRegdate(Timestamp userRegdate) {
 		this.userRegdate = userRegdate;
+	}
+
+	public String getUserCertification() {
+		return userCertification;
+	}
+
+	public void setUserCertification(String userCertification) {
+		this.userCertification = userCertification;
 	}
 
 }

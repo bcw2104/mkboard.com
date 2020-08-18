@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+														"HTTP://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+		<setting name="cacheEnabled" value="false" />
+		<setting name="useGeneratedKeys" value="true" />
+		<setting name="defaultExecutorType" value="REUSE" />
+		<setting name="logImpl" value="LOG4J"/>
+	</settings>
+
+    <typeAliases>
+		<typeAlias type="com.codeplayground.entity.BoardDTO" alias="boardDTO"/>
+		<typeAlias type="com.codeplayground.entity.CategoryDTO" alias="categoryDTO"/>
+		<typeAlias type="com.codeplayground.entity.CommentDTO" alias="commentDTO"/>
+		<typeAlias type="com.codeplayground.entity.SubCommentDTO" alias="subCommentDTO"/>
+		<typeAlias type="com.codeplayground.entity.PostDTO" alias="postDTO"/>
+		<typeAlias type="com.codeplayground.entity.UserDTO" alias="userDTO"/>
+		<typeAlias type="com.codeplayground.entity.CertificationDTO" alias="certificationDTO"/>
+	</typeAliases>
+</configuration>
+

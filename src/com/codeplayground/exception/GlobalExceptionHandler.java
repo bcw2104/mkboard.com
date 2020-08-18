@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobalExceptionHandler {
 	@ExceptionHandler(java.lang.Exception.class)
 	public String exception() {
-		return "redirect:/error/inner";
+		return "redirect:/system/error/none";
 	}
 }

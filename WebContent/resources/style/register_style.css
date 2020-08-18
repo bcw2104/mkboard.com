@@ -19,9 +19,10 @@
 }
 
 #registerForm label {
-	display:inline-block;
+	display:block;
 	font-weight: bold;
 	padding-bottom: 5px;
+	padding-left: 2px;
 }
 
 
@@ -57,5 +58,6 @@
 	height: 20px;
 	font-size:0.85rem;
 	margin-bottom: 5px;
+	padding-left: 2px;
 }
 

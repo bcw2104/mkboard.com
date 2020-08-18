@@ -11,8 +11,8 @@ public class SubCommentDTO {
 
 	public SubCommentDTO() {
 		commentId = 0;
-		commentContent ="";
-		userId = "";
+		commentContent =null;
+		userId = null;
 		createDate = null;
 		parentId = 0;
 	}

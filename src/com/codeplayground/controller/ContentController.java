@@ -1,7 +1,9 @@
 package com.codeplayground.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -22,28 +24,49 @@ import com.codeplayground.entity.BoardDTO;
 import com.codeplayground.entity.CategoryDTO;
 import com.codeplayground.entity.CommentDTO;
 import com.codeplayground.entity.PostDTO;
+import com.codeplayground.entity.SubCommentDTO;
 import com.codeplayground.entity.UserDTO;
-import com.codeplayground.service.BoardService;
-import com.codeplayground.service.CategoryService;
-import com.codeplayground.service.CommentService;
-import com.codeplayground.service.PostService;
+import com.codeplayground.service.FindService;
+import com.codeplayground.service.ModifyService;
+import com.codeplayground.serviceOthers.CommentOtherService;
+import com.codeplayground.serviceOthers.PostOtherService;
+import com.codeplayground.serviceOthers.SubCommentOtherService;
 import com.codeplayground.util.PagePath;
-import com.codeplayground.util.Tools;
 
 @Controller
 @RequestMapping("/content")
 public class ContentController {
 
 	@Autowired
-	private BoardService boardService;
+	private PostOtherService postOtherService;
 	@Autowired
-	private CategoryService categoryService;
+	private CommentOtherService commentOtherService;
 	@Autowired
-	private PostService postService;
-	@Autowired
-	private CommentService commentService;
-	@Autowired
-	private Tools tools;
+	private SubCommentOtherService subCommentOtherService;
+
+	@Resource(name = "postFindService")
+	private FindService<PostDTO> postFindService;
+
+	@Resource(name="postModifyService")
+	private ModifyService<PostDTO> postModifyService;
+
+	@Resource(name = "boardFindService")
+	private FindService<BoardDTO> boardFindService;
+
+	@Resource(name = "categoryFindService")
+	private FindService<CategoryDTO> categoryFindService;
+
+	@Resource(name="commentFindService")
+	private FindService<CommentDTO> commentFindService;
+
+	@Resource(name="commentModifyService")
+	private ModifyService<CommentDTO> commentModifyService;
+
+	@Resource(name="subCommentFindService")
+	private FindService<SubCommentDTO> subCommentFindService;
+
+	@Resource(name="subCommentModifyService")
+	private ModifyService<SubCommentDTO> subCommentModifyService;
 
 	public ContentController() { }
 
@@ -54,21 +77,35 @@ public class ContentController {
 
 	@GetMapping("/{categoryId}/{boardId}/{postId}")
 	public String postview(@PathVariable String categoryId,
-										@PathVariable String boardId,
-										@PathVariable int postId,
-										HttpSession session,Model model) throws Exception{
-		CategoryDTO categoryDTO = categoryService.getCategoryInfo(categoryId);
-		BoardDTO boardDTO = boardService.getBoardInfo(boardId);
-		PostDTO postDTO = postService.getPostInfo(session, postId);
+										 @PathVariable String boardId,
+										 @PathVariable int postId,
+										HttpSession session,Model model) {
+
+		postOtherService.recordVisit(session, postId);
+
+		CategoryDTO categoryDTO = categoryFindService.findOnebyKey(categoryId);
+		BoardDTO boardDTO = boardFindService.findOnebyKey(boardId);
+		PostDTO postDTO = postFindService.findOnebyKey(postId);
 
 		if (categoryDTO != null && boardDTO != null && postDTO != null) {
-			ArrayList<CommentDTO> commentList = commentService.getCommentList(postId, null);
-			commentService.addSubCommentList(commentList);
+
+			HashMap<String, Object> hashMap = new HashMap<String, Object>();
+
+			hashMap.put("postId", postId);
+			hashMap.put("sortType", "DESC");
+
+			ArrayList<CommentDTO> commentList = commentFindService.findList(hashMap);
+			subCommentOtherService.attachToParent(commentList);
+
 			model.addAttribute("thisPost", postDTO);
-			model.addAttribute("thisBoard", boardDTO);
-			model.addAttribute("thisCategory", categoryDTO);
-			model.addAttribute("closestPostList", postService.getClosestPostList(postId, boardDTO.getBoardId()));
-			model.addAttribute("boardList", boardService.getBoardList(categoryDTO.getCategoryId()));
+
+			model.addAttribute("boardId", boardDTO.getBoardId());
+			model.addAttribute("boardName", boardDTO.getBoardName());
+			model.addAttribute("categoryId", categoryDTO.getCategoryId());
+			model.addAttribute("categoryName", categoryDTO.getCategoryName());
+
+			model.addAttribute("closestPostList", postOtherService.getClosestList(postId,boardId));
+			model.addAttribute("boardList", boardFindService.findList(categoryId));
 			model.addAttribute("commentList", commentList);
 			model.addAttribute("requestPage", PagePath.postviewPage);
 
@@ -81,49 +118,68 @@ public class ContentController {
 	@GetMapping({"/{categoryId}","/{categoryId}/{boardId}"})
 	public String boardview(@PathVariable(required = false) String categoryId,
 											@PathVariable(required = false) String boardId,
-											@RequestParam(required = false) String f,
-											@RequestParam(required = false) String tar,
 											@RequestParam(required = false) String query,
-											@RequestParam(required = false) String p, Model model) throws Exception{
+											@RequestParam(required = false) String field,
+											@RequestParam(required = false,value="sort") String sortType,
+											@RequestParam(required = false, value="p") String _pageNum, Model model) throws NumberFormatException{
 
 		BoardDTO boardDTO = null;
-		CategoryDTO categoryDTO = null;
-
-		categoryDTO = categoryService.getCategoryInfo(categoryId);
-
+		CategoryDTO categoryDTO = categoryFindService.findOnebyKey(categoryId);
 		if(boardId == null) {
 			boardDTO = new BoardDTO();
 			boardDTO.setBoardName("전체 글");
 		}else {
-			boardDTO = boardService.getBoardInfo(boardId);
+			boardDTO = boardFindService.findOnebyKey(boardId);
 		}
 
 		if (boardDTO != null && categoryDTO != null) {
-
-			String boardTitle = "";
+			int pageNum = 1;
+			String postTitle = "";
 			String author = "";
 
-			if (tar != null && query != null) {
-				if (tar.equals("title")) {
-					boardTitle = query;
-				} else if (tar.equals("auth")) {
+			if (field != null && query != null) {
+				if (field.equals("title")) {
+					postTitle = query;
+				} else if (field.equals("auth")) {
 					author = query;
 				}
 			}
+			if(_pageNum != null) {
+				pageNum = Integer.parseInt(_pageNum);
+			}
 
-			int totalCount = postService.getPostCount(boardDTO.getBoardId(), categoryDTO.getCategoryId(),
-					boardTitle, author);
+			HashMap<String, Object> hashMap = new HashMap<String, Object>();
+			hashMap.put("important", 1);
 
-			int pageNum = tools.checkPage(p, totalCount, 18);
+			if(!categoryId.equals("notice")){
+				hashMap.put("categoryId", "notice");
+				//공지사항 가져오기
+				model.addAttribute("noticePostList", postFindService.findList(hashMap));
+			}
 
-			model.addAttribute("postList", postService.getPostList(boardDTO.getBoardId(),
-					categoryDTO.getCategoryId(), f, boardTitle, author, pageNum));
-			model.addAttribute("boardList", boardService.getBoardList(categoryDTO.getCategoryId()));
-			model.addAttribute("totalCount", totalCount);
+			hashMap.put("categoryId", categoryId);
+			hashMap.put("boardId", boardId);
+			// 중요한 게시물 가져오기
+			model.addAttribute("importantPostList", postFindService.findList(hashMap));
+
+			hashMap.put("postTitle", "%"+postTitle+"%");
+			hashMap.put("author", "%"+author+"%");
+			hashMap.put("field", postOtherService.sortTypeConverter(sortType));
+			hashMap.put("frontPageNum", 18 * (pageNum - 1) + 1);
+			hashMap.put("rearPageNum", 18 * pageNum);
+			hashMap.put("important", 0);
+			//일반 게시물 가져오기
+			model.addAttribute("postList", postFindService.findList(hashMap));
+
+			model.addAttribute("boardList", boardFindService.findList(categoryId));
+			model.addAttribute("totalCount", postOtherService.getCount(boardId, categoryId, postTitle, author));
 			model.addAttribute("pageNum", pageNum);
-			model.addAttribute("thisBoard", boardDTO);
-			model.addAttribute("thisCategory", categoryDTO);
+			model.addAttribute("boardId", boardDTO.getBoardId());
+			model.addAttribute("boardName", boardDTO.getBoardName());
+			model.addAttribute("categoryId", categoryDTO.getCategoryId());
+			model.addAttribute("categoryName", categoryDTO.getCategoryName());
 			model.addAttribute("requestPage", PagePath.boardviewPage);
+
 			return "forward:/";
 		} else {
 			return "redirect:/system/error/inner";
@@ -131,40 +187,53 @@ public class ContentController {
 
 	}
 
-	@GetMapping("{postId}/comment/sort/{sort}")
+	@GetMapping("{postId}/comment/sort/{sortType}")
 	public String comment(@PathVariable int postId,
-										 @PathVariable String sort, HttpServletResponse response) throws Exception{
+										 @PathVariable String sortType, HttpServletResponse response) throws Exception{
 
-		ArrayList<CommentDTO> commentList = commentService.getCommentList(postId, sort);
-		commentService.addSubCommentList(commentList);
+		if (sortType == null) {
+			sortType = "DESC";
+		}
 
-		JSONArray array = commentService.convertToJson(commentList);
+		PostDTO postDTO = postFindService.findOnebyKey(postId);
+
+		HashMap<String, Object> hashMap = new HashMap<String, Object>();
+
+		hashMap.put("postId", postId);
+		hashMap.put("sortType", sortType);
+
+		ArrayList<CommentDTO> commentList = commentFindService.findList(hashMap);
+		subCommentOtherService.attachToParent(commentList);
+
+		JSONArray result =  commentOtherService.convertToJson(commentList,postDTO.getBoardId());
 
 		response.setCharacterEncoding("UTF-8");
-		response.getWriter().write(array.toJSONString());
+		response.getWriter().write(result.toJSONString());
 
 		return null;
 	}
 
 	@GetMapping({"/{categoryId}/create","/{categoryId}/{boardId}/create"})
 	public String postcreate(@PathVariable String categoryId,
-											@PathVariable(required = false) String boardId, Model model) throws Exception{
-		BoardDTO boardDTO = null;
-		CategoryDTO categoryDTO = null;
+											@PathVariable(required = false) String boardId, Model model){
 
-		categoryDTO = categoryService.getCategoryInfo(categoryId);
+		BoardDTO boardDTO = null;
+		CategoryDTO categoryDTO = categoryFindService.findOnebyKey(categoryId);
 
 		if(boardId == null) {
 			boardDTO = new BoardDTO();
 			boardDTO.setBoardName("전체 글");
 		}else {
-			boardDTO = boardService.getBoardInfo(boardId);
+			boardDTO = boardFindService.findOnebyKey(boardId);
 		}
 
 		if (boardDTO != null && categoryDTO != null) {
-			model.addAttribute("boardList", boardService.getBoardList(categoryDTO.getCategoryId()));
-			model.addAttribute("thisBoard", boardDTO);
-			model.addAttribute("thisCategory", categoryDTO);
+			model.addAttribute("boardList", boardFindService.findList(categoryId));
+
+			model.addAttribute("boardId", boardDTO.getBoardId());
+			model.addAttribute("boardName", boardDTO.getBoardName());
+			model.addAttribute("categoryId", categoryDTO.getCategoryId());
+			model.addAttribute("categoryName", categoryDTO.getCategoryName());
 			model.addAttribute("requestPage", PagePath.postcreatePage);
 
 			return "forward:/";
@@ -173,19 +242,91 @@ public class ContentController {
 		}
 	}
 
+	@GetMapping({"/{categoryId}/{boardId}/{postId}/modify"})
+	public String postmodify(@PathVariable String categoryId,
+											@PathVariable String boardId,
+											@PathVariable String postId, Model model){
+
+		PostDTO postDTO = postFindService.findOnebyKey(postId);
+		BoardDTO boardDTO = boardFindService.findOnebyKey(boardId);
+		CategoryDTO categoryDTO = categoryFindService.findOnebyKey(categoryId);
+
+		if (postDTO != null && boardDTO != null && categoryDTO != null) {
+			model.addAttribute("boardList", boardFindService.findList(categoryId));
+
+			model.addAttribute("boardId", boardDTO.getBoardId());
+			model.addAttribute("boardName", boardDTO.getBoardName());
+			model.addAttribute("categoryId", categoryDTO.getCategoryId());
+			model.addAttribute("categoryName", categoryDTO.getCategoryName());
+			model.addAttribute("thisPost", postDTO);
+			model.addAttribute("requestPage", PagePath.postcreatePage);
+
+			return "forward:/";
+		} else {
+			return "redirect:/system/error/inner";
+		}
+	}
+
+	@GetMapping("/{postId}/rmvpost")
+	public String postremove(@PathVariable String postId,
+			 								  @SessionAttribute("user") UserDTO userDTO,HttpServletResponse response) throws Exception{
+
+		PostDTO postDTO = postFindService.findOnebyKey(postId);
+
+		if(postDTO.getAuthor().equals(userDTO.getUserId())) {
+			postModifyService.delete(postId);
+			String msg = "게시글이 삭제되었습니다.";
+
+			response.setCharacterEncoding("UTF-8");
+			response.setContentType("text/html; charset=UTF-8");
+			response.getWriter().write( "<script>"
+														+ "alert('"+msg+"');"
+														+ "window.location.href='/';"
+														+ "</script>");
+			return null;
+		}
+		else {
+			return "redirect:/system/error/auth";
+		}
+	}
+
 	@PostMapping("/regpost")
-	public String regpost(@RequestParam(value = "post_title") String postTitle,
+	public String regpost(@RequestParam(value = "post_id",required= false) String postId,
+										@RequestParam(value = "post_title") String postTitle,
 									    @RequestParam(value = "post_content") String postContent,
 									    @RequestParam(value = "board_id") String boardId,
+									    @RequestParam(value = "important",required = false) String important,
 									    @SessionAttribute("user") UserDTO userDTO,HttpServletResponse response) throws Exception{
 
 		String userId = userDTO.getUserId();
 		if (!(postTitle.equals("") && postContent.equals("") && boardId.equals(""))) {
-			postService.uploadPost(postTitle, postContent, boardId, userId);
+			PostDTO postDTO = new PostDTO();
+			postDTO.setPostTitle(postTitle);
+			postDTO.setPostContent(postContent);
+			postDTO.setBoardId(boardId);
+			postDTO.setAuthor(userId);
+			if(important == null) {
+				postDTO.setImportant(0);
+			}else {
+				postDTO.setImportant(1);
+			}
+
+			String msg;
+			if(postId == null){
+				postModifyService.register(postDTO);
+				msg = "게시글이 업로드되었습니다.";
+			}
+			else{
+				postDTO.setPostId(Integer.parseInt(postId));
+
+				postModifyService.update(postDTO);
+				msg = "게시글이 변경되었습니다.";
+			}
+
 			response.setCharacterEncoding("UTF-8");
 			response.setContentType("text/html; charset=UTF-8");
 			response.getWriter().write( "<script>"
-														+ "alert('게시글이 업로드되었습니다.');"
+														+ "alert('"+msg+"');"
 														+ "window.location.href='/';"
 														+ "</script>");
 			return null;
@@ -197,21 +338,34 @@ public class ContentController {
 	@PostMapping("/{postId}/regcomment")
 	public String regcomment(@PathVariable int postId,
 											   @RequestParam(required = false, value = "comment_content") String commentContent,
-											   @RequestParam(required = false, value = "parent_id") String parentId,
+											   @RequestParam(required = false, value = "parent_id") String _parentId,
 											   @SessionAttribute("user") UserDTO userDTO,
-											   @RequestHeader("Referer") String from) throws Exception{
+											   @RequestHeader("Referer") String from) {
 		String userId = userDTO.getUserId();
 
 		if (commentContent != null && !commentContent.equals("")) {
-			if (parentId == null) {
-				commentService.addNewComment(postId, commentContent, userId);
+			if (_parentId == null) {
+				CommentDTO commentDTO = new CommentDTO();
+				commentDTO.setPostId(postId);
+				commentDTO.setCommentContent(commentContent);
+				commentDTO.setUserId(userId);
+
+				commentModifyService.register(commentDTO);
 			}
 			else{
-				int _parentId = Integer.parseInt(parentId);
+				int parentId = Integer.parseInt(_parentId);
 
-				_parentId = Integer.parseInt(parentId);
-				commentService.addNewSubComment(postId, _parentId, commentContent, userId);
+				SubCommentDTO subCommentDTO = new SubCommentDTO();
+				subCommentDTO.setUserId(userId);
+				subCommentDTO.setParentId(parentId);
+				subCommentDTO.setCommentContent(commentContent);
+
+				commentOtherService.increaseChildCount(parentId);
+				subCommentModifyService.register(subCommentDTO);
 			}
+
+			postOtherService.increaseComments(postId);
+
 			return "redirect:"+from;
 		} else {
 			return "redirect:/system/error/inner";

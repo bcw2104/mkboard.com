@@ -1,21 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans
-										http://www.springframework.org/schema/beans/spring-beans.xsd
-										http://www.springframework.org/schema/context
-										http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd
+		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 
-	<!-- service beans -->
-	<bean class="com.codeplayground.service.AccountService" lazy-init="true"  />
-	<bean class="com.codeplayground.service.UserService" lazy-init="true" />
-	<bean class="com.codeplayground.service.CategoryService" lazy-init="true" />
-	<bean class="com.codeplayground.service.BoardService" lazy-init="true"  />
-	<bean class="com.codeplayground.service.PostService" lazy-init="true"  />
-	<bean class="com.codeplayground.service.CommentService" lazy-init="true"  />
+	<!-- repository -->
+	<context:property-placeholder location="/WEB-INF/properties/*.properties" />
+
+	<bean class="org.apache.commons.dbcp2.BasicDataSource" id="basicDataSource">
+		<property name="driverClassName" value="${jdbc.driverClass}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+	</bean>
+
+	<bean class="org.mybatis.spring.SqlSessionFactoryBean" id="sqlSessionFactoryBean">
+		<property name="dataSource" ref="basicDataSource"/>
+		<property name="mapperLocations" value="/WEB-INF/mybatis/mappers/*.xml"></property>
+		<property name="configLocation" value="/WEB-INF/mybatis/mybatis-config.xml"/>
+	</bean>
+
+	<bean class="org.mybatis.spring.SqlSessionTemplate" id="sqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactoryBean" />
+	</bean>
+
+	<mybatis-spring:scan base-package="com.codeplayground.mapper"/>
 
 	<!-- Util beans -->
 	<bean class="com.codeplayground.util.Tools" lazy-init="true"  />
+	<bean class="com.codeplayground.util.AuthTools" lazy-init="true"  />
 
 </beans>

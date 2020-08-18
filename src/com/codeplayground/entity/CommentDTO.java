@@ -15,8 +15,8 @@ public class CommentDTO {
 	public CommentDTO() {
 		commentId = 0;
 		postId = 0;
-		commentContent = "";
-		userId = "";
+		commentContent = null;
+		userId = null;
 		createDate = null;
 		childCount = 0;
 		subComment = new ArrayList<SubCommentDTO>();

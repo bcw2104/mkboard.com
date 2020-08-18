@@ -2,23 +2,14 @@ package com.codeplayground.mapper;
 
 import java.util.ArrayList;
 
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Mapper;
 
-import com.codeplayground.entity.BoardDTO;
 import com.codeplayground.entity.CategoryDTO;
 
+@Mapper
 public interface CategoryMapperInterface {
 
-	@Results({
-		@Result(column = "category_id",property = "categoryId"),
-		@Result(column = "category_name",property = "categoryName")
-	})
+	public ArrayList<CategoryDTO> selectAll();
 
-	@Select("SELECT * FROM tbl_category")
-	ArrayList<CategoryDTO> getCategoryAll();
-
-	@Select("SELECT category_name FROM tbl_category  WHERE category_id = #{categoryId}")
-	ArrayList<CategoryDTO> getCategoryListbyId(String categoryId);
+	public CategoryDTO selectOnebyId(String categoryId);
 }

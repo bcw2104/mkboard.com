@@ -17,19 +17,19 @@
         <div class="header">
         	<div class="gnb">
         		<c:choose>
-        			<c:when test="${login == null}">
+        			<c:when test="${requestScope.login == null}">
         				<a class="gnb-item_link" href="/account/login">로그인</a>
         				<span class="v_bar">|</span>
 	        			<a class="gnb-item_link" href="/account/register">회원가입</a>
         			</c:when>
         			<c:otherwise>
-        				<span>${login}님 환영합니다.</span>
+        				<span>${requestScope.login}님 환영합니다.</span>
         				<span class="v_bar">|</span>
         				<a class="gnb-item_link" href="/account/logout">로그아웃</a>
         				<span class="v_bar">|</span>
         				<c:choose>
-	        				<c:when test="${login == 'admin'}">
-		        				<a class="gnb-item_link" href="/admin/users">관리자 메뉴</a>
+	        				<c:when test="${requestScope.login == 'admin'}">
+		        				<a class="gnb-item_link" href="/admin/members">관리자 메뉴</a>
 		        			</c:when>
 		        			<c:otherwise>
 		        				<a class="gnb-item_link" href="/user/profile">설정</a>
@@ -42,13 +42,13 @@
         </div>
         <div class="lnb">
 			<ul class="lnb-list">
-				<c:forEach items="${categoryList}" var="n">
+				<c:forEach items="${requestScope.categoryList}" var="n">
 					<li class="lnb-item"><a class="lnb-item_link" href="/content/${n.categoryId}">${n.categoryName}</a></li>
 				</c:forEach>
 			</ul>
         </div>
         <div class="container">
-	        <jsp:include page="${requestPage}" flush="false" />
+	        <jsp:include page="${requestScope.requestPage}" flush="false" />
         </div>
         <div class="footer">
         	<a class="footer-item_link">Contact |</a>

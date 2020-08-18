@@ -1,5 +1,8 @@
 package com.codeplayground.controller;
 
+import java.util.HashMap;
+
+import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,27 +12,36 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.codeplayground.service.UserService;
+import com.codeplayground.entity.UserDTO;
+import com.codeplayground.service.FindService;
+import com.codeplayground.serviceOthers.UserOtherService;
 import com.codeplayground.util.PagePath;
-import com.codeplayground.util.Tools;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
 
 	@Autowired
-	UserService userService;
-	@Autowired
-	Tools tools;
+	UserOtherService userOtherService;
+	@Resource(name = "userFindService")
+	FindService<UserDTO> userFindService;
 
-	@GetMapping("/users")
-	public String admin(@RequestParam(required = false, value = "p") String requestPageNum,
-									 HttpSession session, Model model)throws Exception{
+	@GetMapping("/members")
+	public String admin(@RequestParam(required = false, value = "p") String _pageNum,
+									 HttpSession session, Model model)throws NumberFormatException{
 
-		int totalCount = userService.getTotalCount();
-		int pageNum = tools.checkPage(requestPageNum, totalCount,8);
+		int totalCount = userOtherService.getTotalCount();
+		int pageNum = 1;
 
-		model.addAttribute("userList", userService.getUserlist(pageNum));
+		if(_pageNum != null) {
+			pageNum = Integer.parseInt(_pageNum);
+		}
+
+		HashMap<String, Object> hashMap = new HashMap<String, Object>();
+		hashMap.put("frontPageNum", 10 * (pageNum - 1) + 1);
+		hashMap.put("rearPageNum", 10 * pageNum);
+
+		model.addAttribute("userList", userFindService.findList(hashMap));
 		model.addAttribute("totalCount", totalCount);
 		model.addAttribute("pageNum", pageNum);
 		model.addAttribute("requestPage", PagePath.userlistPage);

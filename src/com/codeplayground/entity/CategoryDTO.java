@@ -5,8 +5,8 @@ public class CategoryDTO {
 	private String categoryName;
 
 	public CategoryDTO() {
-		categoryId="";
-		categoryName = "";
+		categoryId=null;
+		categoryName = null;
 	}
 
 	public String getCategoryId() {

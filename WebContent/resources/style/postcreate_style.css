@@ -6,43 +6,6 @@
 	justify-content: center;
 }
 
-.nav{
-	background-color: #ffffff;
-}
-.nav {
-	width: 250px;
-	min-height: 500px;
-	padding-left: 30px;
-	margin-right: 80px;
-	box-shadow: 1px 1px 3px 0 rgba(82, 62, 62, 0.4)
-}
-
-.nav-title {
-	padding: 10px;
-	border-bottom: 5px solid #0059ab;
-	font-weight: bold;
-	font-size: 1.3rem;
-	margin-bottom: 10px;
-}
-
-.nav-list {
-	list-style: none;
-}
-
-.nav-item {
-	cursor: pointer;
-}
-
-.nav-item:hover {
-	background-color: #e4e4e4
-}
-
-.nav-item_link{
-	display:block;
-	padding: 5px 10px;
-	color : #000000;
-}
-
 .section {
 	width: 950px;
 	padding: 10px;
@@ -51,6 +14,7 @@
 }
 
 .post_form {
+	position:relative;
 	padding: 10px
 }
 
@@ -58,12 +22,31 @@
 	margin-bottom: 10px;
 }
 
-.form_control label {
+.form_control label,
+.admin_control{
 	display: inline-block;
-	width: 100px;
+
 	font-size: 0.9rem;
 	font-weight: bold;
 }
+
+.form_control label{
+	width: 100px;
+}
+
+.admin_control{
+	position: absolute;
+    top: 13px;
+    left: 340px;
+
+    cursor: pointer
+}
+
+.ckb_notice{
+    position: relative;
+    margin-left: 5px;
+    top: 1px;
+ }
 
 .opt_board {
 	height: 30px;

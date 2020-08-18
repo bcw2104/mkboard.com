@@ -4,17 +4,17 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <link rel="stylesheet" href="/resources/style/postcreate_style.css" />
-<c:set var="categoryId" value="${requestScope.thisCategory.categoryId}" />
-<c:set var="boardId" value="${requestScope.thisBoard.boardId}" />
-<c:set var="boardName" value="${requestScope.thisBoard.boardName}" />
+<link rel="stylesheet" href="/resources/style/common/nav_style.css" />
+
+<c:set var="modify" value="${requestScope.thisPost != null}"/>
 
 <div class="nav">
-	<div class="nav-title">${thisCategory.categoryName}</div>
+	<div class="nav-title">${requestScope.categoryName}</div>
 	<ul class="nav-list">
-		<li class="nav-item ${boardId == '' ? 'selected' : ''}">
-			<a class="nav-item_link" href="/content/${categoryId}">전체 글</a></li>
-		<c:forEach items="${boardList}" var="n">
-			<li class="nav-item ${boardName == n.boardName ? 'selected' : ''}">
+		<li class="nav-item ${requestScope.boardId == null ? 'selected' : ''}">
+			<a class="nav-item_link" href="/content/${requestScope.categoryId}">전체 글</a></li>
+		<c:forEach items="${requestScope.boardList}" var="n">
+			<li class="nav-item ${requestScope.boardName == n.boardName ? 'selected' : ''}">
 				<a class="nav-item_link" href="/content/${n.categoryId}/${n.boardId}">${n.boardName}</a>
 			</li>
 		</c:forEach>
@@ -22,21 +22,37 @@
 </div>
 <div class="section">
 	<form class="post_form" action="/content/regpost" method="post">
+		<c:if test="${modify}">
+			<input type="hidden" name="post_id" value="${requestScope.thisPost.postId}">
+		</c:if>
 		<div class="form_control">
 			<label>게시판</label>
 			<select class="opt_board" name="board_id" required>
 				<option value="">게시판 선택</option>
 				<c:forEach items="${requestScope.boardList}" var="n">
-					<option value="${n.boardId}">${n.boardName}</option>
+					<option value="${n.boardId}"
+						<c:if test="${requestScope.thisPost.boardId ==n.boardId }">
+							selected="selected"
+						</c:if> >
+						${n.boardName}
+					</option>
 				</c:forEach>
 			</select>
 		</div>
+		<c:if test="${requestScope.login == 'admin'}">
+			<label class=admin_control>공지로 등록<input type="checkbox" class="ckb_notice"  name="important"></label>
+		</c:if>
 		<div class="form_control">
-			<label for="">제목</label>
-			<input type="text" name="post_title" class="tf_title" required placeholder="게시글 제목을 입력하세요.">
+			<label>제목</label>
+			<input type="text" name="post_title" class="tf_title"
+				<c:choose>
+					<c:when test="${modify}">value = "${requestScope.thisPost.postTitle}"</c:when>
+					<c:otherwise>placeholder="게시글 제목을 입력하세요."</c:otherwise>
+				</c:choose>
+			required/>
 		</div>
 		<div class="form_control">
-			<label for="">파일첨부</label>
+			<label>파일첨부</label>
 		</div>
 		<div class="box_content">
 			<div class="font_option">
@@ -65,7 +81,11 @@
 					<button type="button" id="f_color_option"><img alt="arrow_bottom" src="/resources/images/arrow_bottom.svg"></button>
 				</div>
 			</div>
-			<div class="tf_content" contenteditable="true"></div>
+			<div class="tf_content" contenteditable="true">
+			<c:if test="${modify}">
+				${requestScope.thisPost.postContent}
+			</c:if>
+			</div>
 			<div class="box_resizer">
 				<img alt="resizer" src="/resources/images/scroll_icon.svg">
 			</div>

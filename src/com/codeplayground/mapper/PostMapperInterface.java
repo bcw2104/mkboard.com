@@ -1,27 +1,30 @@
 package com.codeplayground.mapper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Mapper;
 
-import com.codeplayground.entity.BoardDTO;
-import com.codeplayground.entity.CategoryDTO;
+import com.codeplayground.entity.PostDTO;
 
+@Mapper
 public interface PostMapperInterface {
 
-	@Results({
-		@Result(column = "post_id",property = "postId"),
-		@Result(column = "post_title",property = "postTitle"),
-		@Result(column = "post_content",property = "postContent"),
-		@Result(column = "board_id",property = "boardId"),
-		@Result(column = "create_date",property = "createDate")
-	})
+	public int getCount(HashMap<String, Object> map);
 
-	@Select("SELECT * FROM tbl_category")
-	ArrayList<CategoryDTO> getCategoryAll();
+	public PostDTO selectOnebyId(int postId);
 
-	@Select("SELECT category_name FROM tbl_category  WHERE category_id = #{categoryId}")
-	ArrayList<CategoryDTO> getCategoryListbyId(String categoryId);
+	public ArrayList<PostDTO> selectClosestList(HashMap<String, Object> map);
+
+	public ArrayList<PostDTO> selectList(HashMap<String, Object> map);
+
+	public void insert(PostDTO postDTO);
+
+	public void increaseHits(int postId);
+
+	public void increaseComments(int postId);
+
+	public void update(PostDTO postDTO);
+
+	public void delete(int postId);
 }

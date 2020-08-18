@@ -6,9 +6,9 @@ public class BoardDTO {
 	private String categoryId;
 
 	public BoardDTO() {
-		boardId = "";
-		boardName = "";
-		categoryId = "";
+		boardId = null;
+		boardName = null;
+		categoryId = null;
 	}
 
 	public String getBoardId() {

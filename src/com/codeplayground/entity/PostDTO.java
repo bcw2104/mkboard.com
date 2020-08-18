@@ -11,17 +11,19 @@ public class PostDTO {
 	private Timestamp createDate;
 	private int hits;
 	private int comments;
+	private int important;
 
 
 	public PostDTO() {
 		postId = 0;
-		postTitle = "";
-		postContent = "";
-		boardId = "";
-		author = "";
+		postTitle = null;
+		postContent =null;
+		boardId = null;
+		author = null;
 		createDate = null;
 		hits = 0;
 		comments=0;
+		important = 0;
 	}
 
 	public int getPostId() {
@@ -86,5 +88,14 @@ public class PostDTO {
 	public void setComments(int comments) {
 		this.comments = comments;
 	}
+
+	public int getImportant() {
+		return important;
+	}
+
+	public void setImportant(int important) {
+		this.important = important;
+	}
+
 
 }

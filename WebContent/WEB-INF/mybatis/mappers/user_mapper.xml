@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+														"HTTP://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.codeplayground.mapper.UserMapperInterface">
+
+	<resultMap type="userDTO" id="userDTO">
+		<id column="user_id" property="userId"/>
+		<result column="user_name" property="userName"/>
+		<result column="user_pw" property="userPw"/>
+		<result column="user_gender" property="userGender"/>
+		<result column="user_email" property="userEmail"/>
+		<result column="user_birth" property="userBirth" javaType="java.sql.Timestamp"/>
+		<result column="user_phone" property="userPhone"/>
+		<result column="user_regdate" property="userRegdate" javaType="java.sql.Timestamp"/>
+		<result column="user_certification" property="userCertification"/>
+	</resultMap>
+
+	<select id="selectOnebyId" parameterType="String" resultMap="userDTO">
+		SELECT * FROM tbl_user WHERE user_id=#{userId}
+	</select>
+
+	<select id="selectListbyPage" parameterType="hashmap" resultMap="userDTO">
+		SELECT * FROM (SELECT rownum as row_num ,tbl_user.* FROM
+		(SELECT * FROM tbl_user ORDER BY user_regdate ASC) tbl_user )
+		WHERE row_num BETWEEN #{frontPageNum} AND #{rearPageNum}
+	</select>
+
+	<select id="getTotalCount"  resultType="int">
+		SELECT count(*) as count FROM tbl_user
+	</select>
+
+	<insert id="insert" parameterType="userDTO">
+		INSERT INTO tbl_user
+		VALUES(#{userId},#{userName},#{userPw},#{userGender},#{userEmail},#{userBirth},#{userPhone},sysdate,'N')
+	</insert>
+
+	<update id="update" parameterType="userDTO">
+		UPDATE tbl_user
+		SET user_name = #{userName}, user_pw = #{userPw}, user_gender = #{userGender},
+									user_email = #{userEmail}, user_birth = #{userBirth}, user_phone = #{userPhone}
+		WHERE user_id = #{userId}
+	</update>
+
+	<update id="certification" parameterType="String">
+		UPDATE tbl_user
+		SET user_certification = 'Y'
+		WHERE user_id = #{userId}
+	</update>
+
+	<delete id="delete" parameterType="String">
+		DELETE FROM tbl_user WHERE user_id = #{userId}
+	</delete>
+
+</mapper>
