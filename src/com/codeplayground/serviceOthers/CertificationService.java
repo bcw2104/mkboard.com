@@ -13,26 +13,29 @@ public class CertificationService{
 	@Autowired
 	private CertificationMapperInferface mapper;
 
-	public CertificationDTO findOnebyId(String userId) {
-		CertificationDTO certificationDTO = mapper.selectOnebyId(userId);
+	public CertificationDTO findOnebyEmail(String userEmail) {
+
+		CertificationDTO certificationDTO = mapper.selectOnebyEmail(userEmail);
 		if(certificationDTO != null) {
-			if(certificationDTO.getExpiry().compareTo(new Timestamp(System.currentTimeMillis())) == -1 ){
+			if(certificationDTO.getExpiry().compareTo(new Timestamp(System.currentTimeMillis())) == 1 ){
 				return certificationDTO;
 			}
-			mapper.delete(certificationDTO);
+			mapper.delete(userEmail);
 		}
+
 		return null;
 	}
 
 	public void insert(CertificationDTO certificationDTO) {
-		try {
-		mapper.insert(certificationDTO);
-		}catch (Exception e) {
-			e.printStackTrace();
+		if(mapper.selectOnebyEmail(certificationDTO.getUserEmail()) == null) {
+			mapper.insert(certificationDTO);
+		}
+		else {
+			mapper.update(certificationDTO);
 		}
 	}
 
-	public void delete(CertificationDTO certificationDTO) {
-		mapper.delete(certificationDTO);
+	public void delete(String userEmail) {
+		mapper.delete(userEmail);
 	}
 }

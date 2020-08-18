@@ -3,15 +3,21 @@ package com.codeplayground.entity;
 import java.sql.Timestamp;
 
 public class CertificationDTO {
-	private String userId;
+	private String userEmail;
 	private String key;
 	private Timestamp expiry;
 
-	public String getUserId() {
-		return userId;
+	public CertificationDTO() {
+		userEmail = null;
+		key = null;
+		expiry = null;
 	}
-	public void setUserId(String userId) {
-		this.userId = userId;
+
+	public String getUserEmail() {
+		return userEmail;
+	}
+	public void setUserEmail(String userEmail) {
+		this.userEmail = userEmail;
 	}
 	public String getKey() {
 		return key;

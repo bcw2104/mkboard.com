@@ -11,7 +11,6 @@ public class UserDTO {
 	private Timestamp userBirth;
 	private String userPhone;
 	private Timestamp userRegdate;
-	private String userCertification;
 
 	public UserDTO() {
 		userId = null;
@@ -22,7 +21,6 @@ public class UserDTO {
 		userBirth = null;
 		userPhone = null;
 		userRegdate = null;
-		userCertification = null;
 	}
 
 	public String getUserId() {
@@ -88,13 +86,4 @@ public class UserDTO {
 	public void setUserRegdate(Timestamp userRegdate) {
 		this.userRegdate = userRegdate;
 	}
-
-	public String getUserCertification() {
-		return userCertification;
-	}
-
-	public void setUserCertification(String userCertification) {
-		this.userCertification = userCertification;
-	}
-
 }

@@ -7,9 +7,11 @@ import com.codeplayground.entity.CertificationDTO;
 @Mapper
 public interface CertificationMapperInferface {
 
-	public CertificationDTO selectOnebyId(String userId);
+	public CertificationDTO selectOnebyEmail(String userEmail);
 
 	public void insert(CertificationDTO certificationDTO);
 
-	public void delete(CertificationDTO certificationDTO);
+	public void update(CertificationDTO certificationDTO);
+
+	public void delete(String userEmail);
 }

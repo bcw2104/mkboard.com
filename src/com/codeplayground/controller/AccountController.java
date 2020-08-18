@@ -1,11 +1,15 @@
 package com.codeplayground.controller;
 
+import java.io.InputStreamReader;
 import java.sql.Timestamp;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -108,17 +112,55 @@ public class AccountController{
 
 		userModifyService.register(userDTO);
 
-		String key = authTools.makeAuthCode();
-		if(mailService.sendRegisterMail(userEmail,key)) {
-			CertificationDTO certificationDTO = new CertificationDTO();
-			certificationDTO.setUserId(userId);
-			certificationDTO.setKey(tools.convertValuetoHash(key));
-			certificationDTO.setExpiry(new Timestamp(System.currentTimeMillis()+(long)(1000*60*60)));
 
-			certificationService.insert(certificationDTO);
+		return "redirect:/welcome";
+	}
+
+	@PostMapping("/certification")
+	public void certification(HttpServletRequest request,HttpServletResponse response)  throws Exception{
+		JSONParser parser = new JSONParser();
+		JSONObject object = (JSONObject) parser.parse(new InputStreamReader(request.getInputStream(),"UTF-8"));
+
+		String userEmail = object.get("user_email").toString();
+		String key = object.get("val").toString();
+
+		CertificationDTO certificationDTO = certificationService.findOnebyEmail(userEmail);
+		String sendMsg;
+		if(certificationDTO != null && certificationDTO.getKey().equals(tools.convertValuetoHash(key))) {
+			sendMsg = "true";
+		}else {
+			sendMsg = "false";
 		}
 
-		return "redirect:/account/login?reg=su";
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().write(sendMsg);
+
+	}
+
+	@PostMapping("/reqkey")
+	public void reqkey(HttpServletRequest request,HttpServletResponse response) throws Exception{
+		JSONParser parser = new JSONParser();
+		JSONObject object = (JSONObject) parser.parse(new InputStreamReader(request.getInputStream(),"UTF-8"));
+
+		String userEmail = object.get("user_email").toString();
+		String key = authTools.makeAuthCode();
+		String sendMsg;
+
+		if(mailService.sendRegisterMail(userEmail,key)) {
+			CertificationDTO certificationDTO = new CertificationDTO();
+			certificationDTO.setUserEmail(userEmail);
+			certificationDTO.setKey(tools.convertValuetoHash(key));
+			certificationDTO.setExpiry(new Timestamp(System.currentTimeMillis()+(long)(1000*60*15)));
+
+			certificationService.insert(certificationDTO);
+
+			sendMsg = "true";
+		}else {
+			sendMsg = "false";
+		}
+
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().write(sendMsg);
 	}
 
 	@GetMapping("/overlap")

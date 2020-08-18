@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <link rel="stylesheet" href="/resources/style/register_style.css" />
 <div class="section">
-    <div class="title">회원가입</div>
+    <div class="section-title">회원가입</div>
     <form action="/account/register" method="post" id="registerForm">
         <label>아이디</label>
         <input type="text" id="userId" class="inp inp_self" name="user_id" maxlength="10" autocomplete="off" />
@@ -52,6 +52,10 @@
         <input type="text" class="inp inp_self" id="userEmail" name="user_email"/>
         <div id="emailMsg" class="form_msg"></div>
 
+	    <input type="text" class="inp" id="emailCertification" placeholder="인증키를 입력하세요" />
+		<button type="button" id="certifiactionBtn" class="btn_major">인증키 받기</button>
+		<div id="certificationMsg" class="form_msg"></div>
+
         <label>전화번호</label>
         <div id="userPhone">
             <select name="user_phone" class="inp inp_txt_group">
@@ -70,4 +74,4 @@
         <button type="submit" id="registerFormSubmit"class="btn_self btn_major">회원가입</button>
     </form>
 </div>
-<script type="text/javascript" src="/resources/js/register_validation.js"></script>
+<script type="text/javascript" src="/resources/js/register_action.js"></script>

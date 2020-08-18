@@ -45,13 +45,25 @@ div{
 	background-color: #0059ab;
 	color: #ffffff;
 
-	letter-spacing: 5px;
+	letter-spacing: 3px;
 	font-weight: bold;
 	border-radius: 5px;
 }
 
 .btn_major:hover{
 	background-color: #0073db;
+}
+
+.btn_group>button:not(:last-child){
+	border-right:none;
+}
+
+.btn_group>button:last-child{
+	border-radius:0 5px 5px 0;
+}
+
+.btn_group>button:first-child{
+    border-radius: 5px 0 0 5px;
 }
 
 .page_btn{

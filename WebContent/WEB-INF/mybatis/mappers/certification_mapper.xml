@@ -5,20 +5,24 @@
 <mapper namespace="com.codeplayground.mapper.CertificationMapperInferface">
 
 	<resultMap type="certificationDTO" id="certificationDTO">
-		<id column="user_id" property="userId"/>
-		<id column="key" property="key"/>
+		<id column="user_email" property="userEmail"/>
+		<result column="key" property="key"/>
 		<result column="expiry" property="expiry" javaType="java.sql.Timestamp"/>
 	</resultMap>
 
-	<select id="selectOnebyId" parameterType="String" resultMap="certificationDTO">
-		SELECT * FROM tbl_certification WHERE user_id = #{userId}
+	<select id="selectOnebyEmail" parameterType="String" resultMap="certificationDTO">
+		SELECT * FROM tbl_certification WHERE user_email = #{userEmail}
 	</select>
 
 	<insert id="insert" parameterType="certificationDTO">
-		INSERT INTO tbl_certification VALUES(#{userId},#{key},#{expiry})
+		INSERT INTO tbl_certification VALUES(#{userEmail},#{key},#{expiry})
 	</insert>
 
-	<delete id="delete" parameterType="certificationDTO" >
-		DELETE FROM tbl_certification WHERE user_id = #{userId} AND key = #{key}
+	<update id="update" parameterType="certificationDTO">
+		UPDATE tbl_certification SET key = #{key},expiry = #{expiry} WHERE user_email = #{userEmail}
+	</update>
+
+	<delete id="delete" parameterType="String" >
+		DELETE FROM tbl_certification WHERE user_email = #{userEmail}
 	</delete>
 </mapper>

@@ -20,8 +20,6 @@ public interface UserMapperInterface {
 
 	public void update(UserDTO userDTO);
 
-	public void certification(String userId);
-
 	public void delete(String userId);
 
 }

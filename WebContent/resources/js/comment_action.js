@@ -12,6 +12,7 @@
 			$.ajax({
 				url: "/content/"+$(".post_info").attr("id")+"/comment/sort/"+sortType,
 				type:"get",
+				dataType:"json",
 				success: function(data){
 					var list = JSON.parse(data);
 					var comments = "";

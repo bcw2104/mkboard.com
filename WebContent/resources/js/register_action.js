@@ -1,5 +1,6 @@
 (function($){
 	$(document).ready(function() {
+
 		var idValid = 0;
 		var pwValid =0;
 		var pwCheck = 0;
@@ -7,6 +8,7 @@
 		var birthValid =0;
 		var emailValid = 0;
 		var phoneValid = 0;
+		var certification = 0;
 
 		var idOverlapCheck = function(userId){
 			return $.ajax({
@@ -67,7 +69,7 @@
 		}
 
 		$("#userId").focusout(function(event) {
-			var userId = $("#userId").val();
+			var userId = $(this).val();
 			var regExp = /^[a-z0-9]{5,20}$/;
 
 			$("#idMsg").empty();
@@ -91,7 +93,7 @@
 
 		$("#userPw").focusout(function(event) {
 			var regExp = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*-+])(?=.*[0-9]).{8,16}$/;
-			var userPw = $("#userPw").val();
+			var userPw = $(this).val();
 
 			$("#pwMsg").empty();
 			if(regExp.test(userPw)){
@@ -111,7 +113,7 @@
 
 		$("#userName").focusout(function(event) {
 			var regExp = /^(=?[a-z]+.)+[a-z]$|^[가-힣]+$/i;
-			var userName = $("#userName").val();
+			var userName = $(this).val();
 
 			$("#nameMsg").empty();
 			if(regExp.test(userName)){
@@ -141,9 +143,9 @@
 			}
 		});
 
-		$("#userEmail").focusout(function(event) {
+		$("#userEmail").focusout(function() {
 			var regExp = /^[0-9a-z]([-_.]?[0-9a-z])*@[0-9a-z]([-_.]?[0-9a-z])*.[a-z]{2,3}$/i;
-			var userEmail = $("#userEmail").val();
+			var userEmail = $(this).val();
 
 			$("#emailMsg").empty();
 			if(regExp.test(userEmail)){
@@ -152,6 +154,70 @@
 			else{
 				$("#emailMsg").css("color", "#ff0000").text("올바르지 않는 이메일 주소입니다.");
 				emailValid=0;
+			}
+		});
+
+		$("#certifiactionBtn").click(function() {
+			$("#certificationMsg").empty();
+
+			if(emailValid == 1){
+				var email = $("#userEmail").val();
+
+				var data = {"user_email":email};
+
+				$.ajax({
+					url : "/account/reqkey",
+					type:"post",
+					contentType : "application/json",
+					data:JSON.stringify(data),
+					dataType:"text",
+					success: function(data){
+						if(data ==="true"){
+							$("#certificationMsg").css("color", "#0000ff").text("전송된 인증키를 입력하세요. 유효시간은 15분입니다.");
+						}else{
+							$("#certificationMsg").css("color", "#ff0000").text("다시 시도하세요.");
+						}
+					}
+				});
+			}
+			else{
+				$("#certificationMsg").css("color", "#ff0000").text("이메일을 확인하세요.");
+			}
+		});
+
+		$("#emailCertification").focusout(function(event) {
+			var value = $(this).val();
+			$("#certificationMsg").empty();
+
+			if(value != ""){
+				if(emailValid == 1){
+					var data = {"user_email":$("#userEmail").val(),
+										"val":value};
+
+					$.ajax({
+						url : "/account/certification",
+						type:"post",
+						contentType : "application/json",
+						data:JSON.stringify(data),
+						dataType:"text",
+						success: function(data){
+							if(data ==="true"){
+								$("#certificationMsg").css("color", "#0000ff").text("인증 완료");
+								certification = 1;
+							}else{
+								$("#certificationMsg").css("color", "#ff0000").text("인증키가 일치하지 않습니다.");
+								certification = 0;
+							}
+						}
+					});
+				}
+				else{
+					$("#certificationMsg").css("color", "#ff0000").text("이메일을 확인하세요.");
+					certification = 0;
+				}
+			}
+			else{
+				$("#certificationMsg").css("color", "#ff0000").text("인증키를 입력하세요.");
 			}
 		});
 
@@ -180,9 +246,14 @@
 			var validator = idValid+pwValid +pwCheck +nameValid +birthValid +emailValid + phoneValid;
 
 			if(validator != 7){
-				alert("입력하신 내용을 다시 확인해주세요.");
+				alert("항목을 전부 확인해주세요.");
 				return false;
-			}else{
+			}
+			if(certification == 0){
+				alert("이메일 인증을 해주세요.");
+				return false;
+			}
+			else{
 				return true;
 			}
 		});
