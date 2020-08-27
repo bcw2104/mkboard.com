@@ -10,9 +10,11 @@ import com.codeplayground.entity.CommentDTO;
 @Mapper
 public interface CommentMapperInterface {
 
-	public ArrayList<CommentDTO> selectListSortedbyDate(HashMap<String, Object> map);
+	public int getCount(HashMap<String, Object> hashMap);
 
-	public ArrayList<CommentDTO> selectListbyUser(String userId);
+	public CommentDTO selectOne(int commentId);
+
+	public ArrayList<CommentDTO> selectList(HashMap<String, Object> hashMap);
 
 	public void insert(CommentDTO commentDTO);
 

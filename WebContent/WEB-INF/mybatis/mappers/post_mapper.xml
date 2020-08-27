@@ -3,70 +3,225 @@
 														"HTTP://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.codeplayground.mapper.PostMapperInterface">
 
-	<resultMap type="postDTO" id="postDTO">
-		<id column="post_id" property="postId" />
-		<result column="post_title" property="postTitle" />
-		<result column="post_content" property="postContent" />
-		<result column="board_id" property="boardId" />
-		<result column="author" property="author" />
-		<result column="create_date" property="createDate" javaType="java.sql.Timestamp" />
-		<result column="hits" property="hits" />
-		<result column="comments" property="comments" />
-		<result column="important" property="important"/>
-	</resultMap>
-
-
 	<select id="getCount" parameterType="hashmap" resultType="int">
-		SELECT count(*) as count
-		FROM tbl_post NATURAL JOIN tbl_board
-		WHERE
-		<if test="boardId != null">
-			board_id = #{boardId} AND
-		</if>
-		category_id = #{categoryId}
-		AND post_title LIKE #{postTitle} AND author LIKE #{author}
+		SELECT count(*)
+		FROM
+		(SELECT * FROM tbl_post
+		<where>
+			<choose>
+				<when test="correct != null">
+					<if test="postTitle != null">
+						post_title = #{postTitle}
+					</if>
+					<if test="userId != null">
+						AND user_id = #{userId}
+					</if>
+				</when>
+				<otherwise>
+					<if test="postTitle != null">
+						post_title LIKE '%${postTitle}%'
+					</if>
+					<if test="userId != null">
+						AND user_id LIKE '%${userId}%'
+					</if>
+				</otherwise>
+			</choose>
+		</where>)
+		 NATURAL JOIN
+		 (SELECT * FROM tbl_board
+		<where>
+			<if test="categoryId != null">
+				category_id = #{categoryId}
+			</if>
+			<if test="boardId != null">
+				AND board_id = #{boardId}
+			</if>
+		</where>)
 	</select>
 
-	<select id="selectOnebyId" parameterType="int" resultMap="postDTO">
+	<select id="selectOne" parameterType="int" resultType="postDTO">
 		SELECT * FROM tbl_post WHERE post_id = #{postId}
 	</select>
 
-	<select id="selectClosestList"  parameterType="hashmap" resultMap="postDTO">
+	<select id="selectList" parameterType="hashmap" resultType="postDTO">
+
+		<choose>
+			<when test="frontPageNum == null and rearPageNum == null">
+				SELECT * FROM tbl_post
+					<where>
+						<choose>
+							<when test="correct != null">
+								<if test="postTitle != null">
+									post_title = #{postTitle}
+								</if>
+								<if test="userId != null">
+									AND user_id = #{userId}
+								</if>
+							</when>
+							<otherwise>
+								<if test="postTitle != null">
+									post_title LIKE '%${postTitle}%'
+								</if>
+								<if test="userId != null">
+									AND user_id LIKE '%${userId}%'
+								</if>
+							</otherwise>
+						</choose>
+						<if test="important != null">AND important = ${important}</if>
+						<if test="boardId != null">AND board_id = #{boardId}</if>
+					</where>
+						ORDER BY
+					<choose>
+						<when test="sortType != null">
+							${sortType}
+						</when>
+						<otherwise>
+							post_id DESC
+						</otherwise>
+					</choose>
+			</when>
+			<otherwise>
+				SELECT * FROM
+					(SELECT ROWNUM as row_num ,tbl_result.* FROM
+						(SELECT * FROM	 tbl_post
+						<where>
+							<choose>
+								<when test="correct != null">
+									<if test="postTitle != null">
+										post_title = #{postTitle}
+									</if>
+									<if test="userId != null">
+										AND user_id = #{userId}
+									</if>
+								</when>
+								<otherwise>
+									<if test="postTitle != null">
+										post_title LIKE '%${postTitle}%'
+									</if>
+									<if test="userId != null">
+										AND user_id LIKE '%${userId}%'
+									</if>
+								</otherwise>
+							</choose>
+							<if test="important != null">AND important = ${important}</if>
+							<if test="boardId != null">AND board_id = #{boardId}</if>
+						</where>
+							ORDER BY
+						<choose>
+							<when test="sortType != null">
+								${sortType}
+							</when>
+							<otherwise>
+								post_id DESC
+							</otherwise>
+						</choose>
+						) tbl_result)
+				WHERE row_num BETWEEN  #{frontPageNum} AND #{rearPageNum}
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="selectClosestList"  parameterType="hashmap" resultType="postDTO">
 		WITH tbl_post_row AS
 		(
 	   		SELECT ROWNUM AS row_num, tbl_post.* FROM
 					(SELECT * FROM tbl_post WHERE board_id=#{boardId} ORDER BY post_id DESC) tbl_post
 		)
 
-		SELECT post_id,post_title,author,create_date,comments FROM tbl_post_row
+		SELECT post_id,post_title,user_id,create_date,comments FROM tbl_post_row
 		WHERE
 			row_num = (SELECT row_num FROM tbl_post_row WHERE post_id = ${postId})+1
 		OR
 			row_num = (SELECT row_num FROM tbl_post_row WHERE post_id = ${postId})-1
 	</select>
 
-	<select id="selectList" parameterType="hashmap" resultMap="postDTO">
+	<select id="selectListjoinBoard" parameterType="hashmap" resultType="postBoardDTO">
 
 	WITH tbl_post_board
 	AS (SELECT * FROM
-				(SELECT * FROM tbl_post WHERE important = ${important})
+				(SELECT * FROM tbl_post
+				<where>
+					<if test="important != null">important = ${important}</if>
+				</where>
+				 )
 			NATURAL JOIN
-				(SELECT * FROM tbl_board WHERE
-					<if test="boardId != null">
-						board_id = #{boardId} AND
+				(SELECT * FROM tbl_board
+				<where>
+					<if test="categoryId != null">
+						category_id = #{categoryId}
 					</if>
-					category_id = #{categoryId})
+					<if test="boardId != null">
+						AND board_id = #{boardId}
+					</if>
+				</where>)
 			)
 		<choose>
-			<when test="important == 1">
-				SELECT * FROM tbl_post_board ORDER BY post_id DESC
+			<when test="frontPageNum == null and rearPageNum == null">
+				SELECT * FROM tbl_post_board
+					<where>
+						<choose>
+							<when test="correct != null">
+								<if test="postTitle != null">
+									post_title = #{postTitle}
+								</if>
+								<if test="userId != null">
+									AND user_id = #{userId}
+								</if>
+							</when>
+							<otherwise>
+								<if test="postTitle != null">
+									post_title LIKE '%${postTitle}%'
+								</if>
+								<if test="userId != null">
+									AND user_id LIKE '%${userId}%'
+								</if>
+							</otherwise>
+						</choose>
+					</where>
+						ORDER BY
+					<choose>
+						<when test="sortType != null">
+							${sortType}
+						</when>
+						<otherwise>
+							post_id DESC
+						</otherwise>
+					</choose>
 			</when>
 			<otherwise>
 				SELECT * FROM
 					(SELECT ROWNUM as row_num ,tbl_result.* FROM
 						(SELECT * FROM	 tbl_post_board
-						WHERE post_title LIKE #{postTitle} AND author LIKE #{author} ORDER BY ${field})
-					tbl_result)
+						<where>
+							<choose>
+								<when test="correct != null">
+									<if test="postTitle != null">
+										post_title = #{postTitle}
+									</if>
+									<if test="userId != null">
+										AND user_id = #{userId}
+									</if>
+								</when>
+								<otherwise>
+									<if test="postTitle != null">
+										post_title LIKE '%${postTitle}%'
+									</if>
+									<if test="userId != null">
+										AND user_id LIKE '%${userId}%'
+									</if>
+								</otherwise>
+							</choose>
+						</where>
+							ORDER BY
+						<choose>
+							<when test="sortType != null">
+								${sortType}
+							</when>
+							<otherwise>
+								post_id DESC
+							</otherwise>
+						</choose>
+						) tbl_result)
 				WHERE row_num BETWEEN  #{frontPageNum} AND #{rearPageNum}
 			</otherwise>
 		</choose>
@@ -74,20 +229,19 @@
 
 	<insert id="insert" parameterType="postDTO">
 		INSERT INTO tbl_post
-		VALUES((SELECT NVL(MAX(post_id),0)+1 FROM tbl_post),#{postTitle},#{postContent},#{boardId},#{author},sysdate,0,0,${important})
+		VALUES(#{postId},#{postTitle},#{postContent},#{boardId},#{userId},sysdate,0,0,${important})
 	</insert>
-
-	<update id="increaseHits" parameterType="int">
-		UPDATE tbl_post SET hits=hits+1 WHERE post_id = #{postId}
-	</update>
-
-	<update id="increaseComments" parameterType="int">
-		UPDATE tbl_post SET comments=comments+1 WHERE post_id = #{postId}
-	</update>
 
 	<update id="update" parameterType="postDTO">
 		UPDATE tbl_post
-		SET post_title = #{postTitle}, post_content = #{postContent}, board_id = #{boardId}, important=#{important}
+		<set>
+			<if test="postTitle != null">post_title = #{postTitle},</if>
+			<if test="postContent != null">post_content = #{postContent},</if>
+			<if test="boardId != null">board_id = #{boardId},</if>
+			<if test="hits != -1">hits = hits+${hits},</if>
+			<if test="comments != -1">comments = comments+${comments},</if>
+			<if test="important != -1">important = #{important}</if>
+		</set>
 		WHERE post_id = #{postId}
 	</update>
 

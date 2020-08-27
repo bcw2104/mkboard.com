@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.codeplayground.entity.PostBoardDTO;
 import com.codeplayground.entity.PostDTO;
 import com.codeplayground.mapper.PostMapperInterface;
 
@@ -31,10 +32,6 @@ public class PostOtherService {
 				sortType = "post_id DESC";
 			}
 		}
-		else {
-			sortType = "post_id DESC";
-		}
-
 		return sortType;
 	}
 
@@ -46,7 +43,11 @@ public class PostOtherService {
 		}
 
 		if (visit != postId) {
-			mapper.increaseHits(postId);
+			PostDTO postDTO = new PostDTO();
+			postDTO.setPostId(postId);
+			postDTO.setHits(1);
+
+			mapper.update(postDTO);
 			session.setAttribute("recent_visit", postId);
 		}
 	}
@@ -59,18 +60,16 @@ public class PostOtherService {
 		return mapper.selectClosestList(hashMap);
 	}
 
-	public int getCount(String boardId, String categoryId, String postTitle, String author){
-		HashMap<String, Object> hashMap = new HashMap<String, Object>();
-		hashMap.put("categoryId", categoryId);
-		hashMap.put("postTitle", "%"+postTitle+"%");
-		hashMap.put("author", "%"+author+"%");
-		hashMap.put("boardId", boardId);
-
-		return mapper.getCount(hashMap);
+	public ArrayList<PostBoardDTO> findListjoinBoard(HashMap<String, Object> hashMap) {
+		return mapper.selectListjoinBoard(hashMap);
 	}
 
 	public void increaseComments(int postId) {
-		mapper.increaseComments(postId);
+		PostDTO postDTO = new PostDTO();
+		postDTO.setPostId(postId);
+		postDTO.setComments(1);
+
+		mapper.update(postDTO);
 	}
 
 }

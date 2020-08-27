@@ -1,6 +1,7 @@
 package com.codeplayground.mapper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -9,9 +10,9 @@ import com.codeplayground.entity.SubCommentDTO;
 @Mapper
 public interface SubCommentMapperInterface {
 
-	public ArrayList<SubCommentDTO> selectListbyParent(int parentId);
+	public int getCount(HashMap<String, Object> hashMap);
 
-	public ArrayList<SubCommentDTO> selectListbyUser(String userId);
+	public ArrayList<SubCommentDTO> selectList(HashMap<String, Object> hashMap);
 
 	public void insert(SubCommentDTO subCommentDTO);
 

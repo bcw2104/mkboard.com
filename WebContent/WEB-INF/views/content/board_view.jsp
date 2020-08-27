@@ -36,7 +36,7 @@
 		<a class="btn_write" href="${path}/create">
 		<c:if test="${requestScope.categoryId != 'notice' || requestScope.login == 'admin'}">
 		    <button class="btn_major btn_self">
-				<img alt="write" src="/resources/images/pencil.svg">글쓰기
+				<img alt="write" src="/resources/images/pencil_white.svg">글쓰기
 			</button>
 		</c:if>
 		</a>
@@ -83,7 +83,7 @@
 							<c:if test="${n.comments!=0}">(${n.comments})</c:if>
 						</a>
 					</td>
-					<td>${n.author}</td>
+					<td>${n.userId}</td>
 					<td><fmt:formatDate value="${n.createDate}" pattern="yyyy-MM-dd" /></td>
 					<td><fmt:formatNumber type="number" value="${n.hits}" /></td>
 				</tr>
@@ -100,7 +100,7 @@
 							<c:if test="${n.comments!=0}">(${n.comments})</c:if>
 						</a>
 					</td>
-					<td>${n.author}</td>
+					<td>${n.userId}</td>
 					<td><fmt:formatDate value="${n.createDate}" pattern="yyyy-MM-dd" /></td>
 					<td><fmt:formatNumber type="number" value="${n.hits}" /></td>
 				</tr>
@@ -115,7 +115,7 @@
 							${n.postTitle} <c:if test="${n.comments!=0}">(${n.comments})</c:if>
 						</a>
 					</td>
-					<td>${n.boardId != 'anonymous' ? n.author : '비공개'}</td>
+					<td>${n.boardId != 'anonymous' ? n.userId : '비공개'}</td>
 					<td><fmt:formatDate value="${n.createDate}" pattern="yyyy-MM-dd" /></td>
 					<td><fmt:formatNumber type="number" value="${n.hits}" /></td>
 				</tr>
@@ -125,7 +125,7 @@
 	<div class="pager">
 		<ul class="pager-list">
 			<c:set var="pageNum" value="${requestScope.pageNum }" />
-			<c:set var="lastPage" value="${(requestScope.totalCount-1)/18+1 }" />
+			<c:set var="lastPage" value="${(requestScope.postCount-1)/18+1 }" />
 			<c:set var="startNum" value="${pageNum-(pageNum-1)%5}" />
 
 			<c:if test="${startNum-5 >=1}">

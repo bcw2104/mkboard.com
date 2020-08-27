@@ -10,11 +10,14 @@
 		var phoneValid = 0;
 		var certification = 0;
 
-		var idOverlapCheck = function(userId){
+		var overlapCheck = function(name,value){
+			var data = {"name": name , "value" : value};
+
 			return $.ajax({
 				url : "/account/overlap",
-				type:"get",
-				data:"user_id="+userId,
+				type:"post",
+				data:JSON.stringify(data),
+				contentType:"application/json",
 				dataType:"text"
 			});
 		}
@@ -74,7 +77,7 @@
 
 			$("#idMsg").empty();
 			if(regExp.test(userId)){
-				idOverlapCheck(userId).done(function(data) {
+				overlapCheck("userId",userId).done(function(data) {
 					if(data.trim() == "true"){
 						$("#idMsg").css("color", "#0000ff").text("사용 가능한 아이디입니다.");
 						idValid = 1;
@@ -83,7 +86,7 @@
 						$("#idMsg").css("color", "#ff0000").text("이미 존재하는 아이디입니다.");
 						idValid=0;
 					}
-				})
+				});
 			}
 			else{
 				$("#idMsg").css("color", "#ff0000").text("5~20자의 영문 소문자, 숫자만 사용 가능합니다.");
@@ -149,39 +152,40 @@
 
 			$("#emailMsg").empty();
 			if(regExp.test(userEmail)){
-				emailValid = 1;
+				overlapCheck("userEmail",userEmail).done(function(data) {
+					if(data.trim() == "true"){
+						emailValid = 1;
+					}
+					else if(data.trim() == "false"){
+						$("#emailMsg").css("color", "#ff0000").text("이미 사용중인 이메일 주소입니다.");
+						emailValid=0;
+					}
+				});
 			}
 			else{
-				$("#emailMsg").css("color", "#ff0000").text("올바르지 않는 이메일 주소입니다.");
+				$("#emailMsg").css("color", "#ff0000").text("올바르지 않은 이메일 주소입니다.");
 				emailValid=0;
 			}
 		});
 
 		$("#certifiactionBtn").click(function() {
-			$("#certificationMsg").empty();
 
 			if(emailValid == 1){
+				$("#certificationMsg").empty();
+
 				var email = $("#userEmail").val();
 
 				var data = {"user_email":email};
-
+				$("#certificationMsg").css("color", "#0000ff").text("인증코드 전송 중입니다.");
 				$.ajax({
-					url : "/account/reqkey",
+					url : "/mail/register",
 					type:"post",
 					contentType : "application/json",
 					data:JSON.stringify(data),
-					dataType:"text",
-					success: function(data){
-						if(data ==="true"){
-							$("#certificationMsg").css("color", "#0000ff").text("전송된 인증키를 입력하세요. 유효시간은 15분입니다.");
-						}else{
-							$("#certificationMsg").css("color", "#ff0000").text("다시 시도하세요.");
-						}
-					}
+					dataType:"text"
 				});
-			}
-			else{
-				$("#certificationMsg").css("color", "#ff0000").text("이메일을 확인하세요.");
+
+				$("#certificationMsg").css("color", "#0000ff").text("전송된 인증코드를 입력하세요.");
 			}
 		});
 
@@ -191,8 +195,7 @@
 
 			if(value != ""){
 				if(emailValid == 1){
-					var data = {"user_email":$("#userEmail").val(),
-										"val":value};
+					var data = {"user_email":$("#userEmail").val(), "val":value};
 
 					$.ajax({
 						url : "/account/certification",
@@ -205,7 +208,7 @@
 								$("#certificationMsg").css("color", "#0000ff").text("인증 완료");
 								certification = 1;
 							}else{
-								$("#certificationMsg").css("color", "#ff0000").text("인증키가 일치하지 않습니다.");
+								$("#certificationMsg").css("color", "#ff0000").text("인증코드가 일치하지 않습니다.");
 								certification = 0;
 							}
 						}
@@ -217,7 +220,7 @@
 				}
 			}
 			else{
-				$("#certificationMsg").css("color", "#ff0000").text("인증키를 입력하세요.");
+				$("#certificationMsg").css("color", "#ff0000").text("인증코드를 입력하세요.");
 			}
 		});
 
@@ -225,13 +228,15 @@
 			var target = $(event.target);
 
 			if(target.is("input")){
-				var regExp1 = /^[0-9]{3,4}$/;
-				var regExp2 = /^[0-9]{4}$/;
+				var regExp1 = /^01[016789]$/;
+				var regExp2 = /^[0-9]{3,4}$/;
+				var regExp3 = /^[0-9]{4}$/;
 				var phoneNum1 = $("#phoneNum1").val();
 				var phoneNum2 = $("#phoneNum2").val();
+				var phoneNum3 = $("#phoneNum3").val();
 
 				$("#phoneMsg").empty();
-				if(regExp1.test(phoneNum1) && regExp2.test(phoneNum2) ){
+				if(regExp1.test(phoneNum1) && regExp2.test(phoneNum2) && regExp3.test(phoneNum3) ){
 					phoneValid = 1;
 				}
 				else{

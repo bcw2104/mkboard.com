@@ -7,6 +7,7 @@
 		<setting name="useGeneratedKeys" value="true" />
 		<setting name="defaultExecutorType" value="REUSE" />
 		<setting name="logImpl" value="LOG4J"/>
+		<setting name="mapUnderscoreToCamelCase" value="true" />
 	</settings>
 
     <typeAliases>
@@ -17,6 +18,8 @@
 		<typeAlias type="com.codeplayground.entity.PostDTO" alias="postDTO"/>
 		<typeAlias type="com.codeplayground.entity.UserDTO" alias="userDTO"/>
 		<typeAlias type="com.codeplayground.entity.CertificationDTO" alias="certificationDTO"/>
+		<typeAlias type="com.codeplayground.entity.PostBoardDTO" alias="postBoardDTO"/>
+		<typeAlias type="com.codeplayground.entity.FileDTO" alias="fileDTO"/>
 	</typeAliases>
 </configuration>
 

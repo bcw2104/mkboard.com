@@ -53,6 +53,6 @@
 	</error-page>
 	<error-page>
 		<error-code>500</error-code>
-		<location>/system/error/inner</location>
+		<location>/system/error/access</location>
 	</error-page>
 </web-app>

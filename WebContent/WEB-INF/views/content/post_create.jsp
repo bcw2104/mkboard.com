@@ -21,7 +21,7 @@
 	</ul>
 </div>
 <div class="section">
-	<form class="post_form" action="/content/regpost" method="post">
+	<form class="post_form" action="/content/regpost" method="post" enctype="multipart/form-data" accept-charset="UTF-8">
 		<c:if test="${modify}">
 			<input type="hidden" name="post_id" value="${requestScope.thisPost.postId}">
 		</c:if>
@@ -52,7 +52,9 @@
 			required/>
 		</div>
 		<div class="form_control">
-			<label>파일첨부</label>
+			 <label>파일첨부</label>
+			  <button type="button" class="btn_major" id="fileAddBtn">+</button>
+			  <div id="fileGroup"></div>
 		</div>
 		<div class="box_content">
 			<div class="font_option">

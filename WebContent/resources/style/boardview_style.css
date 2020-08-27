@@ -81,6 +81,7 @@
 
 .search_form>* {
 	height: 30px;
+	font-size: 1rem;
 }
 
 .search_form .opt_target {
@@ -112,9 +113,8 @@
 }
 
 .board_table-field {
-	border-top: 1px solid #c0c0c0;
-	border-bottom: 1px solid #c0c0c0;
-	background-color: #e4e4e4;
+	background-color: #0059ab;
+    color: #ffffff;
 }
 
 .board_table-cell {
@@ -138,7 +138,7 @@
 
 .board_table th,
 .board_table td {
-	padding: 10px;
+	padding: 12px;
 	font-size: 0.9rem;
 	text-align: center;
 }

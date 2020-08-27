@@ -7,7 +7,7 @@ public class PostDTO {
 	private String postTitle;
 	private String postContent;
 	private String boardId;
-	private String author;
+	private String userId;
 	private Timestamp createDate;
 	private int hits;
 	private int comments;
@@ -19,11 +19,11 @@ public class PostDTO {
 		postTitle = null;
 		postContent =null;
 		boardId = null;
-		author = null;
+		userId = null;
 		createDate = null;
-		hits = 0;
-		comments=0;
-		important = 0;
+		hits = -1;
+		comments=-1;
+		important = -1;
 	}
 
 	public int getPostId() {
@@ -58,12 +58,12 @@ public class PostDTO {
 		this.boardId = boardId;
 	}
 
-	public String getAuthor() {
-		return author;
+	public String getUserId() {
+		return userId;
 	}
 
-	public void setAuthor(String author) {
-		this.author = author;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 	public Timestamp getCreateDate() {

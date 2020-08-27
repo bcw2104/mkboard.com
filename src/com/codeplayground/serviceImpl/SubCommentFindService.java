@@ -16,23 +16,18 @@ public class SubCommentFindService implements FindService<SubCommentDTO> {
 	SubCommentMapperInterface mapper;
 
 	@Override
-	public SubCommentDTO findOnebyKey(Object key) {
-		return null;
+	public int getCount(HashMap<String, Object> hashMap) {
+
+		return mapper.getCount(hashMap);
 	}
 
 	@Override
-	public ArrayList<SubCommentDTO> findList(Object key) {
-		return mapper.selectListbyUser(key.toString());
+	public SubCommentDTO findOne(Object key) {
+		return null;
 	}
 
 	@Override
 	public ArrayList<SubCommentDTO> findList(HashMap<String, Object> hashMap) {
-		return null;
+		return mapper.selectList(hashMap);
 	}
-
-	@Override
-	public ArrayList<SubCommentDTO> findAll() {
-		return null;
-	}
-
 }

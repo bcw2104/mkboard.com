@@ -1,23 +1,22 @@
 package com.codeplayground.controller;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.codeplayground.entity.CategoryDTO;
 import com.codeplayground.entity.UserDTO;
-import com.codeplayground.service.FindService;
+import com.codeplayground.serviceOthers.CategoryService;
+import com.codeplayground.util.PagePath;
 
 @Controller
-
 public class HomeController {
 
-	@Resource(name = "categoryFindService")
-	private FindService<CategoryDTO> categoryFindService;
+	@Autowired
+	private CategoryService categoryService;
 
 	@GetMapping("/")
 	public String home(HttpServletRequest request, Model model) {
@@ -27,7 +26,7 @@ public class HomeController {
 		else {
 			HttpSession session = request.getSession();
 
-			model.addAttribute("categoryList",categoryFindService.findAll());
+			model.addAttribute("categoryList",categoryService.findList());
 
 			if (session.getAttribute("user") == null) {
 				model.addAttribute("login", null);
@@ -38,6 +37,12 @@ public class HomeController {
 
 			return "index";
 		}
+	}
+
+	@GetMapping("/welcome")
+	public String welcome(HttpServletRequest request, Model model) {
+		model.addAttribute("requestPage",PagePath.welcomePage);
+		return "forward:/";
 	}
 
 }

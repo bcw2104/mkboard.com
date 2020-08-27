@@ -41,12 +41,11 @@
 
 .nav-item {
 	display: inline-block;
-	font-size: 0.85rem;
+	font-size: 0.95rem;
 
 }
 .nav-item_link{
 	color: #000000;
-	text-decoration: none;
 }
 
 .nav-item_link:hover{

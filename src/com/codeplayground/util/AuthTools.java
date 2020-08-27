@@ -1,8 +1,31 @@
 package com.codeplayground.util;
 
+import java.security.MessageDigest;
 import java.util.Random;
 
 public class AuthTools {
+
+	public String convertValuetoHash(String message) throws Exception {
+		MessageDigest digest= MessageDigest.getInstance("SHA-256");
+		StringBuffer hashMsg = new StringBuffer();
+
+		digest.reset();
+
+		digest.update(message.getBytes("UTF-8"));
+
+		byte[] hash = digest.digest();
+
+		for(int i=0; i<hash.length; i++) {
+			String hex = Integer.toHexString(0xff & hash[i]);
+
+			if(hex.length() == 1) {
+				hashMsg.append(0);
+			}
+			hashMsg.append(hex);
+		}
+
+		return hashMsg.toString();
+	}
 
 	public String makeAuthCode() {
 		StringBuffer key = new StringBuffer();

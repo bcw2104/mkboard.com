@@ -16,27 +16,18 @@ public class PostFindService implements FindService<PostDTO> {
 	private PostMapperInterface mapper;
 
 	@Override
-	public PostDTO findOnebyKey(Object key) throws NumberFormatException{
-		int postId = Integer.parseInt(key.toString());
-
-		return mapper.selectOnebyId(postId);
+	public int getCount(HashMap<String, Object> hashMap) {
+		return mapper.getCount(hashMap);
 	}
 
 	@Override
-	public ArrayList<PostDTO> findList(Object key) {
-
-		return null;
+	public PostDTO findOne(Object key) throws NumberFormatException{
+		return mapper.selectOne(Integer.parseInt(key.toString()));
 	}
 
 	@Override
 	public ArrayList<PostDTO> findList(HashMap<String, Object> hashMap) {
 		return mapper.selectList(hashMap);
-	}
-
-	@Override
-	public ArrayList<PostDTO> findAll() {
-
-		return null;
 	}
 
 }

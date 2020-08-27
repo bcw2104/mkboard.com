@@ -7,19 +7,19 @@ import org.springframework.stereotype.Service;
 
 import com.codeplayground.entity.UserDTO;
 import com.codeplayground.mapper.UserMapperInterface;
-import com.codeplayground.util.Tools;
+import com.codeplayground.util.AuthTools;
 
 @Service
 public class AccountService {
 	@Autowired
 	UserMapperInterface mapper;
 	@Autowired
-	Tools tools;
+	AuthTools authTools;
 
 	public boolean login(String userId, String userPw,HttpSession session) throws Exception{
 
-		userPw = tools.convertValuetoHash(userPw);
-		UserDTO userDTO = mapper.selectOnebyId(userId);
+		userPw = authTools.convertValuetoHash(userPw);
+		UserDTO userDTO = mapper.selectOne(userId);
 
 		if (userDTO != null && userDTO.getUserPw().equals(userPw)) {
 			session.setAttribute("user", userDTO);

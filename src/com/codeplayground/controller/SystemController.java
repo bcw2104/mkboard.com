@@ -21,8 +21,11 @@ public class SystemController{
 		else if(errorType.equals("auth")) {
 			errorMsg ="해당 페이지에 대한 접근 권한이 없습니다.";
 		}
-		else if(errorType.equals("inner")) {
-			errorMsg = "내부적으로 오류가 발생하였습니다.";
+		else if(errorType.equals("access")) {
+			errorMsg = "잘못된 접근입니다.";
+		}
+		else if(errorType.equals("expiry")) {
+			errorMsg = "만료된 페이지입니다.";
 		}
 		else {
 			errorMsg ="존재하지 않는 페이지입니다.";

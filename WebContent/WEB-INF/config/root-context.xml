@@ -4,14 +4,24 @@
 	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
 	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
 	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:task="http://www.springframework.org/schema/task"
 	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd
 		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.3.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 
-	<!-- repository -->
-	<context:property-placeholder location="/WEB-INF/properties/*.properties" />
+	<!-- async -->
+	 <task:executor id="asyncExecutor" pool-size="100-1000" queue-capacity="1000"  rejection-policy="ABORT" />
+	 <task:annotation-driven executor="asyncExecutor" />
 
+	 <!-- MultipartResolver -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+	    <property name="maxUploadSize" value="100000000"/>  <!-- 10MB-->
+	    <property name="maxInMemorySize" value="100000000"/> <!-- 10MB-->
+	</bean>
+
+	<!-- repository -->
 	<bean class="org.apache.commons.dbcp2.BasicDataSource" id="basicDataSource">
 		<property name="driverClassName" value="${jdbc.driverClass}" />
 		<property name="url" value="${jdbc.url}" />
@@ -32,7 +42,9 @@
 	<mybatis-spring:scan base-package="com.codeplayground.mapper"/>
 
 	<!-- Util beans -->
-	<bean class="com.codeplayground.util.Tools" lazy-init="true"  />
+	<bean class="com.codeplayground.util.CookieTools" lazy-init="true"  />
+	<bean class="com.codeplayground.util.FileTools" lazy-init="true"  />
 	<bean class="com.codeplayground.util.AuthTools" lazy-init="true"  />
+	<bean class="com.codeplayground.util.MailForm" lazy-init="true"  />
 
 </beans>

@@ -4,17 +4,11 @@
 
 <mapper namespace="com.codeplayground.mapper.CategoryMapperInterface">
 
-	<resultMap type="categoryDTO" id="categoryDTO">
-		<id column="category_id" property="categoryId"/>
-		<result column="category_name" property="categoryName"/>
-	</resultMap>
-
-	<select id="selectAll" resultMap="categoryDTO">
-		SELECT * FROM tbl_category	ORDER BY sort_order ASC
-	</select>
-
-	<select id="selectOnebyId" parameterType="String" resultMap="categoryDTO">
+	<select id="selectOne" parameterType="String" resultType="categoryDTO">
 		SELECT * FROM tbl_category WHERE category_id = #{categoryId}
 	</select>
 
+	<select id="selectList" resultType="categoryDTO">
+		SELECT * FROM tbl_category	ORDER BY sort_order ASC
+	</select>
 </mapper>

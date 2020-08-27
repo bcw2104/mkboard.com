@@ -4,14 +4,12 @@
 
 <mapper namespace="com.codeplayground.mapper.CertificationMapperInferface">
 
-	<resultMap type="certificationDTO" id="certificationDTO">
-		<id column="user_email" property="userEmail"/>
-		<result column="key" property="key"/>
-		<result column="expiry" property="expiry" javaType="java.sql.Timestamp"/>
-	</resultMap>
-
-	<select id="selectOnebyEmail" parameterType="String" resultMap="certificationDTO">
-		SELECT * FROM tbl_certification WHERE user_email = #{userEmail}
+	<select id="selectOne" parameterType="hashmap" resultType="certificationDTO">
+		SELECT * FROM tbl_certification
+		<where>
+			<if test="userEmail != null">user_email = #{userEmail}</if>
+			<if test="key != null">AND key = #{key}</if>
+		</where>
 	</select>
 
 	<insert id="insert" parameterType="certificationDTO">

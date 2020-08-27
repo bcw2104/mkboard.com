@@ -10,16 +10,15 @@ import com.codeplayground.entity.UserDTO;
 @Mapper
 public interface UserMapperInterface {
 
-	public UserDTO selectOnebyId(String userId);
+	public int getCount();
 
-	public int getTotalCount();
+	public UserDTO selectOne(String userId);
 
-	public ArrayList<UserDTO> selectListbyPage(HashMap<String,Object> map);
+	public ArrayList<UserDTO> selectList(HashMap<String,Object> hashMap);
 
 	public void insert(UserDTO userDTO);
 
 	public void update(UserDTO userDTO);
 
 	public void delete(String userId);
-
 }

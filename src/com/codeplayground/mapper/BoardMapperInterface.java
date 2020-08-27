@@ -9,7 +9,7 @@ import com.codeplayground.entity.BoardDTO;
 @Mapper
 public interface BoardMapperInterface {
 
-	public BoardDTO selectOnebyId(String boardId);
+	public BoardDTO selectOne(String boardId);
 
-	public ArrayList<BoardDTO> selectListbyCategory(String categoryId);
+	public ArrayList<BoardDTO> selectList(String categoryId);
 }

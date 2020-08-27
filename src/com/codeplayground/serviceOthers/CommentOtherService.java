@@ -42,7 +42,7 @@ public class CommentOtherService {
 					SubCommentDTO subCommentDTO = subItr.next();
 					JSONObject subObject = new JSONObject();
 					subObject.put("commentId", subCommentDTO.getCommentId());
-					subObject.put("userId", (boardId.equals("anonymous") ? "비공개" : commentDTO.getUserId()));
+					subObject.put("userId", (boardId.equals("anonymous") ? "비공개" : subCommentDTO.getUserId()));
 					subObject.put("commentContent", subCommentDTO.getCommentContent());
 					subObject.put("createDate", subCommentDTO.getCreateDate().toString());
 

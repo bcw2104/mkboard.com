@@ -19,7 +19,12 @@
 }
 
 .form_control {
-	margin-bottom: 10px;
+    margin-bottom: 10px;
+    font-size: 0px;
+}
+
+.form_control > *{
+	font-size: 1rem;
 }
 
 .form_control label,
@@ -32,11 +37,12 @@
 
 .form_control label{
 	width: 100px;
+    line-height: 30px;
 }
 
 .admin_control{
 	position: absolute;
-    top: 13px;
+    top: 17px;
     left: 340px;
 
     cursor: pointer
@@ -57,6 +63,39 @@
 	height: 30px;
 	width: 600px;
 	padding: 0 5px;
+}
+
+#fileGroup{
+	display: inline-block;
+    vertical-align: top;
+    margin-left: 20px;
+}
+
+#fileAddBtn{
+    width: 30px;
+    font-size: 1.4rem;
+}
+
+.file_ele > *{
+	vertical-align: middle;
+}
+
+.file_upload_msg{
+	display: inline-block;
+    height: 20px;
+    width: 300px;
+
+    line-height: 20px;
+    font-size: 0.8rem;
+
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.file_remove_btn{
+	font-size: 0.8rem;
+    color: #0073db;
 }
 
 .box_content {

@@ -4,25 +4,26 @@
 
 <mapper namespace="com.codeplayground.mapper.SubCommentMapperInterface">
 
-	<resultMap type="subcommentDTO" id="subcommentDTO">
-		<id column="comment_id" property="commentId"/>
-		<result column="comment_content" property="commentContent"/>
-		<result column="user_id" property="userId"/>
-		<result column="create_date" property="createDate" javaType="java.sql.Timestamp"/>
-		<result column="parent_id" property="parentId"/>
-	</resultMap>
-
-	<select id="selectListbyParent" parameterType="int" resultMap="subcommentDTO">
-		SELECT * FROM tbl_subcomment WHERE parent_id = #{parentId} ORDER BY create_date ASC
+	<select id="getCount" parameterType="hashmap" resultType="int">
+		SELECT count(*) FROM tbl_subcomment
+		<where>
+			<if test="parentId != null">parent_id = #{parentId}</if>
+			<if test="userId != null">AND user_id = #{userId}</if>
+		</where>
 	</select>
 
-	<select id="selectListbyUser" parameterType="String" resultMap="subcommentDTO">
-		SELECT * FROM tbl_subcomment WHERE user_id = #{userId} ORDER BY create_date DESC;
+	<select id="selectList" parameterType="hashmap" resultType="subcommentDTO">
+		SELECT * FROM tbl_subcomment
+		<where>
+			<if test="parentId != null">parent_id = #{parentId}</if>
+			<if test="userId != null">AND user_id = #{userId}</if>
+		</where>
+		ORDER BY create_date ASC
 	</select>
 
 	<insert id="insert" parameterType="subCommentDTO">
 		INSERT INTO tbl_subcomment
-		VALUES((SELECT NVL(MAX(comment_id),0)+1 FROM tbl_subcomment),#{commentContent},#{userId},sysdate,#{parentId})
+		VALUES(#{commentId},#{commentContent},#{userId},sysdate,#{parentId})
 	</insert>
 
 	<update id="update" parameterType="subCommentDTO">

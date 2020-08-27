@@ -1,14 +1,5 @@
 @charset "UTF-8";
 
-@font-face {
-	font-family: 'IBMPlexSansKR-Regular';
-	src:
-		url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.0/IBMPlexSansKR-Regular.woff')
-		format('woff');
-	font-weight: normal;
-	font-style: normal;
-}
-
 * {
 	padding: 0;
 	margin: 0;
@@ -21,7 +12,7 @@ html, body {
 }
 
 body, textarea,input{
-	font-family: 'IBMPlexSansKR-Regular' !important;
+ 	font-family: 'Helvetica','Arial',sans-serif;
 }
 
 select, button,input[type="checkbox"],
@@ -45,7 +36,7 @@ div{
 	background-color: #0059ab;
 	color: #ffffff;
 
-	letter-spacing: 3px;
+	letter-spacing: 2px;
 	font-weight: bold;
 	border-radius: 5px;
 }
@@ -77,6 +68,9 @@ div{
 }
 
 .v_bar {
+	position:relative;
+	top:-0.5px;
+
 	margin: 0 5px;
 }
 

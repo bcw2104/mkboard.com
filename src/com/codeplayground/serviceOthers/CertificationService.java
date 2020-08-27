@@ -1,6 +1,7 @@
 package com.codeplayground.serviceOthers;
 
 import java.sql.Timestamp;
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,21 +14,24 @@ public class CertificationService{
 	@Autowired
 	private CertificationMapperInferface mapper;
 
-	public CertificationDTO findOnebyEmail(String userEmail) {
+	public CertificationDTO findOne(HashMap<String, Object> hashMap) {
 
-		CertificationDTO certificationDTO = mapper.selectOnebyEmail(userEmail);
+		CertificationDTO certificationDTO = mapper.selectOne(hashMap);
 		if(certificationDTO != null) {
 			if(certificationDTO.getExpiry().compareTo(new Timestamp(System.currentTimeMillis())) == 1 ){
 				return certificationDTO;
 			}
-			mapper.delete(userEmail);
+			mapper.delete(certificationDTO.getUserEmail());
 		}
 
 		return null;
 	}
 
 	public void insert(CertificationDTO certificationDTO) {
-		if(mapper.selectOnebyEmail(certificationDTO.getUserEmail()) == null) {
+		HashMap<String, Object> hashMap = new HashMap<String, Object>();
+		hashMap.put("userEmail", certificationDTO.getUserEmail());
+
+		if(mapper.selectOne(hashMap) == null) {
 			mapper.insert(certificationDTO);
 		}
 		else {

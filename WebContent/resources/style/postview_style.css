@@ -43,17 +43,86 @@
 
 .post_info-item{
 	display: inline-block;
-	font-size: 0.9rem;
+	vertical-align: middle;
 }
 
 .post_info-item:nth-child(2){
+	margin-left: 10px
+}
+
+.post_info-item:nth-child(3){
+	position: relative;
+    top: 20px;
+
 	float:right;
 }
+
+.author_img_wrap{
+	display:inline-block;
+	width: 40px;
+    height: 40px;
+}
+
+.author_img{
+	width: 40px;
+    height: 40px;
+	border-radius: 20px;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: contain;
+}
+
+.reg_date{
+	margin-top: 3px;
+    color: #808080;
+    font-size: 0.85rem;
+}
+
 
 .section-middle {
 	padding: 20px 0;
 	border-bottom: 1px solid #c0c0c0;
 }
+
+.post_files{
+	position: relative;
+	font-size: 0.85rem;
+
+	text-align: right;
+}
+
+#fileListOpen{
+	cursor: pointer;
+}
+
+.post_files-list{
+	border-radius: 5px;
+    box-shadow: 1px 1px 5px 1px rgba(82, 62, 62, 0.4);
+
+	margin-top:10px;
+	padding: 15px;
+
+	list-style: none;
+
+	position: absolute;
+	right: 0px;
+}
+
+.post_files-item:not(:last-child){
+	margin-bottom: 10px;
+}
+
+.file_download{
+	margin-left:15px;
+	float: right;
+
+	cursor: pointer;
+}
+
+.file_download:hover{
+	text-decoration: underline;
+}
+
 
 .post_content {
 	min-height: 300px;

@@ -4,29 +4,33 @@
 
 <mapper namespace="com.codeplayground.mapper.UserMapperInterface">
 
-	<resultMap type="userDTO" id="userDTO">
-		<id column="user_id" property="userId"/>
-		<result column="user_name" property="userName"/>
-		<result column="user_pw" property="userPw"/>
-		<result column="user_gender" property="userGender"/>
-		<result column="user_email" property="userEmail"/>
-		<result column="user_birth" property="userBirth" javaType="java.sql.Timestamp"/>
-		<result column="user_phone" property="userPhone"/>
-		<result column="user_regdate" property="userRegdate" javaType="java.sql.Timestamp"/>
-	</resultMap>
+	<select id="getCount"  resultType="int">
+		SELECT count(*) FROM tbl_user
+	</select>
 
-	<select id="selectOnebyId" parameterType="String" resultMap="userDTO">
+	<select id="selectOne" parameterType="String" resultType="userDTO">
 		SELECT * FROM tbl_user WHERE user_id=#{userId}
 	</select>
 
-	<select id="selectListbyPage" parameterType="hashmap" resultMap="userDTO">
-		SELECT * FROM (SELECT rownum as row_num ,tbl_user.* FROM
-		(SELECT * FROM tbl_user ORDER BY user_regdate ASC) tbl_user )
-		WHERE row_num BETWEEN #{frontPageNum} AND #{rearPageNum}
-	</select>
-
-	<select id="getTotalCount"  resultType="int">
-		SELECT count(*) as count FROM tbl_user
+	<select id="selectList" parameterType="hashmap" resultType="userDTO">
+		<choose>
+			<when test="frontPageNum != null and rearPageNum != null">
+				SELECT * FROM (SELECT rownum as row_num ,tbl_user.* FROM
+				(SELECT * FROM tbl_user ORDER BY user_regdate ASC) tbl_user )
+				WHERE row_num BETWEEN #{frontPageNum} AND #{rearPageNum}
+			</when>
+			<otherwise>
+				SELECT * FROM tbl_user
+				<where>
+					<if test="userGender != null">user_gender = #{userGender}</if>
+					<if test="userEmail != null">AND user_email = #{userEmail}</if>
+					<if test="userBirth != null">AND user_birth = #{userBirth}</if>
+					<if test="userPhone != null">AND user_phone = #{userPhone}</if>
+					<if test="userRegdate != null">AND user_regdate = #{userRegdate}</if>
+				</where>
+				ORDER BY user_regdate ASC
+			</otherwise>
+		</choose>
 	</select>
 
 	<insert id="insert" parameterType="userDTO">
@@ -36,8 +40,14 @@
 
 	<update id="update" parameterType="userDTO">
 		UPDATE tbl_user
-		SET user_name = #{userName}, user_pw = #{userPw}, user_gender = #{userGender},
-									user_email = #{userEmail}, user_birth = #{userBirth}, user_phone = #{userPhone}
+		<set>
+			<if test="userName != null">user_name = #{userName},</if>
+			<if test="userPw != null">user_pw = #{userPw},</if>
+			<if test="userGender != null">user_gender = #{userGender},</if>
+			<if test="userEmail != null">user_email = #{userEmail},</if>
+			<if test="userBirth != null">user_birth = #{userBirth},</if>
+			<if test="userPhone != null">user_phone = #{userPhone},</if>
+		</set>
 		WHERE user_id = #{userId}
 	</update>
 

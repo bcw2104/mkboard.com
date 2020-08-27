@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 body{
-	background-color: #e4e4e4;
+	background-color: #f7f9fa;
 }
 
 .header{
@@ -40,7 +40,6 @@ body{
 	border-top : 1px solid #002d55;
 	background-color: #0059ab;
 	color : #ffffff;
-	font-weight: bold;
 
 	padding : 0 5px;
 }
@@ -61,6 +60,7 @@ body{
 	padding: 0 30px;
 	line-height: 50px;
 
+	font-weight: bold;
 	color: #ffffff;
 }
 

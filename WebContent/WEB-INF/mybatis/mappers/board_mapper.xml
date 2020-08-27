@@ -4,18 +4,12 @@
 
 <mapper namespace="com.codeplayground.mapper.BoardMapperInterface">
 
-	<resultMap type="boardDTO" id="boardDTO">
-		<id column="board_id" property="boardId"/>
-		<result column="board_name" property="boardName"/>
-		<result column="category_id" property="categoryId"/>
-	</resultMap>
-
-	<select id="selectOnebyId" parameterType="String" resultMap="boardDTO">
+	<select id="selectOne" parameterType="String" resultType="boardDTO">
 		SELECT * FROM tbl_board  WHERE board_id = #{boardId}
 	</select>
 
-	<select id="selectListbyCategory" parameterType="String" resultMap="boardDTO">
-		SELECT * FROM tbl_board  WHERE category_id = #{categoryId}	ORDER BY sort_order ASC
+	<select id="selectList" parameterType="String" resultType="boardDTO">
+		SELECT * FROM tbl_board WHERE category_id = #{categoryId} ORDER BY sort_order ASC
 	</select>
 
 </mapper>

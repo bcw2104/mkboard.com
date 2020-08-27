@@ -9,6 +9,10 @@
 
 	<mvc:annotation-driven />
 
+	<!-- properties -->
+	<context:property-placeholder location="/WEB-INF/properties/*.properties" />
+
+	<!-- controller -->
 	<context:component-scan base-package="com.codeplayground.controller" />
 	<context:component-scan base-package="com.codeplayground.exception" />
 	<context:component-scan base-package="com.codeplayground.serviceImpl" />
@@ -24,6 +28,7 @@
 	<bean id="authCheckInterceptor" class="com.codeplayground.interceptor.AuthCheckInterceptor" />
 	<bean id="accountCheckInterceptor" class="com.codeplayground.interceptor.AccountCheckInterceptor" />
 
+	<!-- interceptor -->
 	<mvc:interceptors>
 		<!-- 권한 체크 -->
 		<mvc:interceptor>
@@ -35,9 +40,11 @@
 
 		<!-- 로그인 체크 -->
 		<mvc:interceptor>
+			<mvc:mapping path="/user/**"/>
 			<mvc:mapping path="/account/logout"/>
 			<mvc:mapping path="/content/*/create"/>
 			<mvc:mapping path="/content/*/*/create"/>
+			<mvc:mapping path="/content/*/*/*/modify"/>
 			<mvc:mapping path="/content/regpost"/>
 			<mvc:mapping path="/*/comment/*"/>
 			<ref bean="accountCheckInterceptor"/>

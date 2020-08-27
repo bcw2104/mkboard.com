@@ -13,12 +13,12 @@ public class CommentModifyService implements ModifyService<CommentDTO> {
 	private CommentMapperInterface mapper;
 
 	@Override
-	public void register(CommentDTO dto) {
-		mapper.insert(dto);
+	public void register(CommentDTO commentDTO) {
+		mapper.insert(commentDTO);
 	}
 
 	@Override
-	public void update(CommentDTO dto) {
+	public void update(CommentDTO commentDTO) {
 
 	}
 

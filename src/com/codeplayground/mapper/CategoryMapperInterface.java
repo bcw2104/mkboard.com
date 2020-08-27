@@ -9,7 +9,7 @@ import com.codeplayground.entity.CategoryDTO;
 @Mapper
 public interface CategoryMapperInterface {
 
-	public ArrayList<CategoryDTO> selectAll();
+	public CategoryDTO selectOne(String categoryId);
 
-	public CategoryDTO selectOnebyId(String categoryId);
+	public ArrayList<CategoryDTO> selectList();
 }

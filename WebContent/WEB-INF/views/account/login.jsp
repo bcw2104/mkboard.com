@@ -13,11 +13,7 @@
 		</div>
 		<span class="v_bar">|</span>
 		<div class="nav-item">
-			<a class="nav-item_link">아이디 찾기</a>
-		</div>
-		<span class="v_bar">|</span>
-		<div class="nav-item">
-			<a class="nav-item_link">비밀번호 찾기</a>
+			<a class="nav-item_link" href="/account/find">계정 찾기</a>
 		</div>
 	</div>
 </div>

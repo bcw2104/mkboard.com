@@ -17,24 +17,20 @@ public class CommentFindService implements FindService<CommentDTO> {
 	private CommentMapperInterface mapper;
 
 	@Override
-	public CommentDTO findOnebyKey(Object key) {
-		return null;
+	public int getCount(HashMap<String, Object> hashMap) {
+		return mapper.getCount(hashMap);
 	}
 
 	@Override
-	public ArrayList<CommentDTO> findList(Object key) {
-		return mapper.selectListbyUser(key.toString());
+	public CommentDTO findOne(Object key) {
+
+		return null;
 	}
 
 	@Override
 	public ArrayList<CommentDTO> findList(HashMap<String, Object> hashMap) {
 
-		return mapper.selectListSortedbyDate(hashMap);
-	}
-
-	@Override
-	public ArrayList<CommentDTO> findAll() {
-		return null;
+		return mapper.selectList(hashMap);
 	}
 
 }

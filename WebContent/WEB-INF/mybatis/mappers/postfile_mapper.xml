@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+														"HTTP://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.codeplayground.mapper.PostFileMapperInterface">
+
+	<select id="selectOne" parameterType="hashmap" resultType="fileDTO">
+		SELECT * FROM tbl_postfile
+		WHERE
+			user_id = #{userId}
+			AND post_id = #{postId}
+			AND stored_file_name = #{storedFileName}
+	</select>
+
+	<select id="selectList" parameterType="hashmap" resultType="fileDTO">
+		SELECT * FROM tbl_postfile
+		WHERE
+			user_id = #{userId}
+			AND post_id = #{postId}
+	</select>
+
+	<insert id="insert" parameterType="fileDTO">
+		INSERT INTO tbl_postfile(
+			file_no,
+			post_id,
+			org_file_name,
+			stored_file_name,
+			file_size,
+			create_date,
+			user_id
+		) VALUES(
+			#{fileNo},
+			#{postId},
+			#{orgFileName},
+			#{storedFileName},
+			#{fileSize},
+			#{createDate},
+			#{userId}
+		)
+	</insert>
+
+	<delete id="delete" parameterType="hashmap">
+		DELETE FROM tbl_postfile
+		WHERE
+			user_id = #{userId}
+			AND post_id = #{postId}
+			<if test="storedFileName != null">
+			AND stored_file_name = #{storedFileName}
+			</if>
+	</delete>
+</mapper>

@@ -10,16 +10,16 @@ import com.codeplayground.service.ModifyService;
 @Service("subCommentModifyService")
 public class SubCommentModifyService implements ModifyService<SubCommentDTO> {
 	@Autowired
-	SubCommentMapperInterface mapper;
+	private SubCommentMapperInterface mapper;
 
 	@Override
-	public void register(SubCommentDTO dto) {
-		mapper.insert(dto);
+	public void register(SubCommentDTO subCommentDTO) {
+		mapper.insert(subCommentDTO);
 	}
 
 	@Override
-	public void update(SubCommentDTO dto) {
-		mapper.update(dto);
+	public void update(SubCommentDTO subCommentDTO) {
+		mapper.update(subCommentDTO);
 	}
 
 	@Override

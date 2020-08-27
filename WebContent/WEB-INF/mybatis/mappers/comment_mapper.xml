@@ -4,26 +4,38 @@
 
 <mapper namespace="com.codeplayground.mapper.CommentMapperInterface">
 
-	<resultMap type="commentDTO" id="commentDTO">
-		<id column="comment_id" property="commentId"/>
-		<result column="post_id" property="postId"/>
-		<result column="comment_content" property="commentContent"/>
-		<result column="user_id" property="userId"/>
-		<result column="create_date" property="createDate" javaType="java.sql.Timestamp"/>
-		<result column="child_count" property="childCount"/>
-	</resultMap>
-
-	<select id="selectListSortedbyDate" parameterType="hashmap" resultMap="commentDTO">
-		SELECT * FROM tbl_comment WHERE post_id = #{postId} ORDER BY create_date ${sortType}
+	<select id="getCount" parameterType="hashmap" resultType="int">
+		SELECT count(*) FROM tbl_comment
+		<where>
+			<if test="postId != null">post_id = #{postId}</if>
+			<if test="userId != null">user_id = #{userId}</if>
+		</where>
 	</select>
 
-	<select id="selectListbyUser" parameterType="String" resultMap="commentDTO">
-		SELECT * FROM tbl_comment WHERE user_id = #{userId} ORDER BY comment_id DESC
+	<select id="selectOne" parameterType="int" resultType="commentDTO">
+		SELECT * FROM tbl_comment WHERE comment_id = #{commentId}
+	</select>
+
+	<select id="selectList" parameterType="hashmap" resultType="commentDTO">
+		SELECT * FROM tbl_comment
+		<where>
+			<if test="postId != null">post_id = #{postId}</if>
+			<if test="userId != null">user_id = #{userId}</if>
+		</where>
+		ORDER BY
+		<choose>
+			<when test="sortType != null">
+				create_date ${sortType}
+			</when>
+			<otherwise>
+				comment_id DESC
+			</otherwise>
+		</choose>
 	</select>
 
 	<insert id="insert" parameterType="commentDTO">
 		INSERT INTO tbl_comment
-		VALUES((SELECT NVL(MAX(comment_id),0)+1 FROM tbl_comment),#{postId},#{commentContent},#{userId},sysdate,0)
+		VALUES(#{commentId},#{postId},#{commentContent},#{userId},sysdate,0)
 	</insert>
 
 	<update id="increaseChildCount" parameterType="int">

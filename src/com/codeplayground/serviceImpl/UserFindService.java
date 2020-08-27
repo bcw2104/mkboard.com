@@ -16,23 +16,17 @@ public class UserFindService implements FindService<UserDTO> {
 	UserMapperInterface mapper;
 
 	@Override
-	public UserDTO findOnebyKey(Object key) {
-		return mapper.selectOnebyId(key.toString());
+	public int getCount(HashMap<String, Object> hashMap) {
+		return mapper.getCount();
 	}
 
 	@Override
-	public ArrayList<UserDTO> findList(Object key) {
-		return null;
+	public UserDTO findOne(Object key) {
+		return mapper.selectOne(key.toString());
 	}
 
 	@Override
 	public ArrayList<UserDTO> findList(HashMap<String, Object> hashMap) {
-		return mapper.selectListbyPage(hashMap);
+		return mapper.selectList(hashMap);
 	}
-
-	@Override
-	public ArrayList<UserDTO> findAll() {
-		return null;
-	}
-
 }

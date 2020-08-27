@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <link rel="stylesheet" href="/resources/style/postview_style.css" />
 <link rel="stylesheet" href="/resources/style/common/nav_style.css" />
@@ -25,14 +26,33 @@
 		</a>
 		<div class="post_title">${requestScope.thisPost.postTitle}</div>
 		<div class="post_info" id="${requestScope.thisPost.postId}">
-			<div class="post_info-item">작성자 : ${requestScope.thisPost.boardId != 'anonymous' ? requestScope.thisPost.author : '비공개'}</div>
+			<div class="post_info-item">
+				<div class="author_img_wrap"></div>
+			</div>
+			<div class="post_info-item">
+				<div id="author">${requestScope.thisPost.boardId != 'anonymous' ? requestScope.thisPost.userId : '비공개'}</div>
+				<div class="reg_date"><fmt:formatDate value="${requestScope.thisPost.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></div>
+			</div>
 			<div class="post_info-item">조회 수 : ${requestScope.thisPost.hits }</div>
 		</div>
 	</div>
 
 	<div class='section-middle'>
+		<c:if test="${requestScope.uploadFileList != null}">
+			<div class="post_files">
+					<a role="button" id="fileListOpen">첨부파일 (${fn:length(requestScope.uploadFileList)})</a>
+					<ul class="post_files-list" style="display: none">
+						<c:forEach items="${requestScope.uploadFileList}" var="n">
+							<li class="post_files-item">
+								<span>${n.orgFileName}</span>
+								<a role="button"  id="${n.storedFileName}" class="file_download">저장</a>
+							</li>
+						</c:forEach>
+					</ul>
+			</div>
+		</c:if>
 		<div class="post_content">${requestScope.thisPost.postContent }</div>
-		<c:if test="${requestScope.thisPost.author == requestScope.login}">
+		<c:if test="${requestScope.thisPost.userId == requestScope.login}">
 			<div class="post_menu">
 				<a class="post_menu-item_link" href="${requestScope['javax.servlet.forward.request_uri']}/modify">수정</a>
 				<span class="v_bar">|</span>
@@ -91,10 +111,11 @@
 					</a>
 				</div>
 				<div>
-					<span>${n.author}</span><span><fmt:formatDate value="${n.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></span>
+					<span>${n.userId}</span><span><fmt:formatDate value="${n.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></span>
 				</div>
 			</div>
 		</c:forEach>
 	</div>
 </div>
+<script type="text/javascript" src="/resources/js/postview_action.js" charset="UTF-8"></script>
 <script type="text/javascript" src="/resources/js/comment_action.js"></script>

@@ -12,15 +12,15 @@ public class PostModifyService implements ModifyService<PostDTO>{
 
 	@Autowired
 	private PostMapperInterface mapper;
-	@Override
 
-	public void register(PostDTO dto) {
-		mapper.insert(dto);
+	@Override
+	public void register(PostDTO postDTO) {
+		mapper.insert(postDTO);
 	}
 
 	@Override
-	public void update(PostDTO dto) {
-		mapper.update(dto);
+	public void update(PostDTO postDTO) {
+		mapper.update(postDTO);
 	}
 
 	@Override

@@ -1,5 +1,7 @@
 package com.codeplayground.mapper;
 
+import java.util.HashMap;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.codeplayground.entity.CertificationDTO;
@@ -7,7 +9,7 @@ import com.codeplayground.entity.CertificationDTO;
 @Mapper
 public interface CertificationMapperInferface {
 
-	public CertificationDTO selectOnebyEmail(String userEmail);
+	public CertificationDTO selectOne(HashMap<String, Object>hashMap);
 
 	public void insert(CertificationDTO certificationDTO);
 

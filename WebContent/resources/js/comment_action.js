@@ -14,9 +14,8 @@
 				type:"get",
 				dataType:"json",
 				success: function(data){
-					var list = JSON.parse(data);
 					var comments = "";
-					for(i of list){
+					for(i of data){
 						comments+= "<li id='"+i.commentId+"' class='post_comment-item main'>"
 							+"<div >"+i.userId+"</div>"
 							+"<div>"+i.commentContent+"</div>"

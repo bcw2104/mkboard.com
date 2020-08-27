@@ -1,0 +1,163 @@
+@charset "UTF-8";
+
+.container{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+}
+
+.section {
+	width: 950px;
+}
+
+.profile,
+.mypost{
+	background-color: #ffffff;
+	box-shadow: 1px 1px 3px 0 rgba(82, 62, 62, 0.4);
+}
+
+.profile{
+	padding: 30px 50px;
+
+	display: flex;
+	flex-direction: row;
+}
+
+.profile_img_wrap{
+	display:inline-block;
+	width: 150px;
+}
+
+.profile_img{
+	width: 150px;
+    height: 150px;
+	border-radius: 75px;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: contain;
+}
+
+.profile-info{
+	margin-left:50px;
+}
+
+
+.profile-info_tb{
+	margin-top: 30px;
+}
+
+.profile-info_tb tr{
+	height: 50px;
+}
+
+.profile-info_tb th{
+	font-size:1.2rem;
+	width: 130px;
+	color:#f28585;
+}
+
+.profile-info_tb td{
+	font-size: 2.4rem;
+    color: #0059ab;
+
+    font-weight: 600;
+    text-align: center;
+}
+
+.mypost{
+	margin-top: 20px;
+
+	padding:20px;
+}
+
+.mypost-top{
+	margin-bottom: 20px;
+}
+
+.mypost-img{
+	position: relative;
+    top: 4px;
+
+	width:25px;
+	margin-right: 7px;
+}
+
+.mypost-title{
+	font-weight:bold;
+	font-size: 1.3rem;
+}
+
+.board_table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.board_table-field {
+	background-color: #0059ab;
+    color: #ffffff;
+}
+
+.board_table-cell {
+	border-bottom: 1px solid #c0c0c0;
+}
+
+ .board_table-cell_link{
+	color: #000000;
+}
+
+.board_table th,
+.board_table td {
+	padding: 12px;
+	font-size: 0.9rem;
+	text-align: center;
+}
+
+.board_table td:nth-child(2) {
+	text-align: left;
+	cursor: pointer;
+}
+
+.board_table th.tb_short {
+	width: 70px;
+}
+
+.board_table th.tb_mid {
+	width: 150px;
+}
+
+.pager {
+	margin-top: 30px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+}
+
+.pager-list {
+	display: flex;
+	list-style: none;
+	flex-direction: row;
+}
+
+.pager-item {
+	margin: 0 3px;
+	color: #808080
+}
+
+.pager-item_link.num {
+	color: #808080;
+	padding: 0 5px;
+	font-size: 1.1rem;
+	text-decoration: none;
+}
+
+.pager-item_link.changer {
+	color: #000000;
+	font-size: 0.9rem;
+	text-decoration: none;
+}
+
+.pager-item_link:hover {
+	color: #000000;
+}

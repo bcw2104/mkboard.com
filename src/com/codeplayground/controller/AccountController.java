@@ -2,6 +2,8 @@ package com.codeplayground.controller;
 
 import java.io.InputStreamReader;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,25 +28,19 @@ import com.codeplayground.service.FindService;
 import com.codeplayground.service.ModifyService;
 import com.codeplayground.serviceOthers.AccountService;
 import com.codeplayground.serviceOthers.CertificationService;
-import com.codeplayground.serviceOthers.MailService;
 import com.codeplayground.util.AuthTools;
 import com.codeplayground.util.PagePath;
-import com.codeplayground.util.Tools;
 
 @Controller
 @RequestMapping("/account")
 public class AccountController{
 
 	@Autowired
-	private Tools tools;
-	@Autowired
 	private AuthTools authTools;
 	@Autowired
 	private AccountService accountService;
 	@Autowired
 	private CertificationService certificationService;
-	@Autowired
-	private MailService mailService;
 	@Resource(name ="userModifyService")
 	private ModifyService<UserDTO> userModifyService;
 	@Resource(name ="userFindService")
@@ -104,7 +101,7 @@ public class AccountController{
 		UserDTO userDTO = new UserDTO();
 		userDTO.setUserId(userId);
 		userDTO.setUserName(userName);
-		userDTO.setUserPw(tools.convertValuetoHash(userPw));
+		userDTO.setUserPw(authTools.convertValuetoHash(userPw));
 		userDTO.setUserEmail(userEmail);
 		userDTO.setUserBirth(Timestamp.valueOf(userBirth));
 		userDTO.setUserGender(userGender);
@@ -116,6 +113,60 @@ public class AccountController{
 		return "redirect:/welcome";
 	}
 
+	@GetMapping("/find")
+	public String find_get(Model model) {
+		model.addAttribute("requestPage", PagePath.findPage);
+		return "forward:/";
+	}
+
+	@GetMapping("/find/{key}")
+	public String find_get(@PathVariable String key,
+										HttpSession session,Model model) {
+
+		HashMap<String, Object> hashMap = new HashMap<String, Object>();
+		hashMap.put("key", key);
+
+		CertificationDTO certificationDTO = certificationService.findOne(hashMap);
+		hashMap.clear();
+
+		if(certificationDTO != null) {
+			UserDTO userDTO = null;
+
+			hashMap.put("userEmail", certificationDTO.getUserEmail());
+			ArrayList<UserDTO> result = userFindService.findList(hashMap);
+
+			if(!result.isEmpty()) {
+				userDTO = result.get(0);
+			}
+			session.setAttribute("tempUser", userDTO);
+
+			model.addAttribute("requestPage", PagePath.findChangePage);
+			return "forward:/";
+		}else {
+			return "redirect:/system/error/expiry";
+		}
+	}
+
+	@GetMapping("/find/complete")
+	public String complete(Model model) {
+		model.addAttribute("requestPage", PagePath.findCompletePage);
+		return "forward:/";
+	}
+
+	@PostMapping("/change")
+	public String change(@RequestParam(value = "user_pw") String userPw,
+										@SessionAttribute("tempUser") UserDTO userDTO)  throws Exception{
+
+		if(userDTO != null) {
+			userDTO.setUserPw(authTools.convertValuetoHash(userPw));
+			userModifyService.update(userDTO);
+			return "redirect:/account/login?st=cng";
+		}
+		else {
+			return "redirect:/system/error/none";
+		}
+	}
+
 	@PostMapping("/certification")
 	public void certification(HttpServletRequest request,HttpServletResponse response)  throws Exception{
 		JSONParser parser = new JSONParser();
@@ -124,9 +175,12 @@ public class AccountController{
 		String userEmail = object.get("user_email").toString();
 		String key = object.get("val").toString();
 
-		CertificationDTO certificationDTO = certificationService.findOnebyEmail(userEmail);
+		HashMap<String, Object> hashMap = new HashMap<String, Object>();
+		hashMap.put("userEmail", userEmail);
+
+		CertificationDTO certificationDTO = certificationService.findOne(hashMap);
 		String sendMsg;
-		if(certificationDTO != null && certificationDTO.getKey().equals(tools.convertValuetoHash(key))) {
+		if(certificationDTO != null && certificationDTO.getKey().equals(authTools.convertValuetoHash(userEmail+key))) {
 			sendMsg = "true";
 		}else {
 			sendMsg = "false";
@@ -137,49 +191,52 @@ public class AccountController{
 
 	}
 
-	@PostMapping("/reqkey")
-	public void reqkey(HttpServletRequest request,HttpServletResponse response) throws Exception{
+	@PostMapping("/overlap")
+	public void overlap(@RequestParam(required = false) String cmd,
+									HttpServletRequest request, HttpServletResponse response, Model model) throws Exception{
 		JSONParser parser = new JSONParser();
 		JSONObject object = (JSONObject) parser.parse(new InputStreamReader(request.getInputStream(),"UTF-8"));
 
-		String userEmail = object.get("user_email").toString();
-		String key = authTools.makeAuthCode();
-		String sendMsg;
+		boolean status = true;
+		String name = object.get("name").toString();
+		String value = object.get("value").toString();
+		UserDTO userDTO = null;
 
-		if(mailService.sendRegisterMail(userEmail,key)) {
-			CertificationDTO certificationDTO = new CertificationDTO();
-			certificationDTO.setUserEmail(userEmail);
-			certificationDTO.setKey(tools.convertValuetoHash(key));
-			certificationDTO.setExpiry(new Timestamp(System.currentTimeMillis()+(long)(1000*60*15)));
+		if(name.equals("userEmail")) {
+			HashMap<String, Object> hashMap = new HashMap<String, Object>();
+			hashMap.put(name,value);
+			ArrayList<UserDTO> result = userFindService.findList(hashMap);
 
-			certificationService.insert(certificationDTO);
-
-			sendMsg = "true";
-		}else {
-			sendMsg = "false";
+			if(!result.isEmpty()) {
+				userDTO = result.get(0);
+			}
+		}
+		else if(name.equals("userId")) {
+			userDTO = userFindService.findOne(value);
+		}
+		else {
+			status = false;
 		}
 
-		response.setCharacterEncoding("UTF-8");
-		response.getWriter().write(sendMsg);
-	}
+		if(status) {
+			String sendMsg;
 
-	@GetMapping("/overlap")
-	public void overlap(@RequestParam(value = "user_id") String userId,
-										HttpServletResponse response, Model model) throws Exception{
-		String sendMsg;
-
-		if (!userId.equals("")) {
-			if (userFindService.findOnebyKey(userId) == null) {
+			if (userDTO == null) {
 				sendMsg = "true";
 			} else {
+				if(cmd != null && cmd.equals("send")) {
+					request.getSession().setAttribute("tempUserId", userDTO.getUserId());
+				}
 				sendMsg = "false";
 			}
-		} else {
-			sendMsg = "null";
+
+			response.setCharacterEncoding("UTF-8");
+			response.getWriter().write(sendMsg);
+		}
+		else {
+			response.sendError(500);
 		}
 
-		response.setCharacterEncoding("UTF-8");
-		response.getWriter().write(sendMsg);
 	}
 
 }

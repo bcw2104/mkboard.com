@@ -5,24 +5,23 @@ import java.util.HashMap;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.codeplayground.entity.PostBoardDTO;
 import com.codeplayground.entity.PostDTO;
 
 @Mapper
 public interface PostMapperInterface {
 
-	public int getCount(HashMap<String, Object> map);
+	public int getCount(HashMap<String, Object> hashMap);
 
-	public PostDTO selectOnebyId(int postId);
+	public PostDTO selectOne(int postId);
 
-	public ArrayList<PostDTO> selectClosestList(HashMap<String, Object> map);
+	public ArrayList<PostDTO> selectClosestList(HashMap<String, Object> hashMap);
 
-	public ArrayList<PostDTO> selectList(HashMap<String, Object> map);
+	public ArrayList<PostDTO> selectList(HashMap<String, Object> hashMap);
+
+	public ArrayList<PostBoardDTO> selectListjoinBoard(HashMap<String, Object> hashMap);
 
 	public void insert(PostDTO postDTO);
-
-	public void increaseHits(int postId);
-
-	public void increaseComments(int postId);
 
 	public void update(PostDTO postDTO);
 
