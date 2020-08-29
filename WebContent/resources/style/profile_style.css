@@ -41,13 +41,16 @@
 	margin-left:50px;
 }
 
+.profile-info > h1{
+	display: inline-block;
+}
 
 .profile-info_tb{
 	margin-top: 30px;
 }
 
 .profile-info_tb tr{
-	height: 50px;
+	height: 52px;
 }
 
 .profile-info_tb th{
@@ -62,6 +65,12 @@
 
     font-weight: 600;
     text-align: center;
+}
+
+.profile-info_tb-img{
+	width: 20px;
+    margin-right: 5px;
+    vertical-align: bottom;
 }
 
 .mypost{

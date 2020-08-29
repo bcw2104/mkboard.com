@@ -2,12 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 														"HTTP://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.codeplayground.mapper.SubCommentMapperInterface">
+<mapper namespace="com.inhaplayground.mapper.SubCommentMapperInterface">
 
 	<select id="getCount" parameterType="hashmap" resultType="int">
 		SELECT count(*) FROM tbl_subcomment
 		<where>
-			<if test="parentId != null">parent_id = #{parentId}</if>
+			<if test="parentId != 0">parent_id = #{parentId}</if>
 			<if test="userId != null">AND user_id = #{userId}</if>
 		</where>
 	</select>
@@ -15,7 +15,7 @@
 	<select id="selectList" parameterType="hashmap" resultType="subcommentDTO">
 		SELECT * FROM tbl_subcomment
 		<where>
-			<if test="parentId != null">parent_id = #{parentId}</if>
+			<if test="parentId != 0">parent_id = #{parentId}</if>
 			<if test="userId != null">AND user_id = #{userId}</if>
 		</where>
 		ORDER BY create_date ASC

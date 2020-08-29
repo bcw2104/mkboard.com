@@ -3,10 +3,10 @@
 
 		var sortComments = function(sortType){
 			if(sortType == "sortType2"){
-				sortType = "ASC"
+				sortType = "ASC";
 			}
 			else{
-				sortType = "DESC"
+				sortType = "DESC";
 			}
 
 			$.ajax({
@@ -15,25 +15,26 @@
 				dataType:"json",
 				success: function(data){
 					var comments = "";
-					for(i of data){
-						comments+= "<li id='"+i.commentId+"' class='post_comment-item main'>"
-							+"<div >"+i.userId+"</div>"
-							+"<div>"+i.commentContent+"</div>"
+					for(i in data){
+						comments+= "<li id='"+data[i].commentId+"' class='post_comment-item main'>"
+							+"<div >"+data[i].userId+"</div>"
+							+"<div>"+data[i].commentContent+"</div>"
 							+"<div>"
-							+i.createDate.substring(0, 19)
+							+data[i].createDate.substring(0, 19)
 							+" <span role='button' class='comment_reply'>답글 쓰기</span>"
 							+"</div>"
-							+"</li>"
-						if(i.subCommentList != ""){
-							for(j of i.subCommentList){
-								comments+= "<li id='sub_"+j.commentId+"' class='post_comment-item sub'>"
-									+"<div >"+j.userId+"</div>"
-									+"<div>"+j.commentContent+"</div>"
+							+"</li>";
+						if(data[i].subCommentList != ""){
+							var subList = data[i].subCommentList;
+							for(j in subList){
+								comments+= "<li id='sub_"+subList[j].commentId+"' class='post_comment-item sub'>"
+									+"<div >"+subList[j].userId+"</div>"
+									+"<div>"+subList[j].commentContent+"</div>"
 									+"<div>"
-									+j.createDate.substring(0, 19)
+									+subList[j].createDate.substring(0, 19)
 									+" <span role='button' class='comment_reply'>답글 쓰기</span>"
 									+"</div>"
-									+"</li>"
+									+"</li>";
 							}
 						}
 					}
@@ -59,7 +60,14 @@
 		$(".post_comment-list").on("click", function(event) {
 			if($(event.target).hasClass("comment_reply")){
 				var target = $(event.target).parents("li");
-				var parentId = target.attr("id");
+				var parentId;
+
+				if(target.is(".sub")){
+					parentId = $(target.prevAll("li.main")[0]).attr("id");
+				}
+				else{
+					parentId = target.attr("id");
+				}
 
 				$.ajax({
 					url:"/account/check",

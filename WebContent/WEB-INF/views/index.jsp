@@ -1,10 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
+	<title>Inha Univ PlayGround</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
     <link rel="stylesheet" href="/resources/style/common/common_setting.css">
 	<link rel="stylesheet" href="/resources/style/common/layout_style.css">
 	<link rel="stylesheet" href="/resources/style/common/frame.css">
@@ -17,18 +20,18 @@
         <div class="header">
         	<div class="gnb">
         		<c:choose>
-        			<c:when test="${requestScope.login == null}">
+        			<c:when test="${sessionScope.user == null}">
         				<a class="gnb-item_link" href="/account/login">로그인</a>
         				<span class="v_bar">|</span>
 	        			<a class="gnb-item_link" href="/account/register">회원가입</a>
         			</c:when>
         			<c:otherwise>
-        				<span>${requestScope.login}님 환영합니다.</span>
+        				<span>${sessionScope.user.userNickName}님 환영합니다.</span>
         				<span class="v_bar">|</span>
         				<a class="gnb-item_link" href="/account/logout">로그아웃</a>
         				<span class="v_bar">|</span>
         				<c:choose>
-	        				<c:when test="${requestScope.login == 'admin'}">
+	        				<c:when test="${sessionScope.user.userId == 'admin'}">
 		        				<a class="gnb-item_link" href="/admin/members">관리자 메뉴</a>
 		        			</c:when>
 		        			<c:otherwise>
@@ -38,7 +41,7 @@
         			</c:otherwise>
         		</c:choose>
         	</div>
-        	<div class="header-title"><a class="header-title_link" href="/">Code Playground</a></div>
+        	<div class="header-title"><a class="header-title_link" href="/">Inha Univ PlayGround</a></div>
         </div>
         <div class="lnb">
 			<ul class="lnb-list">

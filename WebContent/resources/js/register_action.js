@@ -4,6 +4,7 @@
 		var idValid = 0;
 		var pwValid =0;
 		var pwCheck = 0;
+		var nickNameValid =0;
 		var nameValid =0;
 		var birthValid =0;
 		var emailValid = 0;
@@ -48,7 +49,6 @@
 
 			if(regExpY.test(year)){
 				if(month != ""){
-					console.log(new Date(year, month, 0).getDate() >= day);
 					if(regExpD.test(day)
 													&& new Date(year, month, 0).getDate() >= day
 													&& day >= 1
@@ -104,7 +104,7 @@
 				pwValid = 1;
 			}
 			else{
-				$("#pwMsg").css("color", "#ff0000").text("8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.");
+				$("#pwMsg").css("color", "#ff0000").text("8~16자의 영문, 숫자, 특수문자를 사용하세요.");
 				pwValid=0;
 			}
 			passwordCheck();
@@ -112,6 +112,29 @@
 
 		$("#userPwCk").focusout(function(event) {
 			passwordCheck();
+		});
+
+		$("#userNickName").focusout(function(event) {
+			var regExp = /^[a-zA-Z가-힣0-9]{2,10}$/;
+			var userNickName = $(this).val();
+
+			$("#nickNameMsg").empty();
+			if(regExp.test(userNickName)){
+				overlapCheck("userNickName",userNickName).done(function(data) {
+					if(data.trim() == "true"){
+						$("#nickNameMsg").css("color", "#0000ff").text("사용 가능한 닉네임입니다.");
+						nickNameValid = 1;
+					}
+					else if(data.trim() == "false"){
+						$("#nickNameMsg").css("color", "#ff0000").text("이미 존재하는 닉네임입니다.");
+						nickNameValid=0;
+					}
+				});
+			}
+			else{
+				$("#nickNameMsg").css("color", "#ff0000").text("2~10자의 영문, 숫자, 한글만 사용 가능합니다.");
+				nickNameValid=0;
+			}
 		});
 
 		$("#userName").focusout(function(event) {
@@ -248,9 +271,9 @@
 
 
 		$("#registerFormSubmit").on("click",function(event) {
-			var validator = idValid+pwValid +pwCheck +nameValid +birthValid +emailValid + phoneValid;
+			var validator = idValid+pwValid +pwCheck + nickNameValid + nameValid +birthValid +emailValid + phoneValid;
 
-			if(validator != 7){
+			if(validator != 8){
 				alert("항목을 전부 확인해주세요.");
 				return false;
 			}

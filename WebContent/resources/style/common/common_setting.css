@@ -15,8 +15,8 @@ body, textarea,input{
  	font-family: 'Helvetica','Arial',sans-serif;
 }
 
-select, button,input[type="checkbox"],
-.btn{
+select, button,input[type="checkbox"],input[type="submit"],input[type="reset"]
+{
 	cursor: pointer;
 }
 

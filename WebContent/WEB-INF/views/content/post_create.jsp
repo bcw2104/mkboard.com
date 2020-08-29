@@ -6,24 +6,24 @@
 <link rel="stylesheet" href="/resources/style/postcreate_style.css" />
 <link rel="stylesheet" href="/resources/style/common/nav_style.css" />
 
-<c:set var="modify" value="${requestScope.thisPost != null}"/>
+<c:set var="modify" value="${requestScope.postInfo != null}"/>
 
 <div class="nav">
 	<div class="nav-title">${requestScope.categoryName}</div>
 	<ul class="nav-list">
-		<li class="nav-item ${requestScope.boardId == null ? 'selected' : ''}">
+		<li class="nav-item ${requestScope.postInfo.boardId == null ? 'selected' : ''}">
 			<a class="nav-item_link" href="/content/${requestScope.categoryId}">전체 글</a></li>
 		<c:forEach items="${requestScope.boardList}" var="n">
-			<li class="nav-item ${requestScope.boardName == n.boardName ? 'selected' : ''}">
+			<li class="nav-item ${requestScope.postInfo.boardName == n.boardName ? 'selected' : ''}">
 				<a class="nav-item_link" href="/content/${n.categoryId}/${n.boardId}">${n.boardName}</a>
 			</li>
 		</c:forEach>
 	</ul>
 </div>
 <div class="section">
-	<form class="post_form" action="/content/regpost" method="post" enctype="multipart/form-data" accept-charset="UTF-8">
+	<form class="post_form" id="postForm" action="/content/regpost" method="post" enctype="multipart/form-data">
 		<c:if test="${modify}">
-			<input type="hidden" name="post_id" value="${requestScope.thisPost.postId}">
+			<input type="hidden" name="post_id" value="${requestScope.postInfo.postId}">
 		</c:if>
 		<div class="form_control">
 			<label>게시판</label>
@@ -31,7 +31,7 @@
 				<option value="">게시판 선택</option>
 				<c:forEach items="${requestScope.boardList}" var="n">
 					<option value="${n.boardId}"
-						<c:if test="${requestScope.thisPost.boardId ==n.boardId }">
+						<c:if test="${requestScope.postInfo.boardId ==n.boardId }">
 							selected="selected"
 						</c:if> >
 						${n.boardName}
@@ -46,7 +46,7 @@
 			<label>제목</label>
 			<input type="text" name="post_title" class="tf_title"
 				<c:choose>
-					<c:when test="${modify}">value = "${requestScope.thisPost.postTitle}"</c:when>
+					<c:when test="${modify}">value = "${requestScope.postInfo.postTitle}"</c:when>
 					<c:otherwise>placeholder="게시글 제목을 입력하세요."</c:otherwise>
 				</c:choose>
 			required/>
@@ -54,7 +54,15 @@
 		<div class="form_control">
 			 <label>파일첨부</label>
 			  <button type="button" class="btn_major" id="fileAddBtn">+</button>
-			  <div id="fileGroup"></div>
+			  <div id="attachedFileGroup">
+				<c:forEach items="${requestScope.attachedFileList}" var="n">
+				<div class="file_ele">
+					<input type="hidden" name="org_attached_file" value="${n.storedFileName}">
+					<span class="attached_file_name">${n.orgFileName}</span>
+					<a href="#this" class="file_remove_btn" role="button">삭제</a>
+				</div>
+				</c:forEach>
+			  </div>
 		</div>
 		<div class="box_content">
 			<div class="font_option">
@@ -84,17 +92,18 @@
 				</div>
 			</div>
 			<div class="tf_content" contenteditable="true">
-			<c:if test="${modify}">
-				${requestScope.thisPost.postContent}
-			</c:if>
+			<c:choose>
+				<c:when test="${modify}">${requestScope.postInfo.postContent}</c:when>
+				<c:otherwise>내용을 입력해주세요.</c:otherwise>
+			</c:choose>
 			</div>
 			<div class="box_resizer">
 				<img alt="resizer" src="/resources/images/scroll_icon.svg">
 			</div>
 		</div>
 		<div class="form_btn_group">
-			<input type="reset" class="btn btn_major post_reset" value="초기화">
-			<input type="submit" class="btn btn_major post_submit" value="등록">
+			<input type="reset" id="postResetBtn" class="btn_major btn_self" value="초기화">
+			<input type="submit" id="postSubmitBtn" class="btn_major btn_self" value="등록">
 		</div>
 	</form>
 </div>

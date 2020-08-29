@@ -16,6 +16,13 @@
 	font-weight: bold;
 }
 
+#changeForm label{
+	display: block;
+    font-weight: bold;
+    padding-bottom: 5px;
+    padding-left: 2px;
+}
+
 .inp{
 	height: 40px;
 	font-size: 1.1rem;

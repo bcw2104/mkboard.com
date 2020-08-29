@@ -17,5 +17,3 @@
 		</div>
 	</div>
 </div>
-
-<script type="text/javascript" src="/resources/js/login_action.js"></script>

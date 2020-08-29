@@ -3,34 +3,21 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <link rel="stylesheet" href="/resources/style/profile_style.css" />
-<link rel="stylesheet" href="/resources/style/common/nav_style.css" />
 <c:set var="path" value="${requestScope['javax.servlet.forward.request_uri']}" />
 
-<div class="nav">
-	<div class="nav-title">마이페이지</div>
-	<ul class="nav-list">
-		<li class="nav-item ${path == '/user/profile' ? 'selected' : ''}">
-			<a class="nav-item_link" href="/user/profile">프로필</a>
-		</li>
-		<li class="nav-item ${path == '/user/modify' ? 'selected' : ''}">
-			<a class="nav-item_link" href="/user/modify">정보 수정</a>
-		</li>
-		<li class="nav-item ${path == '/user/leave' ? 'selected' : ''}">
-			<a class="nav-item_link" href="/user/leave">회원 탈퇴</a>
-		</li>
-	</ul>
-</div>
+<jsp:include page="/WEB-INF/views/user/user_nav.jsp" flush="false" />
 <div class="section">
 	<div class="profile">
 		<div class="profile_img_wrap"></div>
 		<div class="profile-info">
-			<h1 id="userId">${requestScope.userId}</h1>
+			<h1>${requestScope.userNickName}</h1>
+			<h1 id="userId">(${requestScope.userId})</h1>
 			<table class="profile-info_tb">
 				<thead>
 					<tr>
-						<th>활동점수</th>
-						<th>작성글</th>
-						<th>작성댓글</th>
+						<th><img src="/resources/images/medal.svg" class="profile-info_tb-img" style="width: 15px;">활동점수</th>
+						<th><img src="/resources/images/pencil_pink.svg" class="profile-info_tb-img">작성글</th>
+						<th><img src="/resources/images/pencil_pink.svg" class="profile-info_tb-img">작성댓글</th>
 					</tr>
 				</thead>
 				<tbody>

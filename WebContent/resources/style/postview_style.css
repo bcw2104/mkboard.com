@@ -84,18 +84,18 @@
 	border-bottom: 1px solid #c0c0c0;
 }
 
-.post_files{
+.post_attached_files{
 	position: relative;
 	font-size: 0.85rem;
 
 	text-align: right;
 }
 
-#fileListOpen{
+#attachedFileListOpen{
 	cursor: pointer;
 }
 
-.post_files-list{
+.post_attached_files-list{
 	border-radius: 5px;
     box-shadow: 1px 1px 5px 1px rgba(82, 62, 62, 0.4);
 
@@ -108,18 +108,18 @@
 	right: 0px;
 }
 
-.post_files-item:not(:last-child){
+.post_attached_files-item:not(:last-child){
 	margin-bottom: 10px;
 }
 
-.file_download{
+.attached_file_download{
 	margin-left:15px;
 	float: right;
 
 	cursor: pointer;
 }
 
-.file_download:hover{
+.attached_file_download:hover{
 	text-decoration: underline;
 }
 

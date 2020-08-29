@@ -1,8 +1,8 @@
 (function($){
 	$(document).ready(function() {
 
-		$("#fileListOpen").on("click", function() {
-			$(".post_files-list").toggle();
+		$("#attachedFileListOpen").on("click", function() {
+			$(".post_attached_files-list").toggle();
 		});
 
 		var getFileName = function(contentDisposition) {
@@ -26,8 +26,10 @@
 			$.ajax({
 				url: "/util/profile",
 				xhr:function(){
-				            var xhr = new XMLHttpRequest();
-				            xhr.responseType= "blob"
+							var xhr = new XMLHttpRequest();
+							xhr.onloadstart = function() {
+							    xhr.responseType = "blob";
+							}
 				            return xhr;
 			     		},
 				type:"get",
@@ -73,7 +75,7 @@
 		}
 
 
-		$(".file_download").on("click", function() {
+		$(".attached_file_download").on("click", function() {
 			var ofn = $(this).parent().children("span").text();
 			var sfn = $(this).attr("id");
 			var pid = $(".post_info").attr("id");
@@ -85,8 +87,10 @@
 			$.ajax({
 				url: "/util/download",
 				xhr:function(){
-				            var xhr = new XMLHttpRequest();
-				            xhr.responseType= "blob"
+							var xhr = new XMLHttpRequest();
+							xhr.onloadstart = function() {
+							    xhr.responseType = "blob";
+							}
 				            return xhr;
 			     		},
 				type:"post",

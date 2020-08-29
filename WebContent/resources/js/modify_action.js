@@ -95,8 +95,10 @@
 			$.ajax({
 				url: "/util/profile",
 				xhr:function(){
-				            var xhr = new XMLHttpRequest();
-				            xhr.responseType= "blob"
+							var xhr = new XMLHttpRequest();
+							xhr.onloadstart = function() {
+							    xhr.responseType = "blob";
+							}
 				            return xhr;
 			     		},
 			    data:"uid="+userId,

@@ -13,10 +13,10 @@
 	<context:property-placeholder location="/WEB-INF/properties/*.properties" />
 
 	<!-- controller -->
-	<context:component-scan base-package="com.codeplayground.controller" />
-	<context:component-scan base-package="com.codeplayground.exception" />
-	<context:component-scan base-package="com.codeplayground.serviceImpl" />
-	<context:component-scan base-package="com.codeplayground.serviceOthers" />
+	<context:component-scan base-package="com.inhaplayground.controller" />
+	<context:component-scan base-package="com.inhaplayground.exception" />
+	<context:component-scan base-package="com.inhaplayground.serviceImpl" />
+	<context:component-scan base-package="com.inhaplayground.serviceOthers" />
 
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/views/" />
@@ -25,8 +25,8 @@
 
 	<mvc:resources mapping="/resources/**" location="/resources/" />
 
-	<bean id="authCheckInterceptor" class="com.codeplayground.interceptor.AuthCheckInterceptor" />
-	<bean id="accountCheckInterceptor" class="com.codeplayground.interceptor.AccountCheckInterceptor" />
+	<bean id="authCheckInterceptor" class="com.inhaplayground.interceptor.AuthCheckInterceptor" />
+	<bean id="accountCheckInterceptor" class="com.inhaplayground.interceptor.AccountCheckInterceptor" />
 
 	<!-- interceptor -->
 	<mvc:interceptors>

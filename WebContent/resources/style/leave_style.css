@@ -1,0 +1,76 @@
+@charset "UTF-8";
+
+.container{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+}
+
+.section {
+	position: relative;
+
+	width: 950px;
+	padding: 30px;
+	background-color: #ffffff;
+	box-shadow: 1px 1px 3px 0 rgba(82, 62, 62, 0.4);
+}
+
+.section-title {
+	font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 50px;
+}
+
+.section-content{
+	text-align: center;
+	font-size: 1.1rem;
+
+    line-height: 30px;
+    margin-bottom: 30px;
+}
+
+.section-content > span{
+	color: #ff0000;
+	font-size: 0.9rem;
+	font-weight: bold;
+}
+
+#leaveForm{
+	position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#leaveForm label{
+	display: block;
+    font-weight: bold;
+    padding-bottom: 5px;
+    padding-left: 2px;
+}
+
+.inp{
+	height: 40px;
+	font-size: 1.1rem;
+	line-height: 40px;
+	padding-left: 5px;
+}
+
+.inp_self {
+	display: block;
+	width: 300px;
+}
+
+#leaveForm .btn_self {
+	width: 300px;
+    height: 40px;
+    margin-top: 10px;
+    font-size: 1.1rem;
+}
+
+#leaveForm .form_msg{
+	height: 20px;
+    font-size: 0.8rem;
+    margin-top: 3px;
+    margin-bottom: 5px;
+    padding-left: 2px;
+}

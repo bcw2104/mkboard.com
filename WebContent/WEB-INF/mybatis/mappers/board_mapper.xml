@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 														"HTTP://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.codeplayground.mapper.BoardMapperInterface">
+<mapper namespace="com.inhaplayground.mapper.BoardMapperInterface">
 
 	<select id="selectOne" parameterType="String" resultType="boardDTO">
 		SELECT * FROM tbl_board  WHERE board_id = #{boardId}

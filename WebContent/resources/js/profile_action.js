@@ -18,12 +18,14 @@
 
 		var getProfileImage = function(){
 			var userId = $("#userId").text();
-
+			userId = userId.substring(userId.indexOf("(")+1, userId.lastIndexOf(")"));
 			$.ajax({
 				url: "/util/profile",
 				xhr:function(){
-				            var xhr = new XMLHttpRequest();
-				            xhr.responseType= "blob"
+							var xhr = new XMLHttpRequest();
+							xhr.onloadstart = function() {
+							    xhr.responseType = "blob";
+							}
 				            return xhr;
 			     		},
 				type:"get",
@@ -32,6 +34,7 @@
 			        if (!data) {
 			            return;
 			        }
+
 			        try {
 			        	var fileName = getFileName(jqXhr.getResponseHeader('content-disposition'));
 				        fileName = decodeURI(fileName);
@@ -64,7 +67,10 @@
 			        } catch (e) {
 			            console.error(e)
 			        }
-				}
+				},
+			    error:function(request,status,error){
+			        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+			       }
 			});
 		}
 

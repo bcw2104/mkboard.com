@@ -2,6 +2,7 @@
 	$(document).ready(function() {
 
 		var defaultEmail = $("#userEmail").val();
+		var nickNameValid =1;
 		var nameValid =1;
 		var birthValid =1;
 		var emailValid = 1;
@@ -107,6 +108,29 @@
 			});
 		}
 
+		$("#userNickName").focusout(function(event) {
+			var regExp = /^[a-zA-Z가-힣0-9]{2,10}$/;
+			var userNickName = $(this).val();
+
+			$("#nickNameMsg").empty();
+			if(regExp.test(userNickName)){
+				overlapCheck("userNickName",userNickName).done(function(data) {
+					if(data.trim() == "true"){
+						$("#nickNameMsg").css("color", "#0000ff").text("사용 가능한 닉네임입니다.");
+						nickNameValid = 1;
+					}
+					else if(data.trim() == "false"){
+						$("#nickNameMsg").css("color", "#ff0000").text("이미 존재하는 닉네임입니다.");
+						nickNameValid=0;
+					}
+				});
+			}
+			else{
+				$("#nickNameMsg").css("color", "#ff0000").text("2~10자의 영문 대 소문자, 숫자, 한글만 사용 가능합니다.");
+				nickNameValid=0;
+			}
+		});
+
 		$("#userName").focusout(function(event) {
 			var regExp = /^(=?[a-z]+.)+[a-z]$|^[가-힣]+$/i;
 			var userName = $(this).val();
@@ -199,9 +223,9 @@
 		});
 
 		$("#modifyFormSubmit").on("click",function() {
-			var validator = nameValid +birthValid +emailValid + phoneValid;
+			var validator = nickNameValid + nameValid + birthValid +emailValid + phoneValid;
 
-			if(validator != 4){
+			if(validator != 5){
 				alert("항목을 전부 확인해주세요.");
 				return false;
 			}

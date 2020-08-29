@@ -15,9 +15,13 @@
         <input type="password" id="userPwCk" class="inp inp_self" maxlength="16" />
         <div id="pwCkMsg" class="form_msg"></div>
 
+         <label>닉네임</label>
+	     <input type="text" id="userNickName" class="inp inp_self" name="user_nick_name" maxlength="10"/>
+	     <div id="nickNameMsg" class="form_msg"></div>
+
         <label>이름</label>
         <input type="text" id="userName" class="inp inp_self" name="user_name" autocomplete="off"/>
-        <div id="nameMsg"class="form_msg"></div>
+        <div id="nameMsg" class="form_msg"></div>
 
         <label >생년월일</label>
         <div id="userBirth">
@@ -51,7 +55,7 @@
             <input type="text" id="phoneNum3" class="inp inp_txt_group" name="user_phone" autocomplete="off" maxlength="4" />
         </div>
         <div id="phoneMsg" class="form_msg"></div>
-        <button type="submit" id="registerFormSubmit"class="btn_self btn_major">회원가입</button>
+        <button type="submit" id="registerFormSubmit" class="btn_self btn_major">회원가입</button>
     </form>
 </div>
 <script type="text/javascript" src="/resources/js/register_action.js"></script>

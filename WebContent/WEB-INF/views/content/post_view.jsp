@@ -10,10 +10,10 @@
 <div class="nav">
 	<div class="nav-title">${requestScope.categoryName}</div>
 	<ul class="nav-list">
-		<li class="nav-item ${requestScope.boardId == null ? 'selected' : ''}">
+		<li class="nav-item ${requestScope.postInfo.boardId == null ? 'selected' : ''}">
 			<a class="nav-item_link" href="/content/${requestScope.categoryId}">전체 글</a></li>
 		<c:forEach items="${requestScope.boardList}" var="n">
-			<li class="nav-item ${requestScope.boardName == n.boardName ? 'selected' : ''}">
+			<li class="nav-item ${requestScope.postInfo.boardName == n.boardName ? 'selected' : ''}">
 				<a class="nav-item_link" href="/content/${n.categoryId}/${n.boardId}">${n.boardName}</a>
 			</li>
 		</c:forEach>
@@ -21,52 +21,60 @@
 </div>
 <div class="section">
 	<div class='section-top'>
-		<a class="board_link" href="/content/${requestScope.categoryId}/${requestScope.boardId}">
-			${requestScope.categoryName} > ${requestScope.boardName}
+		<a class="board_link" href="/content/${requestScope.categoryId}/${requestScope.postInfo.boardId}">
+			${requestScope.categoryName} > ${requestScope.postInfo.boardName}
 		</a>
-		<div class="post_title">${requestScope.thisPost.postTitle}</div>
-		<div class="post_info" id="${requestScope.thisPost.postId}">
+		<div class="post_title">${requestScope.postInfo.postTitle}</div>
+		<div class="post_info" id="${requestScope.postInfo.postId}">
 			<div class="post_info-item">
 				<div class="author_img_wrap"></div>
 			</div>
 			<div class="post_info-item">
-				<div id="author">${requestScope.thisPost.boardId != 'anonymous' ? requestScope.thisPost.userId : '비공개'}</div>
-				<div class="reg_date"><fmt:formatDate value="${requestScope.thisPost.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></div>
+				<c:choose>
+					<c:when test="${requestScope.postInfo.boardId != 'anonymous'}">
+						<div>${requestScope.postInfo.userNickName}</div>
+						<div id="author" hidden="hidden">${requestScope.postInfo.userId}</div>
+					</c:when>
+					<c:otherwise>
+						<div id="author">비공개</div>
+					</c:otherwise>
+				</c:choose>
+				<div class="reg_date"><fmt:formatDate value="${requestScope.postInfo.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></div>
 			</div>
-			<div class="post_info-item">조회 수 : ${requestScope.thisPost.hits }</div>
+			<div class="post_info-item">조회 수 : ${requestScope.postInfo.hits }</div>
 		</div>
 	</div>
 
 	<div class='section-middle'>
-		<c:if test="${requestScope.uploadFileList != null}">
-			<div class="post_files">
-					<a role="button" id="fileListOpen">첨부파일 (${fn:length(requestScope.uploadFileList)})</a>
-					<ul class="post_files-list" style="display: none">
-						<c:forEach items="${requestScope.uploadFileList}" var="n">
-							<li class="post_files-item">
+		<c:if test="${requestScope.attachedFileList != null}">
+			<div class="post_attached_files">
+					<a role="button" id="attachedFileListOpen">첨부파일 (${fn:length(requestScope.attachedFileList)})</a>
+					<ul class="post_attached_files-list" style="display: none">
+						<c:forEach items="${requestScope.attachedFileList}" var="n">
+							<li class="post_attached_files-item">
 								<span>${n.orgFileName}</span>
-								<a role="button"  id="${n.storedFileName}" class="file_download">저장</a>
+								<a role="button"  id="${n.storedFileName}" class="attached_file_download">저장</a>
 							</li>
 						</c:forEach>
 					</ul>
 			</div>
 		</c:if>
-		<div class="post_content">${requestScope.thisPost.postContent }</div>
-		<c:if test="${requestScope.thisPost.userId == requestScope.login}">
+		<div class="post_content">${requestScope.postInfo.postContent }</div>
+		<c:if test="${sessionScope.user != null && requestScope.postInfo.userId == sessionScope.user.userId}">
 			<div class="post_menu">
 				<a class="post_menu-item_link" href="${requestScope['javax.servlet.forward.request_uri']}/modify">수정</a>
 				<span class="v_bar">|</span>
-				<a class="post_menu-item_link" href="/content/${requestScope.thisPost.postId}/rmvpost">삭제</a>
+				<a class="post_menu-item_link" href="/content/${requestScope.postInfo.postId}/rmvpost">삭제</a>
 			</div>
 		</c:if>
 		<div class="post_comment">
-			<h3>댓글(${requestScope.thisPost.comments})</h3>
+			<h3>댓글(${requestScope.postInfo.comments})</h3>
 			<span role="button" class="tab_sort_item selected" id="sortType1">최신순</span>
 			<span role="button" class="tab_sort_item" id="sortType2">등록순</span>
 			<ul class="post_comment-list">
 				<c:forEach items="${requestScope.commentList}" var="n">
 				<li id="${n.commentId}" class="post_comment-item main">
-					<div >${requestScope.thisPost.boardId != 'anonymous' ? n.userId : '비공개'}</div>
+					<div >${requestScope.postInfo.boardId != 'anonymous' ? n.userId : '비공개'}</div>
 					<div>${n.commentContent}</div>
 					<div>
 						<fmt:formatDate value="${n.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
@@ -75,7 +83,7 @@
 				</li>
 					<c:forEach items="${n.subComment}" var="sub">
 						<li id="sub_${sub.commentId}" class="post_comment-item sub">
-							<div>${requestScope.thisPost.boardId != 'anonymous' ? sub.userId : '비공개'}</div>
+							<div>${requestScope.postInfo.boardId != 'anonymous' ? sub.userId : '비공개'}</div>
 							<div>${sub.commentContent}</div>
 							<div>
 								<fmt:formatDate value="${sub.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
@@ -85,8 +93,8 @@
 					</c:forEach>
 				</c:forEach>
 			</ul>
-			<c:if test="${requestScope.login != null}">
-			<form class="comment_form" action="/content/${requestScope.thisPost.postId}/regcomment" method="post">
+			<c:if test="${sessionScope.user != null}">
+			<form class="comment_form" action="/content/${requestScope.postInfo.postId}/regcomment" method="post">
 				<textarea cols="20" rows="3" name="comment_content" class="tf_content" placeholder="댓글을 작성해 보세요."></textarea>
 				<button type="submit" class="btn_major btn_self">등록</button>
 			</form>
@@ -98,7 +106,7 @@
 		<c:forEach items="${requestScope.closestPostList}" var="n" >
 			<div class="jump_post">
 				<c:choose>
-					<c:when test="${n.postId > requestScope.thisPost.postId}">
+					<c:when test="${n.postId > requestScope.postInfo.postId}">
 						<div>다음 글</div>
 					</c:when>
 					<c:otherwise>
@@ -106,7 +114,7 @@
 					</c:otherwise>
 				</c:choose>
 				<div>
-					<a class="jump_post_link" href="/content/${requestScope.categoryId}/${requestScope.boardId}/${n.postId}">
+					<a class="jump_post_link" href="/content/${requestScope.categoryId}/${n.boardId}/${n.postId}">
 						${n.postTitle}
 					</a>
 				</div>

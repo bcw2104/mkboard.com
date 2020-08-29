@@ -2,40 +2,38 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 														"HTTP://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.codeplayground.mapper.UserMapperInterface">
+<mapper namespace="com.inhaplayground.mapper.UserMapperInterface">
 
 	<select id="getCount"  resultType="int">
 		SELECT count(*) FROM tbl_user
 	</select>
 
-	<select id="selectOne" parameterType="String" resultType="userDTO">
-		SELECT * FROM tbl_user WHERE user_id=#{userId}
+	<select id="selectOne" parameterType="hashmap" resultType="userDTO">
+		SELECT * FROM tbl_user
+		<where>
+			<if test="userId != null">user_id=#{userId}</if>
+			<if test="userNickName != null">AND user_nick_name=#{userNickName}</if>
+			<if test="userEmail != null">AND user_email=#{userEmail}</if>
+		</where>
 	</select>
 
 	<select id="selectList" parameterType="hashmap" resultType="userDTO">
 		<choose>
-			<when test="frontPageNum != null and rearPageNum != null">
+			<when test="frontPageNum != 0 and rearPageNum != 0">
 				SELECT * FROM (SELECT rownum as row_num ,tbl_user.* FROM
-				(SELECT * FROM tbl_user ORDER BY user_regdate ASC) tbl_user )
+				(SELECT * FROM tbl_user ORDER BY user_regdate ${sortType}) tbl_user )
 				WHERE row_num BETWEEN #{frontPageNum} AND #{rearPageNum}
 			</when>
 			<otherwise>
 				SELECT * FROM tbl_user
-				<where>
-					<if test="userGender != null">user_gender = #{userGender}</if>
-					<if test="userEmail != null">AND user_email = #{userEmail}</if>
-					<if test="userBirth != null">AND user_birth = #{userBirth}</if>
-					<if test="userPhone != null">AND user_phone = #{userPhone}</if>
-					<if test="userRegdate != null">AND user_regdate = #{userRegdate}</if>
-				</where>
-				ORDER BY user_regdate ASC
+				ORDER BY user_regdate ${sortType}
 			</otherwise>
 		</choose>
 	</select>
 
 	<insert id="insert" parameterType="userDTO">
 		INSERT INTO tbl_user
-		VALUES(#{userId},#{userName},#{userPw},#{userGender},#{userEmail},#{userBirth},#{userPhone},sysdate)
+		VALUES(#{userId},#{userName},#{userPw},#{userGender},#{userEmail},#{userBirth},#{userPhone},sysdate,#{userNickName})
 	</insert>
 
 	<update id="update" parameterType="userDTO">
@@ -47,6 +45,7 @@
 			<if test="userEmail != null">user_email = #{userEmail},</if>
 			<if test="userBirth != null">user_birth = #{userBirth},</if>
 			<if test="userPhone != null">user_phone = #{userPhone},</if>
+			<if test="userNickName != null">user_nick_name=#{userNickName}</if>
 		</set>
 		WHERE user_id = #{userId}
 	</update>

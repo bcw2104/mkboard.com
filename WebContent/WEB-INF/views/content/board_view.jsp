@@ -83,7 +83,7 @@
 							<c:if test="${n.comments!=0}">(${n.comments})</c:if>
 						</a>
 					</td>
-					<td>${n.userId}</td>
+					<td>${n.userNickName}</td>
 					<td><fmt:formatDate value="${n.createDate}" pattern="yyyy-MM-dd" /></td>
 					<td><fmt:formatNumber type="number" value="${n.hits}" /></td>
 				</tr>
@@ -100,7 +100,7 @@
 							<c:if test="${n.comments!=0}">(${n.comments})</c:if>
 						</a>
 					</td>
-					<td>${n.userId}</td>
+					<td>${n.userNickName}</td>
 					<td><fmt:formatDate value="${n.createDate}" pattern="yyyy-MM-dd" /></td>
 					<td><fmt:formatNumber type="number" value="${n.hits}" /></td>
 				</tr>
@@ -115,7 +115,7 @@
 							${n.postTitle} <c:if test="${n.comments!=0}">(${n.comments})</c:if>
 						</a>
 					</td>
-					<td>${n.boardId != 'anonymous' ? n.userId : '비공개'}</td>
+					<td>${n.boardId != 'anonymous' ? n.userNickName : '비공개'}</td>
 					<td><fmt:formatDate value="${n.createDate}" pattern="yyyy-MM-dd" /></td>
 					<td><fmt:formatNumber type="number" value="${n.hits}" /></td>
 				</tr>

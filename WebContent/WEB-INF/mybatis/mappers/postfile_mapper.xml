@@ -2,9 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 														"HTTP://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.codeplayground.mapper.PostFileMapperInterface">
+<mapper namespace="com.inhaplayground.mapper.PostFileMapperInterface">
 
-	<select id="selectOne" parameterType="hashmap" resultType="fileDTO">
+	<select id="selectOne" parameterType="hashmap" resultType="postFileDTO">
 		SELECT * FROM tbl_postfile
 		WHERE
 			user_id = #{userId}
@@ -12,14 +12,15 @@
 			AND stored_file_name = #{storedFileName}
 	</select>
 
-	<select id="selectList" parameterType="hashmap" resultType="fileDTO">
+	<select id="selectList" parameterType="hashmap" resultType="postFileDTO">
 		SELECT * FROM tbl_postfile
 		WHERE
 			user_id = #{userId}
 			AND post_id = #{postId}
+			<if test="fileType != null">AND file_type = #{fileType}</if>
 	</select>
 
-	<insert id="insert" parameterType="fileDTO">
+	<insert id="insert" parameterType="postFileDTO">
 		INSERT INTO tbl_postfile(
 			file_no,
 			post_id,
@@ -27,7 +28,8 @@
 			stored_file_name,
 			file_size,
 			create_date,
-			user_id
+			user_id,
+			file_type
 		) VALUES(
 			#{fileNo},
 			#{postId},
@@ -35,7 +37,8 @@
 			#{storedFileName},
 			#{fileSize},
 			#{createDate},
-			#{userId}
+			#{userId},
+			#{fileType}
 		)
 	</insert>
 
