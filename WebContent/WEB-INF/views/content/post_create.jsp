@@ -67,14 +67,13 @@
 		<div class="box_content">
 			<div class="font_option">
 				<select class="opt_font_size">
-					<option value="10">크기</option>
-					<option value="7">7</option>
 					<option value="8">8</option>
 					<option value="9">9</option>
 					<option value="10">10</option>
 					<option value="11">11</option>
 					<option value="12">12</option>
 					<option value="14">14</option>
+					<option value="16" selected="selected">16</option>
 					<option value="18">18</option>
 					<option value="24">24</option>
 					<option value="36">36</option>
@@ -91,10 +90,10 @@
 					<button type="button" id="f_color_option"><img alt="arrow_bottom" src="/resources/images/arrow_bottom.svg"></button>
 				</div>
 			</div>
-			<div class="tf_content" contenteditable="true">
+			<div class="tf_content">
 			<c:choose>
 				<c:when test="${modify}">${requestScope.postInfo.postContent}</c:when>
-				<c:otherwise>내용을 입력해주세요.</c:otherwise>
+				<c:otherwise><span contenteditable="true">내용을 입력해주세요.</span></c:otherwise>
 			</c:choose>
 			</div>
 			<div class="box_resizer">
@@ -108,3 +107,4 @@
 	</form>
 </div>
 <script type="text/javascript" src="/resources/js/postcreate_action.js"></script>
+<script type="text/javascript" src="/resources/js/postcreate_file_action.js"></script>

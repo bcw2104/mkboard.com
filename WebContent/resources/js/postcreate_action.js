@@ -1,97 +1,121 @@
 (function($){
 
-	var fileSizeCheck = function(fileSize){
-		var maxSize = 10 * 1024 * 1024;
-
-		if(fileSize > maxSize){
-			return false;
-		}
-		else{
-			return true;
-		}
-	}
-
 	$(document).ready(function() {
+		var element = $("<span>").attr("contenteditable","true");
+		var change = false;
 
-		$("#attachedFileGroup").on("click", function(event) {
+
+		var changeFontSize = function(target){
+			$(".opt_font_size").val(target.css("font-size").substr(0,target.css("font-size").indexOf("p")));
+		}
+
+		$(".opt_font_size").change(function() {
+			change = true;
+
+			var size = $(this).val();
+			element.css("font-size", size+"px");
+		});
+
+		var removeEvent = function(selection){
+			if(selection.focusOffset == 0){
+				var prev;
+
+				if($(selection.focusNode).is("span")){
+					prev= $(selection.focusNode).prev();
+				}else{
+					prev= $(selection.focusNode).parent().prev();
+				}
+
+				if(prev.is("span")){
+					changeFontSize(prev);
+
+					if($(selection.focusNode).is("span")){
+						$(selection.focusNode).remove();
+					}
+					prev.focus();
+					selection.setPosition(selection.focusNode,selection.focusNode.length);
+				}
+			}
+		}
+
+		//키보드 이벤트
+		$(".tf_content").on("keydown keypress",function(event) {
 			var target = $(event.target);
 			event.stopPropagation();
 
-			if(target.is("a.file_remove_btn")){
-				target.parent().remove();
+			if(target.is("span")){
+				var selection = window.getSelection();
+
+				if(event.keyCode == 8){
+					removeEvent(selection);
+				}
+				else if(event.keyCode == 37){
+					if(selection.focusOffset == 0){
+						var prev = $(selection.focusNode).parent().prev();
+						prev.focus();
+						selection.setPosition(selection.focusNode,selection.focusNode.length);
+
+						changeFontSize(prev);
+					}
+				}
+				else if(event.keyCode == 39){
+					if(selection.focusOffset == selection.focusNode.length){
+						var next = $(selection.focusNode).parent().next();
+						next.focus();
+						changeFontSize(next);
+					}
+				}
+
 			}
 		});
 
-		var fileAddEvent = function(target,fileSize){
-			if(fileSizeCheck(fileSize)){
-				var view = "<span class='attached_file_name'></span>"+
-			     "<a href='#this' class='file_remove_btn' role='button'>삭제</a>";
-				target.parent().append(view);
+		//마우스 이벤트
+		$(".tf_content").click(function(event) {
+			var target = $(event.target);
+			event.stopPropagation();
 
-				var path = target.val();
-				if(path){
-					target.next(".attached_file_name").text(path.split("\\")[path.split("\\").length-1]);
+			if(target.is("div")){
+				target = target.find("span:last-child");
+				if(change){
+					target.after(element);
+					element.focus();
+					element = $("<span>").attr("contenteditable","true");
+					change = false;
+				}else{
+					target.focus();
 				}
-			}else{
-				alert("첨부파일의 크기는 10MB 이내로 등록 가능합니다.");
-				target.parent().remove();
-			}
-		}
-
-		$("#fileAddBtn").on("click", function() {
-			if($(".new_attached_file").length < 3){
-				var element = "<div class='file_ele'><input type='file' class='new_attached_file' hidden='hidden' name='new_attached_file' /></div>";
-
-				$("#attachedFileGroup").prepend(element);
-
-				var fileElement = $("#attachedFileGroup .file_ele:first-child");
-				var upload = fileElement.find(".new_attached_file");
-
-				var agent = navigator.userAgent.toLowerCase();
-
-				//IE
-				if ( (navigator.appName == 'Netscape' && agent.indexOf('trident') != -1) || (agent.indexOf("msie") != -1)) {
-					fileElement.find(".new_attached_file").on("click",function(event) {
-						var target = event.target;
-						setTimeout(function(){
-							if($(target).val().length > 0){
-								var fileSize = target.files[0].size;
-								fileAddEvent($(target),fileSize);
-							}
-						 }, 0);
-					});
-				}
-				else{
-					fileElement.find(".new_attached_file").on("change", function(event) {
-						var target = event.target;
-						if($(target).val().length > 0){
-							var fileSize = target.files[0].size;
-							fileAddEvent($(target),fileSize);
-						}
-					});
-				}
-
-				fileElement.find(".new_attached_file").click();
 			}
 			else{
-				alert("첨부파일은 최대 3개까지 가능합니다.");
+				if(change){
+					var selection = window.getSelection();
+					var offset = selection.focusOffset;
+					var text = target.text();
+					target.html(text.substr(0, offset)).append(element).append(text.substr(offset));
+
+					element.focus();
+
+					element = $("<span>").attr("contenteditable","true");
+					change = false;
+				}else{
+					changeFontSize(target);
+				}
 			}
 		});
 
 		$("#postResetBtn").on("click", function(event) {
-			$(".tf_content").html("내용을 입력해주세요.");
+			var selection = window.getSelection();
+
+			$(".tf_content").html("<span contenteditable='true'>내용을 입력해주세요.</span>").find("span").focus();
+
+			element = $("<span>").attr("contenteditable","true");
+			selection.setPosition(selection.focusNode,selection.focusNode.length);
 		});
 
 		$("#postSubmitBtn").on("click", function(event) {
-			$(".new_attached_file").each(function(i, element) {
-				if(!$(element).val()){
-					$(element).parent().remove();
-				}
-			});
 
 			if($(".tf_content").html() == ""){
 				alert("내용을 작성해주세요.");
-				$(".tf_content").focus();
+				$(".tf_content").find("span").focus();
 				return false;
 			}
 			else{

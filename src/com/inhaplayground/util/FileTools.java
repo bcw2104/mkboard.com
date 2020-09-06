@@ -154,8 +154,6 @@ public class FileTools {
 			file = new File(dirPath);
 		}
 
-		System.out.println(dirPath);
-
 		 if(file.exists()) {
 			if(file.isDirectory()) {
 				clearDirectory(file.listFiles());

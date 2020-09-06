@@ -74,6 +74,7 @@
 #fileAddBtn{
     width: 30px;
     font-size: 1.4rem;
+    letter-spacing: 0px;
 }
 
 .file_ele{
@@ -159,7 +160,14 @@
 .tf_content {
 	min-height: 400px;
 	padding: 5px;
+
+	cursor: text;
 }
+
+.tf_content > p{
+	display: inline-block;
+}
+
 
 .box_resizer {
 	height: 11px;

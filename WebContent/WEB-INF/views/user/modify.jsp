@@ -61,4 +61,5 @@
 </div>
 
 <script type="text/javascript" src="/resources/js/modify_action.js" ></script>
+<script type="text/javascript" src="/resources/js/modify_file_action.js" ></script>
 <script type="text/javascript" src="/resources/js/modify_validation_check.js" ></script>

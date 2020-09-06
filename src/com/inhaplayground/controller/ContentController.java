@@ -312,7 +312,7 @@ public class ContentController {
 			boolean regState = false;
 			String msg = "";
 
-			List<MultipartFile> fileList = mtfRequest.getFiles("new_attached_file");
+			List<MultipartFile> fileList = mtfRequest.getFiles("attached_file");
 
 			if(important == null) {
 				postDTO.setImportant(0);

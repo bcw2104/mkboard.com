@@ -32,6 +32,10 @@ div{
 	word-break: break-all;
 }
 
+[contenteditable="true"]:focus{
+	outline:none;
+}
+
 .btn_major{
 	background-color: #0059ab;
 	color: #ffffff;
@@ -95,3 +99,5 @@ div{
 .right_page_arrow{
 	background-image: url("/resources/images/right_arrow.svg");
 }
+
+
