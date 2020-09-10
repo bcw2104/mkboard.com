@@ -6,6 +6,8 @@ public class MailForm {
 
 	@Value("${mail.title}")
 	private String mailTitle;
+	@Value("${mail.serverPost}")
+	private int serverPost;
 
 	public String registerMailForm(String key) {
 		StringBuffer page = new StringBuffer();
@@ -57,7 +59,7 @@ public class MailForm {
 		page.append("<div style='padding: 10px 0; font-size:16px'>");
 		page.append("아이디: <span style='font-weight:bold;'>"+userId+"</span><br/>");
 		page.append("</div>");
-		page.append("<a href='http://localhost:8080/account/find/"+key+"'>"
+		page.append("<a href='http://localhost:"+serverPost+"/account/find/"+key+"'>"
 				+ "<button style='width:200px; height:40px;"
 				+ "font-size: 14px;"
 				+ "background-color: #0059ab;color: #ffffff;"

@@ -13,7 +13,6 @@ import com.inhaplayground.entity.PostFileDTO;
 import com.inhaplayground.filter.ImageFileFilter;
 
 public class FileTools {
-
 	@Value("${file.root}")
 	private String rootPath;
 	@Value("${file.user}")
@@ -32,14 +31,14 @@ public class FileTools {
 
 		if(postId == 0) {
 			if(userId != null) {
-				dirPath = rootPath+"\\"+userPath+"\\"+userId+"\\"+profilePath;
+				dirPath = rootPath+File.separator+userPath+File.separator+userId+File.separator+profilePath;
 				if(storedFileName != null) {
-					file = new File(dirPath+"\\"+storedFileName);
+					file = new File(dirPath+File.separator+storedFileName);
 					if(file.exists()) {
 						return file;
 					}
 					else {
-						return new File(rootPath+"\\"+defaultProfilePath);
+						return new File(rootPath+File.separator+defaultProfilePath);
 					}
 				}
 				else {
@@ -57,21 +56,21 @@ public class FileTools {
 							return file;
 						}
 						else {
-							return new File(rootPath+"\\"+defaultProfilePath);
+							return new File(rootPath+File.separator+defaultProfilePath);
 						}
 					}
 					else {
-						return new File(rootPath+"\\"+defaultProfilePath);
+						return new File(rootPath+File.separator+defaultProfilePath);
 					}
 				}
 			}
 			else {
-				return new File(rootPath+"\\"+defaultProfilePath);
+				return new File(rootPath+File.separator+defaultProfilePath);
 			}
 		}
 		else {
-			dirPath = rootPath+"\\"+userPath+"\\"+userId+"\\"+postPath+"\\"+postId;
-			file = new File(dirPath +"\\"+storedFileName);
+			dirPath = rootPath+File.separator+userPath+File.separator+userId+File.separator+postPath+File.separator+postId;
+			file = new File(dirPath +File.separator+storedFileName);
 			if(file.exists()) {
 				return file;
 			}
@@ -84,13 +83,13 @@ public class FileTools {
 		String dirPath;
 
 		if(postId == 0) {
-			dirPath = rootPath+"\\"+userPath+"\\"+userId+"\\"+profilePath;
+			dirPath = rootPath+File.separator+userPath+File.separator+userId+File.separator+profilePath;
 		}
 		else {
-			dirPath = rootPath+"\\"+userPath+"\\"+userId+"\\"+postPath+"\\"+postId;
+			dirPath = rootPath+File.separator+userPath+File.separator+userId+File.separator+postPath+File.separator+postId;
 		}
 
-		File file = new File(dirPath+"\\"+fileName);
+		File file = new File(dirPath+File.separator+fileName);
 		if(!file.exists()) {
 			file.mkdirs();
 		}
@@ -140,16 +139,16 @@ public class FileTools {
 
 
 		if(postId == 0) {
-			dirPath = rootPath+"\\"+userPath+"\\"+userId;
+			dirPath = rootPath+File.separator+userPath+File.separator+userId;
 		}
 		else {
-			dirPath = rootPath+"\\"+userPath+"\\"+userId+"\\"+postPath+"\\"+postId;
+			dirPath = rootPath+File.separator+userPath+File.separator+userId+File.separator+postPath+File.separator+postId;
 		}
 
 		File file = null;
 
 		if(storedFileName != null) {
-			file = new File(dirPath+"\\"+storedFileName);
+			file = new File(dirPath+File.separator+storedFileName);
 		}else {
 			file = new File(dirPath);
 		}
