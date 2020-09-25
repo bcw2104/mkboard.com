@@ -1,13 +1,16 @@
 {
   "ecmaVersion": 5,
   "plugins": {
-    "guess-types": {
-      
-    },
     "outline": {
       
     },
+    "doc_comment": {
+      
+    },
     "browser-extension": {
+      
+    },
+    "ckeditor4.4.x": {
       
     },
     "jquery-extension": {
@@ -15,6 +18,7 @@
     }
   },
   "libs": [
+    "ecma5",
     "browser",
     "jquery"
   ]

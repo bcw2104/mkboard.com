@@ -33,6 +33,7 @@
 
 		$("#hideNoticeCkb").on('change', function() {
 			var status;
+
 			$("#hideNotice").toggleClass("selected");
 			if ($(this).is(':checked')) {
 				$("#noticePost").css("display","none");

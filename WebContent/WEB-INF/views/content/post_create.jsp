@@ -39,7 +39,7 @@
 				</c:forEach>
 			</select>
 		</div>
-		<c:if test="${requestScope.login == 'admin'}">
+		<c:if test="${sessionScope.user.userId == 'admin'}">
 			<label class=admin_control>공지로 등록<input type="checkbox" class="ckb_notice"  name="important"></label>
 		</c:if>
 		<div class="form_control">

@@ -34,7 +34,7 @@
 	<div class="board_header">
 		<span class="board_title">${requestScope.boardName}</span>
 		<a class="btn_write" href="${path}/create">
-		<c:if test="${requestScope.categoryId != 'notice' || requestScope.login == 'admin'}">
+		<c:if test="${requestScope.categoryId != 'notice' || sessionScope.user.userId == 'admin'}">
 		    <button class="btn_major btn_self">
 				<img alt="write" src="/resources/images/pencil_white.svg">글쓰기
 			</button>

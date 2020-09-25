@@ -1,9 +1,9 @@
+
 (function($){
 
 	$(document).ready(function() {
 		var element = $("<span>").attr("contenteditable","true");
 		var change = false;
-
 
 		var changeFontSize = function(target){
 			$(".opt_font_size").val(target.css("font-size").substr(0,target.css("font-size").indexOf("p")));
