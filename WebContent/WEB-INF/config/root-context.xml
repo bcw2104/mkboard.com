@@ -39,12 +39,12 @@
 		<constructor-arg index="0" ref="sqlSessionFactoryBean" />
 	</bean>
 
-	<mybatis-spring:scan base-package="com.inhaplayground.mapper"/>
+	<mybatis-spring:scan base-package="com.mkboard.mapper"/>
 
 	<!-- Util beans -->
-	<bean class="com.inhaplayground.util.CookieTools" lazy-init="true"  />
-	<bean class="com.inhaplayground.util.FileTools" lazy-init="true"  />
-	<bean class="com.inhaplayground.util.AuthTools" lazy-init="true"  />
-	<bean class="com.inhaplayground.util.MailForm" lazy-init="true"  />
+	<bean class="com.mkboard.util.CookieTools" lazy-init="true"  />
+	<bean class="com.mkboard.util.FileTools" lazy-init="true"  />
+	<bean class="com.mkboard.util.AuthTools" lazy-init="true"  />
+	<bean class="com.mkboard.util.MailForm" lazy-init="true"  />
 
 </beans>

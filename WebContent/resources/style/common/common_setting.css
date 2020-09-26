@@ -17,6 +17,7 @@ body, textarea,input{
 
 select, button,input[type="checkbox"],input[type="submit"],input[type="reset"]
 {
+	background-color : #ffffff;
 	cursor: pointer;
 }
 

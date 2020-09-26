@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 														"HTTP://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.inhaplayground.mapper.UserMapperInterface">
+<mapper namespace="com.mkboard.mapper.UserMapperInterface">
 
 	<select id="getCount"  resultType="int">
 		SELECT count(*) FROM tbl_user

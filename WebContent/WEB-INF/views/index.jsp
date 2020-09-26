@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Inha Univ PlayGround</title>
+	<title>Mkboard</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
@@ -41,7 +41,7 @@
         			</c:otherwise>
         		</c:choose>
         	</div>
-        	<div class="header-title"><a class="header-title_link" href="/">Inha Univ PlayGround</a></div>
+        	<div class="header-title"><a class="header-title_link" href="/">게시판 플랫폼</a></div>
         </div>
         <div class="lnb">
 			<ul class="lnb-list">

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 														"HTTP://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.inhaplayground.mapper.CategoryMapperInterface">
+<mapper namespace="com.mkboard.mapper.CategoryMapperInterface">
 
 	<select id="selectOne" parameterType="String" resultType="categoryDTO">
 		SELECT * FROM tbl_category WHERE category_id = #{categoryId}

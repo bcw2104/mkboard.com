@@ -11,15 +11,15 @@
 	</settings>
 
     <typeAliases>
-		<typeAlias type="com.inhaplayground.entity.BoardDTO" alias="boardDTO"/>
-		<typeAlias type="com.inhaplayground.entity.CategoryDTO" alias="categoryDTO"/>
-		<typeAlias type="com.inhaplayground.entity.CommentDTO" alias="commentDTO"/>
-		<typeAlias type="com.inhaplayground.entity.SubCommentDTO" alias="subCommentDTO"/>
-		<typeAlias type="com.inhaplayground.entity.PostDTO" alias="postDTO"/>
-		<typeAlias type="com.inhaplayground.entity.UserDTO" alias="userDTO"/>
-		<typeAlias type="com.inhaplayground.entity.CertificationDTO" alias="certificationDTO"/>
-		<typeAlias type="com.inhaplayground.entity.PostInfoDTO" alias="postInfoDTO"/>
-		<typeAlias type="com.inhaplayground.entity.PostFileDTO" alias="postFileDTO"/>
+		<typeAlias type="com.mkboard.entity.BoardDTO" alias="boardDTO"/>
+		<typeAlias type="com.mkboard.entity.CategoryDTO" alias="categoryDTO"/>
+		<typeAlias type="com.mkboard.entity.CommentDTO" alias="commentDTO"/>
+		<typeAlias type="com.mkboard.entity.SubCommentDTO" alias="subCommentDTO"/>
+		<typeAlias type="com.mkboard.entity.PostDTO" alias="postDTO"/>
+		<typeAlias type="com.mkboard.entity.UserDTO" alias="userDTO"/>
+		<typeAlias type="com.mkboard.entity.CertificationDTO" alias="certificationDTO"/>
+		<typeAlias type="com.mkboard.entity.PostInfoDTO" alias="postInfoDTO"/>
+		<typeAlias type="com.mkboard.entity.PostFileDTO" alias="postFileDTO"/>
 	</typeAliases>
 </configuration>
 
