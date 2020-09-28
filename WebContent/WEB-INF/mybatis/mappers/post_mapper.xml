@@ -12,16 +12,16 @@
 						<if test="postTitle != null">
 							post_title = #{postTitle}
 						</if>
-						<if test="userId != null">
-							AND user_id = #{userId}
+						<if test="userNickName != null">
+							AND user_id = (SELECT user_id FROM tbl_user WHERE user_nick_name = #{userNickName})
 						</if>
 					</when>
 					<otherwise>
 						<if test="postTitle != null">
 							post_title LIKE '%${postTitle}%'
 						</if>
-						<if test="userId != null">
-							AND user_id LIKE '%${userId}%'
+						<if test="userNickName != null">
+							AND user_id = (SELECT user_id FROM tbl_user WHERE user_nick_name LIKE '%${userNickName}%')
 						</if>
 					</otherwise>
 				</choose>
@@ -55,18 +55,18 @@
 					<choose>
 							<when test="correct == true">
 								<if test="postTitle != null">
-									post_title = #{postTitle}
+									AND post_title = #{postTitle}
 								</if>
-								<if test="userId != null">
-									AND user_id = #{userId}
+								<if test="userNickName != null">
+									AND user_id = (SELECT user_id FROM tbl_user WHERE user_nick_name = #{userNickName})
 								</if>
 							</when>
 							<otherwise>
 								<if test="postTitle != null">
-									post_title LIKE '%${postTitle}%'
+									AND post_title LIKE '%${postTitle}%'
 								</if>
-								<if test="userId != null">
-									AND user_id LIKE '%${userId}%'
+								<if test="userNickName != null">
+									AND user_id = (SELECT user_id FROM tbl_user WHERE user_nick_name LIKE '%${userNickName}%')
 								</if>
 							</otherwise>
 						</choose>

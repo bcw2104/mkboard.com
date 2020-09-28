@@ -60,10 +60,12 @@
 			</div>
 		</c:if>
 		<div class="post_content">${requestScope.postInfo.postContent }</div>
-		<c:if test="${sessionScope.user != null && requestScope.postInfo.userId == sessionScope.user.userId}">
+		<c:if test="${sessionScope.user != null && (requestScope.postInfo.userId == sessionScope.user.userId || sessionScope.user.userId == 'admin')}">
 			<div class="post_menu">
-				<a class="post_menu-item_link" href="${requestScope['javax.servlet.forward.request_uri']}/modify">수정</a>
-				<span class="v_bar">|</span>
+				<c:if test="${requestScope.postInfo.userId == sessionScope.user.userId}">
+					<a class="post_menu-item_link" href="${requestScope['javax.servlet.forward.request_uri']}/modify">수정</a>
+					<span class="v_bar">|</span>
+				</c:if>
 				<a class="post_menu-item_link" href="/content/${requestScope.postInfo.postId}/rmvpost">삭제</a>
 			</div>
 		</c:if>

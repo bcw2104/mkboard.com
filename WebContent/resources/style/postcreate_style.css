@@ -103,82 +103,16 @@
     color: #0073db;
 }
 
-.box_content {
-	margin-top: 20px;
-	border: 1px solid #c0c0c0;
+.ck.ck-editor__main>.ck-editor__editable{
+    height:400px;
 }
 
-.font_option {
-	padding: 5px;
-	border-bottom: 1px solid #c0c0c0;
+.ck.ck-editor__main>.ck-editor__editable li{
+	padding-left: 20px;
 }
 
-.font_option img{
-	vertical-align: middle;
-    width: 10px;
-}
-
-.font_option > div{
-	display: inline-block;
-	font-size: 0px;
-}
-
-.font_option button{
-	background-color: #ffffff;
-}
-
-.font_option button:hover{
-	background-color: #d6d6d6;
-}
-
-.opt_font_size	{
-	border-radius:5px;
-    vertical-align: bottom;
-	width: 60px;
-	height: 30px;
-}
-
-.box_font_style{
-	display: inline-block;
-	margin: 0 10px;
-}
-
-.box_font_style button{
-	width: 35px;
-	height: 30px;
-}
-
-.box_font_color button:nth-child(1){
-	width: 35px;
-	height: 30px;
-}
-.box_font_color button:nth-child(2){
-	width: 25px;
-	height: 30px;
-}
-
-.tf_content {
-	min-height: 400px;
-	padding: 5px;
-
-	cursor: text;
-}
-
-.tf_content > p{
-	display: inline-block;
-}
-
-
-.box_resizer {
-	height: 11px;
-	background-color: #e0e0e0;
-	cursor: pointer;
-	text-align: center;
-}
-
-.box_resizer img{
-	vertical-align: super;
-    height: 11px;
+.ck.ck-editor__editable > .ck-placeholder::before {
+    color: #888888;
 }
 
 .btn_self {

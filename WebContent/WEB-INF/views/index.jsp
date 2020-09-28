@@ -12,7 +12,7 @@
 	<link rel="stylesheet" href="/resources/style/common/layout_style.css">
 	<link rel="stylesheet" href="/resources/style/common/frame.css">
 	<link rel="stylesheet" href="/resources/style/common/normalize.css">
-	<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	<script type="text/javascript" src="/resources/js/tools/jquery-3.5.1.min.js"></script>
 </head>
 
 <body>
@@ -61,8 +61,6 @@
         	<a class="footer-item_link" href="https://github.com/bcw2104">Github</a><br/>
         	<hr class="hr_light">
         	<span>제작자 : bcw2104</span>
-        	<span class="v_bar">|</span>
-        	<span>대표명 : 방철우</span>
         	<span class="v_bar">|</span>
         	<span>문의전화 : 010-5026-7047</span><br/>
         	<span>주소 : 경기도 고양시 일산동구 숲속마을2로 51-57 101동 402호 (엘리시아)</span>

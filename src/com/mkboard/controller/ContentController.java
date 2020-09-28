@@ -146,13 +146,13 @@ public class ContentController {
 
 
 			String postTitle = null;
-			String userId = null;
+			String userNickName = null;
 
 			if (field != null && query != null) {
 				if (field.equals("title")) {
 					postTitle = query;
-				} else if (field.equals("auth")) {
-					userId = query;
+				} else if (field.equals("nick")) {
+					userNickName = query;
 				}
 			}
 
@@ -161,12 +161,12 @@ public class ContentController {
 			}
 
 			//일반 게시물 가져오기
-			model.addAttribute("postList", postService.findList(categoryId,boardId,0,postTitle,userId,false,sortType
+			model.addAttribute("postList", postService.findList(categoryId,boardId,0,postTitle,userNickName,false,sortType
 																				,18 * (pageNum - 1) + 1,18 * pageNum));
 
 
 			model.addAttribute("boardList", boardService.findList(categoryId));
-			model.addAttribute("postCount", postService.getCount(categoryId,boardId,0,postTitle,userId,false));
+			model.addAttribute("postCount", postService.getCount(categoryId,boardId,0,postTitle,userNickName,false));
 			model.addAttribute("pageNum", pageNum);
 			model.addAttribute("boardId", boardDTO.getBoardId());
 			model.addAttribute("boardName", boardDTO.getBoardName());
@@ -276,7 +276,7 @@ public class ContentController {
 
 		PostInfoDTO postInfoDTO = postService.findOne(postId);
 
-		if(postInfoDTO.getUserId().equals(userDTO.getUserId())) {
+		if(postInfoDTO.getUserId().equals(userDTO.getUserId()) || userDTO.getUserId().equals("admin")) {
 			postFileService.delete(postInfoDTO.getUserId(),postInfoDTO.getPostId(), null);
 			postModifyService.delete(postId);
 

@@ -56,13 +56,13 @@ public class PostService{
 		return mapper.getCount(hashMap);
 	}
 
-	public int getCount(String categoryId,String boardId,int important,String postTitle,String userId,boolean correct) {
+	public int getCount(String categoryId,String boardId,int important,String postTitle,String userNickName,boolean correct) {
 		HashMap<String, Object> hashMap = new HashMap<String, Object>();
 		hashMap.put("categoryId", categoryId);
 		hashMap.put("boardId", boardId);
 		hashMap.put("important", important);
 		hashMap.put("postTitle", postTitle);
-		hashMap.put("userId", userId);
+		hashMap.put("userNickName", userNickName);
 		hashMap.put("correct", correct);
 
 		return mapper.getCount(hashMap);
@@ -82,14 +82,14 @@ public class PostService{
 	}
 
 	public ArrayList<PostInfoDTO> findList(String categoryId,String boardId,int important,
-							String postTitle,String userId,boolean correct,String sortType,int frontPageNum,int rearPageNum) {
+							String postTitle,String userNickName,boolean correct,String sortType,int frontPageNum,int rearPageNum) {
 
 		HashMap<String, Object> hashMap = new HashMap<String, Object>();
 		hashMap.put("categoryId", categoryId);
 		hashMap.put("boardId", boardId);
 		hashMap.put("important", important);
 		hashMap.put("postTitle", postTitle);
-		hashMap.put("userId", userId);
+		hashMap.put("userNickName", userNickName);
 		hashMap.put("correct", correct);
 		hashMap.put("sortType", sortTypeConverter(sortType));
 		hashMap.put("frontPageNum", frontPageNum);

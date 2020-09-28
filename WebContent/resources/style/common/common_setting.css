@@ -1,7 +1,6 @@
 @charset "UTF-8";
 
 * {
-	padding: 0;
 	margin: 0;
 	box-sizing: border-box
 }
@@ -11,7 +10,7 @@ html, body {
 	height: 100vh;
 }
 
-body, textarea,input{
+body{
  	font-family: 'Helvetica','Arial',sans-serif;
 }
 
@@ -21,7 +20,7 @@ select, button,input[type="checkbox"],input[type="submit"],input[type="reset"]
 	cursor: pointer;
 }
 
-input, select,button	 {
+input, select,button{
 	border: 1px solid #c0c0c0;
 }
 
@@ -38,7 +37,7 @@ div{
 }
 
 .btn_major{
-	background-color: #0059ab;
+	background-color: #0059ab !important;
 	color: #ffffff;
 
 	letter-spacing: 2px;
@@ -47,7 +46,7 @@ div{
 }
 
 .btn_major:hover{
-	background-color: #0073db;
+	background-color: #0073db !important;
 }
 
 .btn_group>button:not(:last-child){
@@ -70,6 +69,10 @@ div{
 .selected{
 	color : #000000 !important;
 	font-weight: bold;
+}
+
+.btn_selected{
+	background-color: #d6d6d6;
 }
 
 .v_bar {

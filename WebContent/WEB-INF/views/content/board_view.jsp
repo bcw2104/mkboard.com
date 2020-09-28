@@ -10,7 +10,7 @@
 <c:set var="path" value="/content/${requestScope.categoryId}${requestScope.boardId != null ? '/'+=requestScope.boardId : ''}" />
 <c:set var="sort" value="${param.sort != null ? 'sort='+=param.sort+='&' : ''}" />
 <c:choose>
-	<c:when test="${(param.field == 'title' || param.field== 'auth')  && param.query != null}">
+	<c:when test="${(param.field == 'title' || param.field== 'nick')  && param.query != null}">
 		<c:set var="search" value="?field=${param.field}&query=${param.query}&" />
 	</c:when>
 	<c:otherwise>
@@ -53,7 +53,7 @@
 			<form action="${path}" method="get" class="search_form">
 				<select name="field" class="opt_target">
 					<option value="title" ${param.field == 'title' ? 'selected=selected' : ''}>제목</option>
-					<option value="auth" ${param.field == 'auth' ? 'selected=selected' : ''}>작성자</option>
+					<option value="nick" ${param.field == 'nick' ? 'selected=selected' : ''}>작성자</option>
 				</select>
 				<input type="text" name="query" class="tf_query" value="${param.query}" placeholder="검색어" />
 				<button type="submit" class="btn_self">
