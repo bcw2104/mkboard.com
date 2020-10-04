@@ -13,12 +13,12 @@
 	</select>
 
 	<select id="selectList" parameterType="hashmap" resultType="subcommentDTO">
-		SELECT * FROM tbl_subcomment
+		SELECT tbl_user.user_nick_name,tbl_subcomment.* FROM tbl_user INNER JOIN (SELECT * FROM tbl_subcomment
 		<where>
 			<if test="parentId != 0">parent_id = #{parentId}</if>
 			<if test="userId != null">AND user_id = #{userId}</if>
 		</where>
-		ORDER BY create_date ASC
+		ORDER BY create_date ASC) tbl_subcomment ON tbl_user.user_id=tbl_subcomment.user_id
 	</select>
 
 	<insert id="insert" parameterType="subCommentDTO">

@@ -16,7 +16,7 @@
 
         })
         .then( editor => {
-        	if($("#preContent")){
+        	if($("#preContent")[0]){
         		editor.setData($("#preContent").html());
         		$("#preContent").remove();
         	}
@@ -24,7 +24,6 @@
         .catch( error => {
             console.error( error );
         } );
-
 
 		$("#postSubmitBtn").on("click", function(event) {
 

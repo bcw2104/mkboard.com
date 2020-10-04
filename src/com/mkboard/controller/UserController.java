@@ -62,9 +62,9 @@ public class UserController {
 		if(_pageNum != null) {
 			pageNum = Integer.parseInt(_pageNum);
 		}
-		int postCount = postService.getCount(null, null, 0, null, userDTO.getUserId(), true);
+		int postCount = postService.getCount(null, null, 0, null, userDTO.getUserNickName(), true);
 
-		model.addAttribute("postList", postService.findList(null, null, 0, null, userDTO.getUserId(),
+		model.addAttribute("postList", postService.findList(null, null, 0, null, userDTO.getUserNickName(),
 																				true, null, 8 * (pageNum - 1) + 1, 8 * pageNum));
 
 		int commentCount = commentService.getCount(0,userDTO.getUserId())+commentService.getSubCount(0,userDTO.getUserId());

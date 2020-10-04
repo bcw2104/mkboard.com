@@ -1,6 +1,19 @@
 (function($){
 	$(document).ready(function() {
 
+		ClassicEditor
+        .create( document.querySelector( '#editor' ))
+        .then( editor => {
+        	if($(".post_content")[0]){
+        		editor.setData($(".post_content").html());
+        		$(".post_content").remove();
+        	}
+        	editor.isReadOnly = true;
+        } )
+        .catch( error => {
+            console.error( error );
+        } );
+
 		$("#attachedFileListOpen").on("click", function() {
 			$(".post_attached_files-list").toggle();
 		});

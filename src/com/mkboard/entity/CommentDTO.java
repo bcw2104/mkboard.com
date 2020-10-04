@@ -8,6 +8,7 @@ public class CommentDTO {
 	private int postId;
 	private String commentContent;
 	private String userId;
+	private String userNickName;
 	private Timestamp createDate;
 	private int childCount;
 	private ArrayList<SubCommentDTO> subComment;
@@ -52,6 +53,14 @@ public class CommentDTO {
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+	public String getUserNickName() {
+		return userNickName;
+	}
+
+	public void setUserNickName(String userNickName) {
+		this.userNickName = userNickName;
 	}
 
 	public Timestamp getCreateDate() {

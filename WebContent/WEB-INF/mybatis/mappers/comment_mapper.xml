@@ -13,24 +13,31 @@
 	</select>
 
 	<select id="selectOne" parameterType="int" resultType="commentDTO">
-		SELECT * FROM tbl_comment WHERE comment_id = #{commentId}
+		SELECT tbl_user.user_nick_name,tbl_comment.*
+			FROM tbl_user
+				INNER  JOIN
+					(SELECT * FROM tbl_comment WHERE comment_id = #{commentId}) tbl_comment
+						ON tbl_user.user_id=tbl_comment.user_id
 	</select>
 
 	<select id="selectList" parameterType="hashmap" resultType="commentDTO">
-		SELECT * FROM tbl_comment
-		<where>
-			<if test="postId != 0">post_id = #{postId}</if>
-			<if test="userId != null">AND user_id = #{userId}</if>
-		</where>
-		ORDER BY
-		<choose>
-			<when test="sortType != null">
-				create_date ${sortType}
-			</when>
-			<otherwise>
-				comment_id DESC
-			</otherwise>
-		</choose>
+		SELECT tbl_user.user_nick_name,tbl_comment.*
+			FROM tbl_user
+				INNER  JOIN
+				(SELECT * FROM tbl_comment
+				<where>
+					<if test="postId != 0">post_id = #{postId}</if>
+					<if test="userId != null">AND user_id = #{userId}</if>
+				</where>
+				ORDER BY
+				<choose>
+					<when test="sortType != null">
+						create_date ${sortType}
+					</when>
+					<otherwise>
+						comment_id DESC
+					</otherwise>
+				</choose>) tbl_comment ON tbl_user.user_id=tbl_comment.user_id
 	</select>
 
 	<insert id="insert" parameterType="commentDTO">

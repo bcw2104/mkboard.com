@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="/resources/style/boardview_style.css" />
 <link rel="stylesheet" href="/resources/style/common/nav_style.css" />
 
-
+<c:set var="now"><fmt:formatDate  value="<%=new java.util.Date()%>"  pattern="yyyy-MM-dd"/></c:set>
 <c:set var="path" value="/content/${requestScope.categoryId}${requestScope.boardId != null ? '/'+=requestScope.boardId : ''}" />
 <c:set var="sort" value="${param.sort != null ? 'sort='+=param.sort+='&' : ''}" />
 <c:choose>
@@ -84,7 +84,13 @@
 						</a>
 					</td>
 					<td>${n.userNickName}</td>
-					<td><fmt:formatDate value="${n.createDate}" pattern="yyyy-MM-dd" /></td>
+					<td>
+						<c:set var="createDate"><fmt:formatDate value="${n.createDate}" pattern="yyyy-MM-dd" /></c:set>
+						<c:choose>
+							<c:when test="${now == createDate}"><fmt:formatDate value="${n.createDate}" pattern="HH:mm" /></c:when>
+							<c:otherwise>${createDate}</c:otherwise>
+						</c:choose>
+					</td>
 					<td><fmt:formatNumber type="number" value="${n.hits}" /></td>
 				</tr>
 			</c:forEach>
@@ -101,25 +107,46 @@
 						</a>
 					</td>
 					<td>${n.userNickName}</td>
-					<td><fmt:formatDate value="${n.createDate}" pattern="yyyy-MM-dd" /></td>
+					<td>
+						<c:set var="createDate"><fmt:formatDate value="${n.createDate}" pattern="yyyy-MM-dd" /></c:set>
+						<c:choose>
+							<c:when test="${now == createDate}"><fmt:formatDate value="${n.createDate}" pattern="HH:mm" /></c:when>
+							<c:otherwise>${createDate}</c:otherwise>
+						</c:choose>
+					</td>
 					<td><fmt:formatNumber type="number" value="${n.hits}" /></td>
 				</tr>
 			</c:forEach>
 		</tbody>
 		<tbody id="regulerPost">
-			<c:forEach begin="0" end="17" items="${requestScope.postList}" var="n" varStatus="st">
-				<tr class="board_table-cell">
-					<td>${st.index+1}</td>
-					<td>
-						<a class="board_table-cell_link" href="/content/${requestScope.categoryId}/${n.boardId}/${n.postId}">
-							${n.postTitle} <c:if test="${n.comments!=0}">(${n.comments})</c:if>
-						</a>
-					</td>
-					<td>${n.boardId != 'anonymous' ? n.userNickName : '비공개'}</td>
-					<td><fmt:formatDate value="${n.createDate}" pattern="yyyy-MM-dd" /></td>
-					<td><fmt:formatNumber type="number" value="${n.hits}" /></td>
-				</tr>
-			</c:forEach>
+			<c:choose>
+				<c:when test="${requestScope.postCount > 0}">
+					<c:forEach begin="0" end="17" items="${requestScope.postList}" var="n" varStatus="st">
+						<tr class="board_table-cell">
+							<td>${st.index+1}</td>
+							<td>
+								<a class="board_table-cell_link" href="/content/${requestScope.categoryId}/${n.boardId}/${n.postId}">
+									${n.postTitle} <c:if test="${n.comments!=0}">(${n.comments})</c:if>
+								</a>
+							</td>
+							<td>${n.boardId != 'anonymous' ? n.userNickName : '비공개'}</td>
+							<td>
+								<c:set var="createDate"><fmt:formatDate value="${n.createDate}" pattern="yyyy-MM-dd" /></c:set>
+								<c:choose>
+									<c:when test="${now == createDate}"><fmt:formatDate value="${n.createDate}" pattern="HH:mm" /></c:when>
+									<c:otherwise>${createDate}</c:otherwise>
+								</c:choose>
+							</td>
+							<td><fmt:formatNumber type="number" value="${n.hits}" /></td>
+						</tr>
+					</c:forEach>
+				</c:when>
+				<c:otherwise>
+					<tr class="board_table-cell">
+						<td colspan="5">게시글이 존재하지 않습니다.</td>
+					</tr>
+				</c:otherwise>
+			</c:choose>
 		</tbody>
 	</table>
 	<div class="pager">

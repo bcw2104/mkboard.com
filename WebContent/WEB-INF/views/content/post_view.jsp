@@ -7,6 +7,8 @@
 <link rel="stylesheet" href="/resources/style/postview_style.css" />
 <link rel="stylesheet" href="/resources/style/common/nav_style.css" />
 
+<script src="/resources/js/tools/ckeditor.js"></script>
+
 <div class="nav">
 	<div class="nav-title">${requestScope.categoryName}</div>
 	<ul class="nav-list">
@@ -59,7 +61,10 @@
 					</ul>
 			</div>
 		</c:if>
-		<div class="post_content">${requestScope.postInfo.postContent }</div>
+		<div class="post_content" hidden="hidden">${requestScope.postInfo.postContent }</div>
+		<div class="editor-wrap">
+			<div id="editor"></div>
+		</div>
 		<c:if test="${sessionScope.user != null && (requestScope.postInfo.userId == sessionScope.user.userId || sessionScope.user.userId == 'admin')}">
 			<div class="post_menu">
 				<c:if test="${requestScope.postInfo.userId == sessionScope.user.userId}">
@@ -76,7 +81,7 @@
 			<ul class="post_comment-list">
 				<c:forEach items="${requestScope.commentList}" var="n">
 				<li id="${n.commentId}" class="post_comment-item main">
-					<div >${requestScope.postInfo.boardId != 'anonymous' ? n.userId : '비공개'}</div>
+					<div >${requestScope.postInfo.boardId != 'anonymous' ? n.userNickName : '비공개'}</div>
 					<div>${n.commentContent}</div>
 					<div>
 						<fmt:formatDate value="${n.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
@@ -85,7 +90,7 @@
 				</li>
 					<c:forEach items="${n.subComment}" var="sub">
 						<li id="sub_${sub.commentId}" class="post_comment-item sub">
-							<div>${requestScope.postInfo.boardId != 'anonymous' ? sub.userId : '비공개'}</div>
+							<div>${requestScope.postInfo.boardId != 'anonymous' ? sub.userNickName : '비공개'}</div>
 							<div>${sub.commentContent}</div>
 							<div>
 								<fmt:formatDate value="${sub.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
@@ -121,7 +126,7 @@
 					</a>
 				</div>
 				<div>
-					<span>${n.userId}</span><span><fmt:formatDate value="${n.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></span>
+					<span>${n.userNickName}</span><span><fmt:formatDate value="${n.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></span>
 				</div>
 			</div>
 		</c:forEach>

@@ -6,6 +6,7 @@ public class SubCommentDTO {
 	private int commentId;
 	private String commentContent;
 	private String userId;
+	private String userNickName;
 	private Timestamp createDate;
 	private int parentId;
 
@@ -39,6 +40,14 @@ public class SubCommentDTO {
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+	public String getUserNickName() {
+		return userNickName;
+	}
+
+	public void setUserNickName(String userNickName) {
+		this.userNickName = userNickName;
 	}
 
 	public Timestamp getCreateDate() {

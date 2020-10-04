@@ -17,7 +17,7 @@
 					var comments = "";
 					for(i in data){
 						comments+= "<li id='"+data[i].commentId+"' class='post_comment-item main'>"
-							+"<div >"+data[i].userId+"</div>"
+							+"<div >"+data[i].userNickName+"</div>"
 							+"<div>"+data[i].commentContent+"</div>"
 							+"<div>"
 							+data[i].createDate.substring(0, 19)
@@ -28,7 +28,7 @@
 							var subList = data[i].subCommentList;
 							for(j in subList){
 								comments+= "<li id='sub_"+subList[j].commentId+"' class='post_comment-item sub'>"
-									+"<div >"+subList[j].userId+"</div>"
+									+"<div >"+subList[j].userNickName+"</div>"
 									+"<div>"+subList[j].commentContent+"</div>"
 									+"<div>"
 									+subList[j].createDate.substring(0, 19)

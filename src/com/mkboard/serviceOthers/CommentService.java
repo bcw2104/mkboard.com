@@ -68,7 +68,7 @@ public class CommentService{
 			CommentDTO commentDTO = itr.next();
 			JSONObject object = new JSONObject();
 			object.put("commentId", commentDTO.getCommentId());
-			object.put("userId", (boardId.equals("anonymous") ? "비공개" : commentDTO.getUserId()));
+			object.put("userNickName", (boardId.equals("anonymous") ? "비공개" : commentDTO.getUserNickName()));
 			object.put("commentContent", commentDTO.getCommentContent());
 			object.put("createDate", commentDTO.getCreateDate().toString());
 
@@ -80,7 +80,7 @@ public class CommentService{
 					SubCommentDTO subCommentDTO = subItr.next();
 					JSONObject subObject = new JSONObject();
 					subObject.put("commentId", subCommentDTO.getCommentId());
-					subObject.put("userId", (boardId.equals("anonymous") ? "비공개" : subCommentDTO.getUserId()));
+					subObject.put("userNickName", (boardId.equals("anonymous") ? "비공개" : subCommentDTO.getUserNickName()));
 					subObject.put("commentContent", subCommentDTO.getCommentContent());
 					subObject.put("createDate", subCommentDTO.getCreateDate().toString());
 

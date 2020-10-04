@@ -5,6 +5,7 @@
 
 <link rel="stylesheet" href="/resources/style/postcreate_style.css" />
 <link rel="stylesheet" href="/resources/style/common/nav_style.css" />
+
 <script src="/resources/js/tools/ckeditor.js"></script>
 <c:set var="modify" value="${requestScope.postInfo != null}"/>
 
@@ -67,7 +68,9 @@
 		<c:if test="${requestScope.postInfo != null}">
 			<div id="preContent" hidden="hidden">${requestScope.postInfo.postContent}</div>
 		</c:if>
-		<div id="editor"></div>
+		<div class="editor-wrap">
+			<div id="editor"></div>
+		</div>
 		<div class="form_btn_group">
 			<input type="submit" id="postSubmitBtn" class="btn_major btn_self" value="등록">
 		</div>

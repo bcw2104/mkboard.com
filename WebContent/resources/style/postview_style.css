@@ -18,10 +18,6 @@
 	box-shadow: 1px 1px 3px 0 rgba(82, 62, 62, 0.4)
 }
 
-.section-top {
-	border-bottom: 1px solid #c0c0c0;
-}
-
 .board_link {
 	height: 30px;
 	color: #000000;
@@ -123,10 +119,17 @@
 	text-decoration: underline;
 }
 
+.editor-wrap{
+    min-height:400px;
+}
 
-.post_content {
-	min-height: 300px;
-	padding: 30px 10px;
+.ck.ck-editor__main>.ck-editor__editable{
+	padding: 10px;
+    border:0;
+}
+
+.ck.ck-editor__main>.ck-editor__editable li{
+	padding-left: 20px;
 }
 
 .post_menu{

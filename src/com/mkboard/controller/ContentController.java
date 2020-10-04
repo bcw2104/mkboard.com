@@ -201,7 +201,7 @@ public class ContentController {
 			}
 		}
 
-		JSONArray result =  commentService.convertToJson(commentList,postInfoDTO.getBoardId());
+		JSONArray result = commentService.convertToJson(commentList,postInfoDTO.getBoardId());
 
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().write(result.toJSONString());
