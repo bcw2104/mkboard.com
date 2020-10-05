@@ -6,9 +6,7 @@
 		var pwCheck = 0;
 		var nickNameValid =0;
 		var nameValid =0;
-		var birthValid =0;
 		var emailValid = 0;
-		var phoneValid = 0;
 		var certification = 0;
 
 		var overlapCheck = function(name,value){
@@ -151,24 +149,6 @@
 			}
 		});
 
-		$("#userBirth").focusout(function(event) {
-			var target = $(event.target);
-
-			if(target.is("input")){
-				var year = $("#userBirthY").val();
-				var month = $("#userBirthM").val();
-				var day = $("#userBirthD").val();
-
-				$("#birthMsg").empty();
-				if(dateCheck(year,month,day)){
-					birthValid = 1;
-				}
-				else{
-					birthValid = 0;
-				}
-			}
-		});
-
 		$("#userEmail").focusout(function() {
 			var regExp = /^[0-9a-z]([-_.]?[0-9a-z])*@[0-9a-z]([-_.]?[0-9a-z])*.[a-z]{2,3}$/i;
 			var userEmail = $(this).val();
@@ -199,7 +179,6 @@
 				var email = $("#userEmail").val();
 
 				var data = {"user_email":email};
-				$("#certificationMsg").css("color", "#0000ff").text("인증코드 전송 중입니다.");
 				$.ajax({
 					url : "/mail/register",
 					type:"post",
@@ -247,33 +226,11 @@
 			}
 		});
 
-		$("#userPhone").focusout(function(event) {
-			var target = $(event.target);
-
-			if(target.is("input")){
-				var regExp1 = /^01[016789]$/;
-				var regExp2 = /^[0-9]{3,4}$/;
-				var regExp3 = /^[0-9]{4}$/;
-				var phoneNum1 = $("#phoneNum1").val();
-				var phoneNum2 = $("#phoneNum2").val();
-				var phoneNum3 = $("#phoneNum3").val();
-
-				$("#phoneMsg").empty();
-				if(regExp1.test(phoneNum1) && regExp2.test(phoneNum2) && regExp3.test(phoneNum3) ){
-					phoneValid = 1;
-				}
-				else{
-					$("#phoneMsg").css("color", "#ff0000").text("전화번호를 정확하게 입력하세요.");
-					phoneValid=0;
-				}
-			}
-		});
-
 
 		$("#registerFormSubmit").on("click",function(event) {
-			var validator = idValid+pwValid +pwCheck + nickNameValid + nameValid +birthValid +emailValid + phoneValid;
+			var validator = idValid+pwValid +pwCheck + nickNameValid + nameValid +emailValid;
 
-			if(validator != 8){
+			if(validator != 6){
 				alert("항목을 전부 확인해주세요.");
 				return false;
 			}

@@ -7,7 +7,7 @@
 
 <div class="nav">
 	<div class="nav-title">마이페이지</div>
-	<ul class="nav-list">
+	<ul class="nav-list list_deco_none">
 		<li class="nav-item ${path == '/user/profile' ? 'selected' : ''}">
 			<a class="nav-item_link" href="/user/profile">프로필</a>
 		</li>
@@ -17,8 +17,18 @@
 		<li class="nav-item ${path == '/user/password' ? 'selected' : ''}">
 			<a class="nav-item_link" href="/user/password">비밀번호 변경</a>
 		</li>
+		<c:if test="${sessionScope.user.admin == 0}">
 		<li class="nav-item ${path == '/user/leave' ? 'selected' : ''}">
 			<a class="nav-item_link" href="/user/leave">회원 탈퇴</a>
 		</li>
+		</c:if>
 	</ul>
+	<c:if test="${sessionScope.user.admin == 1}">
+	<div class="nav-title">게시판 관리</div>
+	<ul class="nav-list list_deco_none">
+		<li class="nav-item ${path == '/admin/members' ? 'selected' : ''}">
+			<a class="nav-item_link" href="/admin/members">회원 목록</a>
+		</li>
+	</ul>
+	</c:if>
 </div>

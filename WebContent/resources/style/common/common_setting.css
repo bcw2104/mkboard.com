@@ -36,6 +36,11 @@ div{
 	outline:none;
 }
 
+.list_deco_none{
+	padding:0;
+	list-style: none;
+}
+
 .btn_major{
 	background-color: #0059ab !important;
 	color: #ffffff;

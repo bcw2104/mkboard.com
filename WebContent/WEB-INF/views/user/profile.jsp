@@ -50,9 +50,14 @@
 					<tr class="board_table-cell">
 						<td>${st.index+1}</td>
 						<td>
-							<a class="board_table-cell_link" href="/content/${n.categoryId}/${n.boardId}/${n.postId}">
-								${n.postTitle} <c:if test="${n.comments!=0}">(${n.comments})</c:if>
-							</a>
+						<c:choose>
+							<c:when test="${n.permission == 1}">
+								<a class="board_table-cell_link" href="/content/${n.categoryId}/${n.boardId}/${n.postId}">
+									${n.postTitle} <c:if test="${n.comments!=0}">(${n.comments})</c:if>
+								</a>
+							</c:when>
+							<c:otherwise>관리자에 의해 블라인드 처리된 게시글입니다.</c:otherwise>
+						</c:choose>
 						</td>
 						<td>${n.boardName}</td>
 						<td><fmt:formatDate value="${n.createDate}" pattern="yyyy-MM-dd" /></td>

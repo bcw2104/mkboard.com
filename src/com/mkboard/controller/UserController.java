@@ -1,7 +1,5 @@
 package com.mkboard.controller;
 
-import java.sql.Timestamp;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 
@@ -94,19 +92,13 @@ public class UserController {
 											@RequestParam(value = "user_nick_name") String userNickName,
 											 @RequestParam(value = "user_name") String userName,
 											 @RequestParam(value = "user_email") String userEmail,
-											 @RequestParam(value = "user_birth") String[] userBirthList,
-											 @RequestParam(value = "user_phone") String[] userPhoneList,
 											 @SessionAttribute("user") UserDTO userDTO,HttpServletResponse response) throws Exception{
 
 		if(userDTO.getUserId().equals(userId)) {
-			String userBirth = userBirthList[0] + "-" + userBirthList[1] + "-" + userBirthList[2]+" 00:00:00";
-			String userPhone = userPhoneList[0] + "-" + userPhoneList[1] + "-" + userPhoneList[2];
 
 			userDTO.setUserNickName(userNickName);
 			userDTO.setUserName(userName);
 			userDTO.setUserEmail(userEmail);
-			userDTO.setUserBirth(Timestamp.valueOf(userBirth));
-			userDTO.setUserPhone(userPhone);
 
 			userModifyService.update(userDTO);
 

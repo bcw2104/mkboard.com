@@ -20,7 +20,7 @@
 
 <div class="nav">
 	<div class="nav-title">${requestScope.categoryName}</div>
-	<ul class="nav-list">
+	<ul class="nav-list list_deco_none">
 		<li class="nav-item ${requestScope.boardId == null ? 'selected' : ''}">
 			<a class="nav-item_link" href="/content/${requestScope.categoryId}">전체 글</a></li>
 		<c:forEach items="${requestScope.boardList}" var="n">
@@ -34,7 +34,7 @@
 	<div class="board_header">
 		<span class="board_title">${requestScope.boardName}</span>
 		<a class="btn_write" href="${path}/create">
-		<c:if test="${requestScope.categoryId != 'notice' || sessionScope.user.userId == 'admin'}">
+		<c:if test="${requestScope.categoryId != 'notice' || sessionScope.user.admin == 1}">
 		    <button class="btn_major btn_self">
 				<img alt="write" src="/resources/images/pencil_white.svg">글쓰기
 			</button>
@@ -125,9 +125,14 @@
 						<tr class="board_table-cell">
 							<td>${st.index+1}</td>
 							<td>
-								<a class="board_table-cell_link" href="/content/${requestScope.categoryId}/${n.boardId}/${n.postId}">
-									${n.postTitle} <c:if test="${n.comments!=0}">(${n.comments})</c:if>
-								</a>
+								<c:choose>
+									<c:when test="${n.permission == 1}">
+										<a class="board_table-cell_link" href="/content/${requestScope.categoryId}/${n.boardId}/${n.postId}">
+											${n.postTitle} <c:if test="${n.comments!=0}">(${n.comments})</c:if>
+										</a>
+									</c:when>
+									<c:otherwise>관리자에 의해 블라인드 처리된 게시글입니다.</c:otherwise>
+								</c:choose>
 							</td>
 							<td>${n.boardId != 'anonymous' ? n.userNickName : '비공개'}</td>
 							<td>
@@ -150,7 +155,7 @@
 		</tbody>
 	</table>
 	<div class="pager">
-		<ul class="pager-list">
+		<ul class="pager-list list_deco_none">
 			<c:set var="pageNum" value="${requestScope.pageNum }" />
 			<c:set var="lastPage" value="${(requestScope.postCount-1)/18+1 }" />
 			<c:set var="startNum" value="${pageNum-(pageNum-1)%5}" />

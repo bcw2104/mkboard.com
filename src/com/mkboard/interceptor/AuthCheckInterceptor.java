@@ -14,7 +14,7 @@ public class AuthCheckInterceptor implements HandlerInterceptor {
 
 		UserDTO userDTO = (UserDTO) request.getSession().getAttribute("user");
 
-		if (userDTO != null && userDTO.getUserId().equals("admin")) {
+		if (userDTO != null && userDTO.getAdmin() == 1) {
 			return true; // 관리자
 		}else{
 			response.sendRedirect("/system/error/auth");

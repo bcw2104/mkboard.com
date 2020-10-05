@@ -32,8 +32,8 @@
 	</select>
 
 	<insert id="insert" parameterType="userDTO">
-		INSERT INTO tbl_user
-		VALUES(#{userId},#{userName},#{userPw},#{userGender},#{userEmail},#{userBirth},#{userPhone},sysdate,#{userNickName})
+		INSERT INTO tbl_user(user_id,user_name,user_pw,user_email,user_regdate,user_nick_name,admin)
+		VALUES(#{userId},#{userName},#{userPw},#{userEmail},sysdate,#{userNickName},0)
 	</insert>
 
 	<update id="update" parameterType="userDTO">
@@ -41,11 +41,16 @@
 		<set>
 			<if test="userName != null">user_name = #{userName},</if>
 			<if test="userPw != null">user_pw = #{userPw},</if>
-			<if test="userGender != null">user_gender = #{userGender},</if>
 			<if test="userEmail != null">user_email = #{userEmail},</if>
-			<if test="userBirth != null">user_birth = #{userBirth},</if>
-			<if test="userPhone != null">user_phone = #{userPhone},</if>
 			<if test="userNickName != null">user_nick_name=#{userNickName}</if>
+		</set>
+		WHERE user_id = #{userId}
+	</update>
+
+	<update id="admin" parameterType="userDTO">
+		UPDATE tbl_user
+		<set>
+			<if test="admin != null">admin=#{admin}</if>
 		</set>
 		WHERE user_id = #{userId}
 	</update>

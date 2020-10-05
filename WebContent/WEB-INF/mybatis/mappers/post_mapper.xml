@@ -125,6 +125,10 @@
 			(SELECT * FROM
 		   		(SELECT ROWNUM AS row_num,tbl_post.* FROM
 					(SELECT * FROM tbl_post
+					WHERE permission = 1 AND important=0
+					<if test="boardId != null">
+						AND board_id = #{boardId}
+					</if>
 					ORDER BY post_id DESC) tbl_post
 				)
 			NATURAL JOIN
@@ -132,9 +136,6 @@
 				<where>
 					<if test="categoryId != null">
 						category_id = #{categoryId}
-					</if>
-					<if test="boardId != null">
-						AND board_id = #{boardId}
 					</if>
 				</where>
 				))
@@ -151,7 +152,7 @@
 
 	<insert id="insert" parameterType="postDTO">
 		INSERT INTO tbl_post
-		VALUES(#{postId},#{postTitle},#{postContent},#{boardId},#{userId},sysdate,0,0,${important})
+		VALUES(#{postId},#{postTitle},#{postContent},#{boardId},#{userId},sysdate,0,0,${important},1)
 	</insert>
 
 	<update id="update" parameterType="postDTO">
@@ -162,6 +163,7 @@
 			<if test="boardId != null">board_id = #{boardId},</if>
 			<if test="hits > 0">hits = hits+${hits},</if>
 			<if test="comments > 0">comments = comments+${comments},</if>
+			<if test="permission != null">permission = #{permission},</if>
 			important = #{important}
 		</set>
 		WHERE post_id = #{postId}

@@ -23,21 +23,6 @@
         <input type="text" id="userName" class="inp inp_self" name="user_name" autocomplete="off"/>
         <div id="nameMsg" class="form_msg"></div>
 
-        <label >생년월일</label>
-        <div id="userBirth">
-	        <input type="text" id="userBirthY" class="inp inp_group" name="user_birth"  autocomplete="off" maxlength="4" placeholder="년(4자리)" />
-	        <input type="text" id="userBirthM" class="inp inp_group" name="user_birth"  autocomplete="off" maxlength="2" placeholder="월" />
-	        <input type="text" id="userBirthD" class="inp inp_group" name="user_birth" maxlength="2"	 autocomplete="off" placeholder="일"/>
-        </div>
-        <div id="birthMsg" class="form_msg"></div>
-
-        <label>성별</label>
-        <select name="user_gender" class="inp inp_self">
-            <option value="M">남성</option>
-            <option value="F">여성</option>
-        </select>
-         <div class="form_msg"></div>
-
         <label>이메일</label>
         <input type="text" class="inp inp_self" id="userEmail" name="user_email"/>
         <div id="emailMsg" class="form_msg"></div>
@@ -46,15 +31,6 @@
 		<button type="button" id="certifiactionBtn" class="btn_major">인증코드 받기</button>
 		<div id="certificationMsg" class="form_msg"></div>
 
-        <label>전화번호</label>
-        <div id="userPhone">
-            <input type="text" id="phoneNum1" class="inp inp_txt_group" name="user_phone" autocomplete="off" maxlength="3"/>
-            -
-            <input type="text" id="phoneNum2" class="inp inp_txt_group" name="user_phone" autocomplete="off" maxlength="4" />
-            -
-            <input type="text" id="phoneNum3" class="inp inp_txt_group" name="user_phone" autocomplete="off" maxlength="4" />
-        </div>
-        <div id="phoneMsg" class="form_msg"></div>
         <button type="submit" id="registerFormSubmit" class="btn_self btn_major">회원가입</button>
     </form>
 </div>

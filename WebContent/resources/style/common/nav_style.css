@@ -13,19 +13,16 @@
 
 .nav-title {
 	padding: 10px;
+	margin: 10px 0;
 	border-bottom: 5px solid #0059ab;
 	font-weight: bold;
 	font-size: 1.3rem;
 	margin-bottom: 10px;
 }
 
-.nav-list {
-	padding:0;
-	list-style: none;
-}
-
 .nav-item {
 	cursor: pointer;
+	font-size: 1.1rem;
 }
 
 .nav-item:hover {

@@ -11,7 +11,7 @@
 
 <div class="nav">
 	<div class="nav-title">${requestScope.categoryName}</div>
-	<ul class="nav-list">
+	<ul class="nav-list list_deco_none">
 		<li class="nav-item ${requestScope.postInfo.boardId == null ? 'selected' : ''}">
 			<a class="nav-item_link" href="/content/${requestScope.categoryId}">전체 글</a></li>
 		<c:forEach items="${requestScope.boardList}" var="n">
@@ -65,14 +65,20 @@
 		<div class="editor-wrap">
 			<div id="editor"></div>
 		</div>
-		<c:if test="${sessionScope.user != null && (requestScope.postInfo.userId == sessionScope.user.userId || sessionScope.user.userId == 'admin')}">
-			<div class="post_menu">
-				<c:if test="${requestScope.postInfo.userId == sessionScope.user.userId}">
-					<a class="post_menu-item_link" href="${requestScope['javax.servlet.forward.request_uri']}/modify">수정</a>
+		<c:if test="${sessionScope.user != null}">
+		<div class="post_menu">
+			<c:if test="${requestScope.postInfo.userId == sessionScope.user.userId}">
+				<a class="post_menu-item_link" href="${requestScope['javax.servlet.forward.request_uri']}/modify">수정</a>
+				<span class="v_bar">|</span>
+				<a class="post_menu-item_link" href="/content/${requestScope.postInfo.postId}/rmvpost">삭제</a>
+				<c:if test="${sessionScope.user.admin == 1}">
 					<span class="v_bar">|</span>
 				</c:if>
-				<a class="post_menu-item_link" href="/content/${requestScope.postInfo.postId}/rmvpost">삭제</a>
-			</div>
+			</c:if>
+			<c:if test="${sessionScope.user.admin == 1}">
+				<a class="post_menu-item_link" href="/content/${requestScope.postInfo.postId}/blind">블라인드</a>
+			</c:if>
+		</div>
 		</c:if>
 		<div class="post_comment">
 			<h3>댓글(${requestScope.postInfo.comments})</h3>

@@ -25,33 +25,10 @@
 	        <input type="text" id="userName" class="inp inp_self" name="user_name" value="${sessionScope.user.userName}" autocomplete="off"/>
 	        <div id="nameMsg" class="form_msg"></div>
 
-	        <label >생년월일</label>
-	        <div id="userBirth">
-		        <input type="text" id="userBirthY" class="inp inp_group" name="user_birth" autocomplete="off" maxlength="4" placeholder="년(4자리)"
-		        value='<fmt:formatDate value="${sessionScope.user.userBirth}" pattern="yyyy"/>' />
-		        <input type="text" id="userBirthM" class="inp inp_group" name="user_birth"  autocomplete="off" maxlength="2" placeholder="월"
-		        value='<fmt:formatDate value="${sessionScope.user.userBirth}" pattern="MM"/>' />
-		        <input type="text" id="userBirthD" class="inp inp_group" name="user_birth" maxlength="2"	 autocomplete="off" placeholder="일"
-		        value='<fmt:formatDate value="${sessionScope.user.userBirth}" pattern="dd"/>' />
-	        </div>
-	        <div id="birthMsg" class="form_msg"></div>
-
 	        <label>이메일</label>
 	        <input type="text" class="inp inp_self" id="userEmail" name="user_email" value="${sessionScope.user.userEmail}"/>
 	        <div id="emailMsg" class="form_msg"></div>
 
-	        <label>전화번호</label>
-	        <div id="userPhone">
-	            <input type="text" id="phoneNum1" class="inp inp_txt_group" name="user_phone" autocomplete="off" maxlength="3"
-	            value="${sessionScope.user.userPhone.split('-')[0]}"/>
-	            -
-	            <input type="text" id="phoneNum2" class="inp inp_txt_group" name="user_phone" autocomplete="off" maxlength="4"
-	             value="${sessionScope.user.userPhone.split('-')[1]}"/>
-	            -
-	            <input type="text" id="phoneNum3" class="inp inp_txt_group" name="user_phone" autocomplete="off" maxlength="4"
-	             value="${sessionScope.user.userPhone.split('-')[2]}"/>
-	        </div>
-	        <div id="phoneMsg" class="form_msg"></div>
 			<div class="btn_wrap">
 		        <button type="button" id="modifyFormCancel" class="btn_self btn_major">취소</button>
 		        <button type="submit" id="modifyFormSubmit" class="btn_self btn_major">변경</button>

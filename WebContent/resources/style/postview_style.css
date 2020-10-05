@@ -82,8 +82,9 @@
 
 .post_attached_files{
 	position: relative;
-	font-size: 0.85rem;
+	margin: 10px 0;
 
+	font-size: 0.9rem;
 	text-align: right;
 }
 
@@ -102,6 +103,8 @@
 
 	position: absolute;
 	right: 0px;
+
+	z-index: 1;
 }
 
 .post_attached_files-item:not(:last-child){

@@ -12,6 +12,7 @@ public class PostDTO {
 	private int hits;
 	private int comments;
 	private int important;
+	private int permission;
 
 
 	public PostDTO() {
@@ -24,6 +25,7 @@ public class PostDTO {
 		hits = 0;
 		comments=0;
 		important = 0;
+		permission = 1;
 	}
 
 	public int getPostId() {
@@ -95,6 +97,14 @@ public class PostDTO {
 
 	public void setImportant(int important) {
 		this.important = important;
+	}
+
+	public int getPermission() {
+		return permission;
+	}
+
+	public void setPermission(int permission) {
+		this.permission = permission;
 	}
 
 

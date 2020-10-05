@@ -2,11 +2,10 @@
 	$(document).ready(function() {
 
 		var defaultEmail = $("#userEmail").val();
+		var defaultNickName = $("#userNickName").val();
 		var nickNameValid =1;
 		var nameValid =1;
-		var birthValid =1;
 		var emailValid = 1;
-		var phoneValid = 1;
 		var certification = 1;
 
 		var overlapCheck = function(name,value){
@@ -114,16 +113,20 @@
 
 			$("#nickNameMsg").empty();
 			if(regExp.test(userNickName)){
-				overlapCheck("userNickName",userNickName).done(function(data) {
-					if(data.trim() == "true"){
-						$("#nickNameMsg").css("color", "#0000ff").text("사용 가능한 닉네임입니다.");
-						nickNameValid = 1;
-					}
-					else if(data.trim() == "false"){
-						$("#nickNameMsg").css("color", "#ff0000").text("이미 존재하는 닉네임입니다.");
-						nickNameValid=0;
-					}
-				});
+				if(userNickName != defaultNickName){
+					overlapCheck("userNickName",userNickName).done(function(data) {
+						if(data.trim() == "true"){
+							$("#nickNameMsg").css("color", "#0000ff").text("사용 가능한 닉네임입니다.");
+							nickNameValid = 1;
+						}
+						else if(data.trim() == "false"){
+							$("#nickNameMsg").css("color", "#ff0000").text("이미 존재하는 닉네임입니다.");
+							nickNameValid=0;
+						}
+					});
+				}else{
+					nickNameValid =1;
+				}
 			}
 			else{
 				$("#nickNameMsg").css("color", "#ff0000").text("2~10자의 영문 대 소문자, 숫자, 한글만 사용 가능합니다.");
@@ -142,24 +145,6 @@
 			else{
 				$("#nameMsg").css("color", "#ff0000").text("이름을 확인하세요.");
 				nameValid=0;
-			}
-		});
-
-		$("#userBirth").focusout(function(event) {
-			var target = $(event.target);
-
-			if(target.is("input")){
-				var year = $("#userBirthY").val();
-				var month = $("#userBirthM").val();
-				var day = $("#userBirthD").val();
-
-				$("#birthMsg").empty();
-				if(dateCheck(year,month,day)){
-					birthValid = 1;
-				}
-				else{
-					birthValid = 0;
-				}
 			}
 		});
 
@@ -200,32 +185,10 @@
 			}
 		});
 
-		$("#userPhone").focusout(function(event) {
-			var target = $(event.target);
-
-			if(target.is("input")){
-				var regExp1 = /^01[016789]$/;
-				var regExp2 = /^[0-9]{3,4}$/;
-				var regExp3 = /^[0-9]{4}$/;
-				var phoneNum1 = $("#phoneNum1").val();
-				var phoneNum2 = $("#phoneNum2").val();
-				var phoneNum3 = $("#phoneNum3").val();
-
-				$("#phoneMsg").empty();
-				if(regExp1.test(phoneNum1) && regExp2.test(phoneNum2) && regExp3.test(phoneNum3) ){
-					phoneValid = 1;
-				}
-				else{
-					$("#phoneMsg").css("color", "#ff0000").text("전화번호를 정확하게 입력하세요.");
-					phoneValid=0;
-				}
-			}
-		});
-
 		$("#modifyFormSubmit").on("click",function() {
-			var validator = nickNameValid + nameValid + birthValid +emailValid + phoneValid;
+			var validator = nickNameValid + nameValid  +emailValid;
 
-			if(validator != 5){
+			if(validator != 3){
 				alert("항목을 전부 확인해주세요.");
 				return false;
 			}

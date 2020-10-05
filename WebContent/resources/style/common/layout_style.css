@@ -44,12 +44,6 @@ body{
 	padding : 0 5px;
 }
 
-.lnb-list{
-	list-style: none;
-
-	padding:0;
-}
-
 .lnb-item{
 	display: inline-block;
 }

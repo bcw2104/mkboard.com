@@ -11,7 +11,7 @@
 
 <div class="nav">
 	<div class="nav-title">${requestScope.categoryName}</div>
-	<ul class="nav-list">
+	<ul class="nav-list list_deco_none">
 		<li class="nav-item ${requestScope.postInfo.boardId == null ? 'selected' : ''}">
 			<a class="nav-item_link" href="/content/${requestScope.categoryId}">전체 글</a></li>
 		<c:forEach items="${requestScope.boardList}" var="n">
@@ -40,7 +40,7 @@
 				</c:forEach>
 			</select>
 		</div>
-		<c:if test="${sessionScope.user.userId == 'admin'}">
+		<c:if test="${sessionScope.user.admin == 1}">
 			<label class=admin_control>공지로 등록<input type="checkbox" class="ckb_notice"  name="important"></label>
 		</c:if>
 		<div class="form_control">

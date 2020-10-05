@@ -30,21 +30,19 @@
         				<span class="v_bar">|</span>
         				<a class="gnb-item_link" href="/account/logout">로그아웃</a>
         				<span class="v_bar">|</span>
+        				<a class="gnb-item_link" href="/user/profile">
         				<c:choose>
-	        				<c:when test="${sessionScope.user.userId == 'admin'}">
-		        				<a class="gnb-item_link" href="/admin/members">관리자 메뉴</a>
-		        			</c:when>
-		        			<c:otherwise>
-		        				<a class="gnb-item_link" href="/user/profile">마이페이지</a>
-		        			</c:otherwise>
-	        			</c:choose>
+        					<c:when test="${sessionScope.user.admin == 1}">관리자 메뉴</c:when>
+        					<c:otherwise>마이페이지</c:otherwise>
+        				</c:choose>
+        				</a>
         			</c:otherwise>
         		</c:choose>
         	</div>
         	<div class="header-title"><a class="header-title_link" href="/">게시판 플랫폼</a></div>
         </div>
         <div class="lnb">
-			<ul class="lnb-list">
+			<ul class="lnb-list list_deco_none">
 				<c:forEach items="${requestScope.categoryList}" var="n">
 					<li class="lnb-item"><a class="lnb-item_link" href="/content/${n.categoryId}">${n.categoryName}</a></li>
 				</c:forEach>

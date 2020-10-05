@@ -79,7 +79,7 @@ public class ContentController {
 		BoardDTO boardDTO = boardService.findOne(boardId);
 		PostInfoDTO postInfoDTO = postService.findOne(postId);
 
-		if (categoryDTO != null && boardDTO != null && postInfoDTO != null) {
+		if (postInfoDTO.getPermission() == 1 && categoryDTO != null && boardDTO != null && postInfoDTO != null) {
 
 			ArrayList<CommentDTO> commentList = commentService.findList(postId, null , "DESC");
 			Iterator<CommentDTO> itr = commentList.iterator();
@@ -274,13 +274,13 @@ public class ContentController {
 	public String remove(@PathVariable int postId,
 			 								  @SessionAttribute("user") UserDTO userDTO,HttpServletResponse response) throws Exception{
 
-		PostInfoDTO postInfoDTO = postService.findOne(postId);
+		PostDTO postDTO = postService.findOne(postId);
 
-		if(postInfoDTO.getUserId().equals(userDTO.getUserId()) || userDTO.getUserId().equals("admin")) {
-			postFileService.delete(postInfoDTO.getUserId(),postInfoDTO.getPostId(), null);
-			postModifyService.delete(postId);
-
+		if(postDTO.getUserId().equals(userDTO.getUserId())) {
 			String msg = "게시글이 삭제되었습니다.";
+
+			postFileService.delete(postDTO.getUserId(),postDTO.getPostId(), null);
+			postModifyService.delete(postId);
 
 			response.setCharacterEncoding("UTF-8");
 			response.setContentType("text/html; charset=UTF-8");
@@ -294,6 +294,31 @@ public class ContentController {
 			return "redirect:/system/error/auth";
 		}
 	}
+
+	@GetMapping("/{postId}/blind")
+	public String blind(@PathVariable int postId,
+			 								  @SessionAttribute("user") UserDTO userDTO,HttpServletResponse response) throws Exception{
+
+		PostDTO postDTO = postService.findOne(postId);
+
+		if(userDTO.getAdmin() == 1) {
+			String msg = "게시글이 블라인드 처리되었습니다.";
+			postDTO.setPermission(0);
+			postModifyService.update(postDTO);
+
+			response.setCharacterEncoding("UTF-8");
+			response.setContentType("text/html; charset=UTF-8");
+			response.getWriter().write( "<script>"
+														+ "alert('"+msg+"');"
+														+ "window.location.href='/';"
+														+ "</script>");
+			return null;
+		}
+		else {
+			return "redirect:/system/error/auth";
+		}
+	}
+
 	@PostMapping("/regpost")
 	public String regpost(@RequestParam(value = "post_id",required= false) String _postId,
 										@RequestParam(value = "post_title") String postTitle,
