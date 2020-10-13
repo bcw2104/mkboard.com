@@ -27,10 +27,11 @@ public class UserService{
 		return mapper.selectOne(hashMap);
 	}
 
-	public ArrayList<UserDTO> findList(int frontPageNum,int rearPageNum, String sortType) {
+	public ArrayList<UserDTO> findList(int frontPageNum,int rearPageNum,int admin, String sortType) {
 		HashMap<String, Object> hashMap = new HashMap<String, Object>();
 		hashMap.put("frontPageNum", frontPageNum);
 		hashMap.put("rearPageNum", rearPageNum);
+		hashMap.put("admin", admin);
 
 		if(sortType == null) {
 			sortType = "DESC";

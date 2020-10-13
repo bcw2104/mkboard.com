@@ -26,7 +26,10 @@
 	<c:if test="${sessionScope.user.admin == 1}">
 	<div class="nav-title">게시판 관리</div>
 	<ul class="nav-list list_deco_none">
-		<li class="nav-item ${path == '/admin/members' ? 'selected' : ''}">
+		<li class="nav-item ${path == '/admin/members' && param.s=='adm' ? 'selected' : ''}">
+			<a class="nav-item_link" href="/admin/members?s=adm">관리자 목록</a>
+		</li>
+		<li class="nav-item ${path == '/admin/members' && param.s!='adm' ? 'selected' : ''}">
 			<a class="nav-item_link" href="/admin/members">회원 목록</a>
 		</li>
 	</ul>

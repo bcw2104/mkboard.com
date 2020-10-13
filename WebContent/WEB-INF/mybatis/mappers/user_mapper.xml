@@ -19,13 +19,24 @@
 
 	<select id="selectList" parameterType="hashmap" resultType="userDTO">
 		<choose>
-			<when test="frontPageNum != 0 and rearPageNum != 0">
+			<when test="frontPageNum != null and rearPageNum != null">
 				SELECT * FROM (SELECT rownum as row_num ,tbl_user.* FROM
-				(SELECT * FROM tbl_user ORDER BY user_regdate ${sortType}) tbl_user )
+				(SELECT * FROM tbl_user
+					<where>
+						<if test="admin != null">
+							admin = #{admin}
+						</if>
+					</where>
+					ORDER BY user_regdate ${sortType}) tbl_user )
 				WHERE row_num BETWEEN #{frontPageNum} AND #{rearPageNum}
 			</when>
 			<otherwise>
 				SELECT * FROM tbl_user
+				<where>
+					<if test="admin != null">
+						admin = #{admin}
+					</if>
+				</where>
 				ORDER BY user_regdate ${sortType}
 			</otherwise>
 		</choose>

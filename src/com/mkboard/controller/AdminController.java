@@ -20,17 +20,24 @@ public class AdminController {
 	UserService userService;
 
 	@GetMapping("/members")
-	public String admin(@RequestParam(required = false, value = "p") String _pageNum,
+	public String admin(@RequestParam(required = false, value = "s") String search,
+						@RequestParam(required = false, value = "p") String _pageNum,
 									 HttpSession session, Model model)throws NumberFormatException{
 
 		int totalCount = userService.getCount();
 		int pageNum = 1;
+		int position = 0;
 
 		if(_pageNum != null) {
 			pageNum = Integer.parseInt(_pageNum);
 		}
 
-		model.addAttribute("userList", userService.findList(10 * (pageNum - 1) + 1, 10 * pageNum, null));
+		if(search != null && search.equals("adm") ) {
+			position = 1;
+		}
+
+		model.addAttribute("type", position);
+		model.addAttribute("userList", userService.findList(10 * (pageNum - 1) + 1, 10 * pageNum,position, null));
 		model.addAttribute("totalCount", totalCount);
 		model.addAttribute("pageNum", pageNum);
 		model.addAttribute("requestPage", PagePath.userlistPage);
