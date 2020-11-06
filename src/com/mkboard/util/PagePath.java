@@ -1,8 +1,6 @@
 package com.mkboard.util;
 
 public class PagePath {
-	//root
-	public final static String welcomePage = "welcome.jsp";
 
 	//account
 	public final static String loginPage = "account/login.jsp";
@@ -10,6 +8,7 @@ public class PagePath {
 	public final static String findPage = "account/find.jsp";
 	public final static String findCompletePage = "account/find_complete.jsp";
 	public final static String findChangePage = "account/find_change.jsp";
+	public final static String welcomePage = "account/welcome.jsp";
 
 	//admin
 	public final static String userlistPage = "admin/members.jsp";
