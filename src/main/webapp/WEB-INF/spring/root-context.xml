@@ -11,6 +11,10 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 
+
+	<!-- properties -->
+	<context:property-placeholder location="/WEB-INF/properties/*.properties" />
+
 	<!-- async -->
 	 <task:executor id="asyncExecutor" pool-size="100-1000" queue-capacity="1000"  rejection-policy="ABORT" />
 	 <task:annotation-driven executor="asyncExecutor" />
@@ -42,9 +46,9 @@
 	<mybatis-spring:scan base-package="com.mkboard.mapper"/>
 
 	<!-- Util beans -->
-	<bean class="com.mkboard.util.CookieTools" lazy-init="true"  />
-	<bean class="com.mkboard.util.FileTools" lazy-init="true"  />
-	<bean class="com.mkboard.util.AuthTools" lazy-init="true"  />
-	<bean class="com.mkboard.util.MailForm" lazy-init="true"  />
+	<bean class="com.mkboard.util.CookieTools"/>
+	<bean class="com.mkboard.util.FileTools"/>
+	<bean class="com.mkboard.util.AuthTools"/>
+	<bean class="com.mkboard.util.MailForm"/>
 
 </beans>
